@@ -1,21 +1,17 @@
 {
-    "extends": "expo/tsconfig.base",
-    "compilerOptions": {
-        "strict": true,
-        "noUncheckedIndexedAccess": true,
-        "exactOptionalPropertyTypes": true,
-        "noImplicitOverride": true,
-        "noFallthroughCasesInSwitch": true,
-        "allowJs": false,
-        "baseUrl": ".",
-        "ignoreDeprecations": "6.0",
-        "paths": {
-            "@/*": [
-                "src/*"
-            ],
-            "@assets/*": [
-                "assets/*"
-            ]
-        }
+  "extends": "expo/tsconfig.base",
+  "compilerOptions": {
+    "strict": true,
+    "noUncheckedIndexedAccess": true,
+    "exactOptionalPropertyTypes": true,
+    "noImplicitOverride": true,
+    "noFallthroughCasesInSwitch": true,
+    "allowJs": false,
+    "baseUrl": ".",
+    "ignoreDeprecations": "6.0",
+    "paths": {
+      "@/*": ["src/*"],
+      "@assets/*": ["assets/*"]
     }
+  }
 }
