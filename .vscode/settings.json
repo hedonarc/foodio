@@ -1,0 +1,9 @@
+{
+  "search.exclude": {
+    "**/.expo": true,
+    "**/android": true,
+    "**/ios": true,
+    "**/node_modules": true,
+    "**/.git": true
+  }
+}
