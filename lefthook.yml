@@ -9,6 +9,11 @@ pre-commit:
       run: pnpm exec eslint --fix {staged_files}
       stage_fixed: true
 
+pre-push:
+  jobs:
+    - name: typecheck
+      run: pnpm tsc --noEmit
+
 commit-msg:
   jobs:
     - name: commitlint
