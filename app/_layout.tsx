@@ -4,6 +4,8 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 import '../global.css';
 
+import '@/i18n';
+
 export default function RootLayout() {
   return (
     <SafeAreaProvider>

@@ -1,0 +1,20 @@
+{
+  "common": {
+    "allow": "Allow",
+    "skip": "Skip"
+  },
+  "onboarding": {
+    "location": {
+      "title": "Enable Location",
+      "description": "Find restaurants and deals near you"
+    },
+    "notifications": {
+      "title": "Stay Updated",
+      "description": "Get notified about orders and deals"
+    }
+  },
+  "home": {
+    "title": "Foodio",
+    "subtitle": "Main app goes here"
+  }
+}

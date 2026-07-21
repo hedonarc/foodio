@@ -35,8 +35,8 @@ export default function LocationPermissionScreen() {
           contentFit="contain"
         />
       }
-      title="Enable Location"
-      description="Find restaurants and deals near you"
+      titleKey="onboarding.location.title"
+      descriptionKey="onboarding.location.description"
       onAllow={handleAllow}
       onSkip={handleSkip}
     />

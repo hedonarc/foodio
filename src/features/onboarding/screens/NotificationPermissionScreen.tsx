@@ -38,8 +38,8 @@ export default function NotificationPermissionScreen() {
           contentFit="contain"
         />
       }
-      title="Stay Updated"
-      description="Get notified about orders and deals"
+      titleKey="onboarding.notifications.title"
+      descriptionKey="onboarding.notifications.description"
       onAllow={handleAllow}
       onSkip={handleSkip}
     />
