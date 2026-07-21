@@ -37,7 +37,28 @@ export default [
       '@typescript-eslint/no-explicit-any': 'error',
       'react-hooks/rules-of-hooks': 'error',
       'react-hooks/exhaustive-deps': 'warn',
-      'simple-import-sort/imports': 'error',
+      'simple-import-sort/imports': [
+        'error',
+        {
+          groups: [
+            // React
+            ['^react$', '^react-native$'],
+            // Expo
+            ['^expo', '^@expo'],
+            // Third-party packages
+            ['^@?\\w'],
+            // Internal aliases
+            ['^@/'],
+            ['^@assets/'],
+            // Parent imports
+            ['^\\.\\.(?!/?$)', '^\\.\\./?$'],
+            // Sibling imports
+            ['^\\./(?=.*/)(?!/?$)', '^\\.(?!/?$)', '^\\./?$'],
+            // Style imports
+            ['^.+\\.?(css|scss|sass)$'],
+          ],
+        },
+      ],
       'simple-import-sort/exports': 'error',
     },
     settings: {

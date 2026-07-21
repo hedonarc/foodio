@@ -1,5 +1,6 @@
-import * as Location from 'expo-location';
 import { useCallback } from 'react';
+
+import * as Location from 'expo-location';
 
 export function useLocationPermission() {
   const requestPermission = useCallback(async () => {

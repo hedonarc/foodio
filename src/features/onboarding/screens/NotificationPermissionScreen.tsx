@@ -1,8 +1,11 @@
-import { Ionicons } from '@expo/vector-icons';
-import { useRouter } from 'expo-router';
 import { useCallback } from 'react';
 
+import { Image } from 'expo-image';
+import { useRouter } from 'expo-router';
+
 import { useOnboardingStore } from '@/stores/onboarding.store';
+
+import notificationPermission from '@assets/images/notification_permission.svg';
 
 import { PermissionScreen } from '../components/PermissionScreen';
 import { useNotificationPermission } from '../hooks/useNotificationPermission';
@@ -28,7 +31,13 @@ export default function NotificationPermissionScreen() {
 
   return (
     <PermissionScreen
-      illustration={<Ionicons name="notifications-outline" size={120} color="#FF9800" />}
+      illustration={
+        <Image
+          source={notificationPermission}
+          style={{ width: 250, height: 250 }}
+          contentFit="contain"
+        />
+      }
       title="Stay Updated"
       description="Get notified about orders and deals"
       onAllow={handleAllow}

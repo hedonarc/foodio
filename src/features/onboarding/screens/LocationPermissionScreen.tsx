@@ -1,8 +1,11 @@
-import { Ionicons } from '@expo/vector-icons';
-import { useRouter } from 'expo-router';
 import { useCallback } from 'react';
 
+import { Image } from 'expo-image';
+import { useRouter } from 'expo-router';
+
 import { useOnboardingStore } from '@/stores/onboarding.store';
+
+import locationPermission from '@assets/images/location_permission.svg';
 
 import { PermissionScreen } from '../components/PermissionScreen';
 import { useLocationPermission } from '../hooks/useLocationPermission';
@@ -25,7 +28,13 @@ export default function LocationPermissionScreen() {
 
   return (
     <PermissionScreen
-      illustration={<Ionicons name="location-outline" size={120} color="#4CAF50" />}
+      illustration={
+        <Image
+          source={locationPermission}
+          style={{ width: 250, height: 250 }}
+          contentFit="contain"
+        />
+      }
       title="Enable Location"
       description="Find restaurants and deals near you"
       onAllow={handleAllow}

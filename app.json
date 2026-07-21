@@ -26,15 +26,16 @@
       "bundler": "metro"
     },
     "plugins": [
-      "expo-router",
+      "expo-font",
+      "expo-image",
       "expo-location",
+      "expo-router",
       [
         "expo-notifications",
         {
           "icon": "./assets/icon.png"
         }
-      ],
-      "expo-font"
+      ]
     ]
   }
 }

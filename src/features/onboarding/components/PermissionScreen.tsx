@@ -1,5 +1,6 @@
-import type { ReactNode } from 'react';
 import { Text, View } from 'react-native';
+
+import type { ReactNode } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 export type PermissionScreenProps = {
