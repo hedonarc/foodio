@@ -3,25 +3,25 @@ import { useCallback } from 'react';
 import { Image } from 'expo-image';
 import { useRouter } from 'expo-router';
 
+import { usePermissionRequest } from '@/hooks/usePermissionRequest';
 import { useOnboardingStore } from '@/stores/onboarding.store';
 
 import notificationPermission from '@assets/images/notification_permission.svg';
 
 import { PermissionScreen } from '../components/PermissionScreen';
-import { useNotificationPermission } from '../hooks/useNotificationPermission';
 
 export default function NotificationPermissionScreen() {
   const router = useRouter();
-  const { requestPermission } = useNotificationPermission();
+  const { request } = usePermissionRequest();
   const completeNotificationStep = useOnboardingStore((state) => state.completeNotificationStep);
   const completeOnboarding = useOnboardingStore((state) => state.completeOnboarding);
 
   const handleAllow = useCallback(async () => {
-    await requestPermission();
+    await request('notification');
     completeNotificationStep();
     completeOnboarding();
     router.replace('/(tabs)');
-  }, [requestPermission, completeNotificationStep, completeOnboarding, router]);
+  }, [request, completeNotificationStep, completeOnboarding, router]);
 
   const handleSkip = useCallback(() => {
     completeNotificationStep();

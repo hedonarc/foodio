@@ -3,23 +3,23 @@ import { useCallback } from 'react';
 import { Image } from 'expo-image';
 import { useRouter } from 'expo-router';
 
+import { usePermissionRequest } from '@/hooks/usePermissionRequest';
 import { useOnboardingStore } from '@/stores/onboarding.store';
 
 import locationPermission from '@assets/images/location_permission.svg';
 
 import { PermissionScreen } from '../components/PermissionScreen';
-import { useLocationPermission } from '../hooks/useLocationPermission';
 
 export default function LocationPermissionScreen() {
   const router = useRouter();
-  const { requestPermission } = useLocationPermission();
+  const { request } = usePermissionRequest();
   const completeLocationStep = useOnboardingStore((state) => state.completeLocationStep);
 
   const handleAllow = useCallback(async () => {
-    await requestPermission();
+    await request('location');
     completeLocationStep();
     router.push('/(onboarding)/notifications');
-  }, [requestPermission, completeLocationStep, router]);
+  }, [request, completeLocationStep, router]);
 
   const handleSkip = useCallback(() => {
     completeLocationStep();
