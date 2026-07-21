@@ -1,11 +1,11 @@
 import { Redirect } from 'expo-router';
 
-import { useOnboardingStore } from '@/stores/onboarding.store';
+import { OnboardingStep, useOnboardingStore } from '@/stores/onboarding.store';
 
 export default function Index() {
-  const hasCompletedOnboarding = useOnboardingStore((state) => state.hasCompletedOnboarding);
+  const step = useOnboardingStore((state) => state.step);
 
-  if (!hasCompletedOnboarding) {
+  if (step !== OnboardingStep.Complete) {
     return <Redirect href="/(onboarding)/location" />;
   }
 

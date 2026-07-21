@@ -1,19 +1,19 @@
 import { create } from 'zustand';
 
+export enum OnboardingStep {
+  Location = 'location',
+  Notifications = 'notifications',
+  Complete = 'complete',
+}
+
 type OnboardingState = {
-  hasCompletedOnboarding: boolean;
-  locationStepCompleted: boolean;
-  notificationStepCompleted: boolean;
+  step: OnboardingStep;
   completeLocationStep: () => void;
   completeNotificationStep: () => void;
-  completeOnboarding: () => void;
 };
 
 export const useOnboardingStore = create<OnboardingState>((set) => ({
-  hasCompletedOnboarding: false,
-  locationStepCompleted: false,
-  notificationStepCompleted: false,
-  completeLocationStep: () => set({ locationStepCompleted: true }),
-  completeNotificationStep: () => set({ notificationStepCompleted: true }),
-  completeOnboarding: () => set({ hasCompletedOnboarding: true }),
+  step: OnboardingStep.Location,
+  completeLocationStep: () => set({ step: OnboardingStep.Notifications }),
+  completeNotificationStep: () => set({ step: OnboardingStep.Complete }),
 }));

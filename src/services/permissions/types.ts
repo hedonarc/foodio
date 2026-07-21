@@ -1,7 +1,12 @@
-export type PermissionType = 'location' | 'notification';
+export enum PermissionType {
+  Location = 'location',
+  Notification = 'notification',
+}
+
+export type ExpoPermissionStatus = 'granted' | 'denied' | 'undetermined';
 
 export type PermissionResult = {
-  readonly status: 'granted' | 'denied' | 'undetermined';
+  readonly status: ExpoPermissionStatus;
   readonly type: PermissionType;
 };
 

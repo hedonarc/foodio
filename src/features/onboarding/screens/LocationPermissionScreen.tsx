@@ -4,6 +4,7 @@ import { Image } from 'expo-image';
 import { useRouter } from 'expo-router';
 
 import { usePermissionRequest } from '@/hooks/usePermissionRequest';
+import { PermissionType } from '@/services/permissions';
 import { useOnboardingStore } from '@/stores/onboarding.store';
 
 import locationPermission from '@assets/images/location_permission.svg';
@@ -16,7 +17,7 @@ export default function LocationPermissionScreen() {
   const completeLocationStep = useOnboardingStore((state) => state.completeLocationStep);
 
   const handleAllow = useCallback(async () => {
-    await request('location');
+    await request(PermissionType.Location);
     completeLocationStep();
     router.push('/(onboarding)/notifications');
   }, [request, completeLocationStep, router]);
