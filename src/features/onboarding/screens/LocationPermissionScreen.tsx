@@ -18,12 +18,12 @@ export default function LocationPermissionScreen() {
 
   const handleAllow = useCallback(async () => {
     await request(PermissionType.Location);
-    completeLocationStep();
+    await completeLocationStep();
     router.push('/(onboarding)/notifications');
   }, [request, completeLocationStep, router]);
 
-  const handleSkip = useCallback(() => {
-    completeLocationStep();
+  const handleSkip = useCallback(async () => {
+    await completeLocationStep();
     router.push('/(onboarding)/notifications');
   }, [completeLocationStep, router]);
 
