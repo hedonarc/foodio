@@ -15,6 +15,12 @@
   },
   "home": {
     "title": "Foodio",
-    "subtitle": "Main app goes here"
+    "searchPlaceholder": "Search for food or restaurants...",
+    "featuredVideos": "Featured Videos",
+    "restaurants": "Restaurants Near You"
+  },
+  "restaurant": {
+    "detailsTitle": "Restaurant Details",
+    "idLabel": "Restaurant ID:"
   }
 }
