@@ -22,5 +22,8 @@
   "restaurant": {
     "detailsTitle": "Restaurant Details",
     "idLabel": "Restaurant ID:"
+  },
+  "menu": {
+    "title": "Menu"
   }
 }

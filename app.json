@@ -35,7 +35,8 @@
         {
           "icon": "./assets/icon.png"
         }
-      ]
+      ],
+      "expo-splash-screen"
     ]
   }
 }
