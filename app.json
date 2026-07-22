@@ -6,6 +6,7 @@
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
+    "scheme": "foodio",
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.anonymous.foodio"
@@ -21,7 +22,20 @@
       "package": "com.anonymous.foodio"
     },
     "web": {
-      "favicon": "./assets/favicon.png"
-    }
+      "favicon": "./assets/favicon.png",
+      "bundler": "metro"
+    },
+    "plugins": [
+      "expo-font",
+      "expo-image",
+      "expo-location",
+      "expo-router",
+      [
+        "expo-notifications",
+        {
+          "icon": "./assets/icon.png"
+        }
+      ]
+    ]
   }
 }
