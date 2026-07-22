@@ -1,6 +1,6 @@
 import * as SecureStore from 'expo-secure-store';
 
-import { OnboardingStep } from '@/stores/onboarding.store';
+import { OnboardingStep } from '@/features/onboarding/types/onboarding.types';
 
 const ONBOARDING_STATUS_KEY = 'foodio_onboarding_status';
 

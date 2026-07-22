@@ -2,8 +2,11 @@ import { ScrollView } from 'react-native';
 
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-import { FeaturedVideoCarousel, RestaurantCarousel, SearchBar } from '@/features/discovery';
-import { MOCK_FEATURED_VIDEOS, MOCK_RESTAURANT_PREVIEWS } from '@/features/discovery';
+import { FeaturedVideoCarousel } from '../components/FeaturedVideoCarousel';
+import { RestaurantCarousel } from '../components/RestaurantCarousel';
+import { SearchBar } from '../components/SearchBar';
+import { MOCK_RESTAURANT_PREVIEWS } from '../data/discovery.mock';
+import { MOCK_FEATURED_VIDEOS } from '../data/featuredVideos.mock';
 
 export function HomeScreen() {
   return (

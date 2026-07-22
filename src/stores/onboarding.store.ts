@@ -1,12 +1,9 @@
 import { create } from 'zustand';
 
+import { OnboardingStep } from '@/features/onboarding/types/onboarding.types';
 import { getOnboardingStatus, setOnboardingStatus } from '@/services/storage';
 
-export enum OnboardingStep {
-  Location = 'location',
-  Notifications = 'notifications',
-  Complete = 'complete',
-}
+export { OnboardingStep };
 
 type OnboardingState = {
   step: OnboardingStep;
