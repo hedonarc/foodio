@@ -1,15 +1,14 @@
-import * as Location from 'expo-location';
-import * as Notifications from 'expo-notifications';
-
 import type { PermissionPort, PermissionResult } from './types';
 import { PermissionType } from './types';
 
 async function requestLocation(): Promise<PermissionResult> {
+  const Location = await import('expo-location');
   const { status } = await Location.requestForegroundPermissionsAsync();
   return { status, type: PermissionType.Location };
 }
 
 async function requestNotification(): Promise<PermissionResult> {
+  const Notifications = await import('expo-notifications');
   const { status } = await Notifications.requestPermissionsAsync();
   return { status, type: PermissionType.Notification };
 }
