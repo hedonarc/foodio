@@ -18,12 +18,12 @@ export default function NotificationPermissionScreen() {
 
   const handleAllow = useCallback(async () => {
     await request(PermissionType.Notification);
-    completeNotificationStep();
+    await completeNotificationStep();
     router.replace('/(tabs)');
   }, [request, completeNotificationStep, router]);
 
-  const handleSkip = useCallback(() => {
-    completeNotificationStep();
+  const handleSkip = useCallback(async () => {
+    await completeNotificationStep();
     router.replace('/(tabs)');
   }, [completeNotificationStep, router]);
 
