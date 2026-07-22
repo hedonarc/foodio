@@ -4,7 +4,7 @@ import { Image } from 'expo-image';
 
 import { Text } from '@/components/ui';
 
-import type { FeaturedVideo } from '../types/restaurant.types';
+import type { FeaturedVideo } from '../types/featuredVideo.types';
 
 type FeaturedVideoCardProps = {
   video: FeaturedVideo;

@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 
 import { Text } from '@/components/ui';
 
-import type { FeaturedVideo } from '../types/restaurant.types';
+import type { FeaturedVideo } from '../types/featuredVideo.types';
 
 import { FeaturedVideoCard } from './FeaturedVideoCard';
 

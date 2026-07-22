@@ -1,3 +1,3 @@
-import { HomeScreen } from '@/features/restaurants';
+import { HomeScreen } from '@/features/discovery';
 
 export default HomeScreen;

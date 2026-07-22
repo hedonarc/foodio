@@ -1,4 +1,4 @@
-import type { FeaturedVideo } from '../types/restaurant.types';
+import type { FeaturedVideo } from '../types/featuredVideo.types';
 
 export const MOCK_FEATURED_VIDEOS: FeaturedVideo[] = [
   {
