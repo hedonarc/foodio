@@ -5,6 +5,7 @@ import { Stack } from 'expo-router';
 
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 
+import { logDebug } from '@/lib/logger';
 import { QueryProvider } from '@/providers/QueryProvider';
 import { OnboardingStep, useOnboardingStore } from '@/stores/onboarding.store';
 import { colors } from '@/theme';
@@ -44,6 +45,13 @@ export default function RootLayout() {
   }
 
   const hasOnboarded = step === OnboardingStep.Complete;
+
+  logDebug(
+    'root.layout',
+    `step=${step} hasOnboarded=${hasOnboarded} mounts=[${
+      hasOnboarded ? 'index, restaurant/[id], cart' : '(onboarding)'
+    }]`,
+  );
 
   return (
     <QueryProvider>

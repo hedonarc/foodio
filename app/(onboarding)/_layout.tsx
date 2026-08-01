@@ -1,5 +1,6 @@
 import { Stack } from 'expo-router';
 
+import { logDebug } from '@/lib/logger';
 import { OnboardingStep, useOnboardingStore } from '@/stores/onboarding.store';
 
 /**
@@ -20,6 +21,16 @@ import { OnboardingStep, useOnboardingStore } from '@/stores/onboarding.store';
  */
 export default function OnboardingLayout() {
   const step = useOnboardingStore((state) => state.step);
+
+  logDebug(
+    'onboarding.layout',
+    `step=${step} mounts=[${[
+      step === OnboardingStep.Location ? 'location' : null,
+      step !== OnboardingStep.Location ? 'notifications' : null,
+    ]
+      .filter(Boolean)
+      .join(', ')}]`,
+  );
 
   return (
     <Stack
