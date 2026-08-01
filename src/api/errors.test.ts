@@ -68,4 +68,8 @@ describe('ApiError.isRetryable', () => {
     expect(new ApiError('client', '', { status: 404 }).isRetryable).toBe(false);
     expect(new ApiError('contract', '').isRetryable).toBe(false);
   });
+
+  it('is false when the app does not know where to send the request', () => {
+    expect(new ApiError('config', '').isRetryable).toBe(false);
+  });
 });

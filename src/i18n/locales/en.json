@@ -3,7 +3,9 @@
     "allow": "Allow",
     "skip": "Skip",
     "loading": "Loading",
-    "retry": "Try again"
+    "retry": "Try again",
+    "cancel": "Cancel",
+    "back": "Go back"
   },
   "errors": {
     "unknown": "Something went wrong. Please try again."
@@ -43,5 +45,26 @@
     "title": "Menu",
     "empty": "This restaurant has not published a menu yet.",
     "popularBadge": "Popular"
+  },
+  "cart": {
+    "title": "Your Cart",
+    "empty": "Your cart is empty.",
+    "clear": "Clear",
+    "subtotal": "Subtotal",
+    "deliveryFee": "Delivery",
+    "total": "Total",
+    "free": "Free",
+    "fromRestaurant": "From {{restaurant}}",
+    "items_one": "{{count}} item",
+    "items_other": "{{count}} items",
+    "viewWithCount_one": "View cart, {{count}} item",
+    "viewWithCount_other": "View cart, {{count}} items",
+    "add": "Add {{name}} to cart",
+    "increase": "Add another {{name}}",
+    "decrease": "Remove one {{name}}",
+    "replaceTitle": "Start a new cart?",
+    "replaceMessage": "Your cart has items from {{restaurant}}. Each restaurant delivers its own orders, so you can only order from one at a time.",
+    "replaceConfirm": "Start new cart",
+    "checkoutComingSoon": "Checkout is coming next."
   }
 }
