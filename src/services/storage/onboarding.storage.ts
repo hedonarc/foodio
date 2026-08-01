@@ -14,9 +14,7 @@ export async function getOnboardingStatus(): Promise<OnboardingStep | null> {
     const value = await SecureStore.getItemAsync(ONBOARDING_STATUS_KEY);
     return value && isOnboardingStep(value) ? value : null;
   } catch (error) {
-    // Treated as "never onboarded" rather than fatal, but no longer silently:
-    // a read failure here means onboarding repeats on every launch, which is
-    // worth seeing rather than guessing at.
+    // Non-fatal: treated as never onboarded.
     logError('onboarding.storage.get', error);
     return null;
   }

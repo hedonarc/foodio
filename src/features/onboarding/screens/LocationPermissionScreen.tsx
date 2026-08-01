@@ -15,12 +15,7 @@ export default function LocationPermissionScreen() {
   const { request } = usePermissionRequest();
   const completeLocationStep = useOnboardingStore((state) => state.completeLocationStep);
 
-  /**
-   * No navigation here on purpose — the onboarding layout decides which screen
-   * exists for the current step, so completing the step is what moves the user
-   * on. Failures are logged rather than thrown, because being unable to record
-   * the step must not strand anyone on this screen.
-   */
+  // No navigation: the layout mounts the screen for the current step.
   const advance = useCallback(async () => {
     try {
       await completeLocationStep();
@@ -33,7 +28,6 @@ export default function LocationPermissionScreen() {
     try {
       await request(PermissionType.Location);
     } catch (error) {
-      // Denying, or the permission being unavailable, must not block onboarding.
       logError('onboarding.location.request', error);
     }
     await advance();

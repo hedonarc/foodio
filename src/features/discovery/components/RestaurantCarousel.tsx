@@ -8,10 +8,7 @@ import { useRestaurants } from '@/features/restaurants';
 import { RestaurantPreviewCard } from './RestaurantPreviewCard';
 import { SectionHeader } from './SectionHeader';
 
-/**
- * Owns its own query so a failure here does not blank the whole discovery
- * screen — the featured section beside it keeps working.
- */
+/** Owns its query so a failure here does not blank the whole screen. */
 export function RestaurantCarousel() {
   const { t } = useTranslation();
   const { data: restaurants, isPending, error, refetch } = useRestaurants();

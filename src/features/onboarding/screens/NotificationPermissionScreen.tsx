@@ -15,11 +15,7 @@ export default function NotificationPermissionScreen() {
   const { request } = usePermissionRequest();
   const completeNotificationStep = useOnboardingStore((state) => state.completeNotificationStep);
 
-  /**
-   * No navigation here on purpose — see LocationPermissionScreen. Completing
-   * the final step removes the whole onboarding group from the navigator, and
-   * the router falls back to the app.
-   */
+  // No navigation: completing the last step unmounts the onboarding group.
   const finish = useCallback(async () => {
     try {
       await completeNotificationStep();

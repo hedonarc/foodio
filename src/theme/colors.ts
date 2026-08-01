@@ -36,7 +36,7 @@ export const colors = {
     500: '#F44336',
   },
 
-  /** Ratings, "popular" badges — anything that draws the eye without alarming. */
+  /** Ratings and "popular" badges. */
   warning: {
     100: '#FEF3C7',
     500: '#F59E0B',

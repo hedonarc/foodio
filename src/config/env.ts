@@ -2,13 +2,9 @@ import { NativeModules, TurboModuleRegistry } from 'react-native';
 
 import Constants from 'expo-constants';
 
-/** Port the local mock API listens on (see the `api` script in package.json). */
 const DEV_API_PORT = 3000;
 
-/**
- * Pull a bare hostname out of any of the shapes Expo hands us:
- * `192.168.0.6:8081`, `http://192.168.0.6:8081/`, `exp://192.168.0.6:8081`.
- */
+/** Handles `host:port`, `http://host:port/` and `exp://host:port`. */
 function hostFrom(value: unknown): string | null {
   if (typeof value !== 'string' || value.length === 0) return null;
 
@@ -18,7 +14,6 @@ function hostFrom(value: unknown): string | null {
   return host && host.length > 0 ? host : null;
 }
 
-/** Read `scriptURL` off either shape of the SourceCode native module. */
 function readScriptUrl(module: unknown): string | null {
   if (typeof module !== 'object' || module === null) return null;
 
@@ -37,14 +32,7 @@ function readScriptUrl(module: unknown): string | null {
   return null;
 }
 
-/**
- * The Metro server this bundle was loaded from — definitionally the dev
- * machine, and the only source that survives being launched outside the dev
- * client, where Expo's manifest fields are empty.
- *
- * The TurboModule is tried first: under the New Architecture, which RN 0.86
- * enables by default, `NativeModules.SourceCode` is not exposed at all.
- */
+/** TurboModule first: the New Architecture does not expose NativeModules.SourceCode. */
 function metroScriptUrl(): string | null {
   return (
     readScriptUrl(TurboModuleRegistry.get('SourceCode')) ?? readScriptUrl(NativeModules.SourceCode)
@@ -52,11 +40,8 @@ function metroScriptUrl(): string | null {
 }
 
 /**
- * In development the API host cannot be hardcoded: `localhost` means the
- * emulator itself on Android, and means nothing at all on a physical device.
- *
- * `hostUri` is populated in Expo Go but not in every development build, so
- * fall through several sources rather than trusting one.
+ * `localhost` is the emulator itself on Android and nothing on a device, so the
+ * host is derived. `hostUri` is empty outside Expo Go, hence the fallbacks.
  */
 function resolveDevApiUrl(): string | null {
   const host =
@@ -67,11 +52,7 @@ function resolveDevApiUrl(): string | null {
   return host ? `http://${host}:${DEV_API_PORT}` : null;
 }
 
-/**
- * Resolved lazily, and null rather than throwing, so a misconfigured build
- * surfaces as an error state on the screen that needed data — not as a crash
- * at import time that takes the whole app down before it renders.
- */
+/** Null rather than throwing, so misconfiguration surfaces as an error state. */
 export function resolveApiUrl(): string | null {
   const configured = process.env.EXPO_PUBLIC_API_URL?.trim();
   if (configured) return configured;

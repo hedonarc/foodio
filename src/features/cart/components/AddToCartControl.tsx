@@ -15,11 +15,7 @@ type AddToCartControlProps = {
   item: AddableMenuItem;
 };
 
-/**
- * Collapses to a single "add" button until the item is in the cart, then
- * becomes a stepper. Keeps the menu scannable rather than putting a stepper
- * on every row.
- */
+/** A single add button until the item is in the cart, then a stepper. */
 export function AddToCartControl({ restaurant, item }: AddToCartControlProps) {
   const { t } = useTranslation();
 
@@ -36,7 +32,7 @@ export function AddToCartControl({ restaurant, item }: AddToCartControlProps) {
       return;
     }
 
-    // Adding would discard the existing cart, so ask rather than surprise them.
+    // Adding would discard the existing cart.
     Alert.alert(
       t('cart.replaceTitle'),
       t('cart.replaceMessage', { restaurant: currentRestaurantName ?? '' }),

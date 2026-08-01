@@ -14,11 +14,7 @@ type ErrorStateProps = {
   className?: string;
 };
 
-/**
- * Surfaces the message the API layer already normalised, rather than a raw
- * exception. Retry is offered only when retrying could plausibly help — a 404
- * or a contract mismatch will fail identically every time.
- */
+/** Offers retry only when retrying could plausibly help. */
 export function ErrorState({ error, onRetry, className }: ErrorStateProps) {
   const { t } = useTranslation();
 

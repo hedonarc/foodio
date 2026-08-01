@@ -18,18 +18,13 @@ type CartState = {
 
 type CartContents = Pick<CartState, 'restaurant' | 'lines' | 'nextLineId'>;
 
-/** A fresh empty cart. A function so no two callers share one `lines` array. */
+/** A function so no two callers share one `lines` array. */
 const emptyCart = (): CartContents => ({ restaurant: null, lines: [], nextLineId: 1 });
 
 export const useCartStore = create<CartState>((set) => ({
   ...emptyCart(),
 
-  /**
-   * Adding from a different restaurant replaces the Cart rather than merging.
-   * Two restaurants means two sets of delivery staff, which is two orders —
-   * so this is enforced here rather than left to callers to remember.
-   * Use `selectIsFromOtherRestaurant` to warn the customer first.
-   */
+  /** Enforces one restaurant per cart. Warn first with selectIsFromOtherRestaurant. */
   addItem: (restaurant, item) =>
     set((state) => {
       const isSameRestaurant = state.restaurant?.id === restaurant.id;
@@ -64,7 +59,6 @@ export const useCartStore = create<CartState>((set) => ({
       ),
     })),
 
-  /** Decrementing the last unit removes the line — a zero-quantity line is not a thing. */
   decrementLine: (lineId) =>
     set((state) => {
       const lines = state.lines
@@ -83,16 +77,13 @@ export const useCartStore = create<CartState>((set) => ({
   clear: () => set(emptyCart()),
 }));
 
-// ─── selectors ───────────────────────────────────────────────────────────────
-
-/** Total units, not lines — "3" for one burger and two colas. */
+/** Total units, not lines. */
 export const selectItemCount = (state: CartState): number =>
   state.lines.reduce((count, line) => count + line.quantity, 0);
 
 export const selectSubtotalMinor = (state: CartState): number =>
   state.lines.reduce((total, line) => total + line.unitPriceMinor * line.quantity, 0);
 
-/** An empty Cart owes nothing, delivery fee included. */
 export const selectTotalMinor = (state: CartState): number => {
   if (state.lines.length === 0) return 0;
   return selectSubtotalMinor(state) + (state.restaurant?.deliveryFeeMinor ?? 0);
@@ -100,13 +91,12 @@ export const selectTotalMinor = (state: CartState): number => {
 
 export const selectIsEmpty = (state: CartState): boolean => state.lines.length === 0;
 
-/** True when adding from `restaurantId` would discard what is already in the Cart. */
+/** True when adding from `restaurantId` would discard the current Cart. */
 export const selectIsFromOtherRestaurant =
   (restaurantId: string) =>
   (state: CartState): boolean =>
     state.lines.length > 0 && state.restaurant !== null && state.restaurant.id !== restaurantId;
 
-/** Units of one menu item currently in the Cart, for the menu's stepper. */
 export const selectQuantityOf =
   (menuItemId: string) =>
   (state: CartState): number =>

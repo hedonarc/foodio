@@ -6,10 +6,7 @@ export const menuItemSchema = z.object({
   menuCategoryId: z.string(),
   name: z.string(),
   description: z.string(),
-  /**
-   * The restaurant's current asking price, in minor units of the restaurant's
-   * currency. Not what anyone paid — see docs/adr/0002.
-   */
+  /** Minor units. The current asking price, not what anyone paid — docs/adr/0002. */
   priceMinor: z.number().int(),
   image: z.string(),
   rating: z.number().optional(),
@@ -20,12 +17,11 @@ export const menuCategorySchema = z.object({
   id: z.string(),
   restaurantId: z.string(),
   name: z.string(),
-  /** Display order chosen by the restaurant. */
   position: z.number().int(),
   menuItems: z.array(menuItemSchema),
 });
 
-/** `GET /restaurants/:id/menu` — categories in display order, items embedded. */
+/** `GET /restaurants/:id/menu` */
 export const restaurantMenuSchema = z.array(menuCategorySchema);
 
 export type MenuItem = z.infer<typeof menuItemSchema>;
