@@ -5,16 +5,16 @@ import { useLocalSearchParams } from 'expo-router';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { Text } from '@/components/ui';
-import {
-  MOCK_RESTAURANTS,
-  RestaurantGallery,
-  RestaurantHeader,
-  RestaurantHero,
-  RestaurantHours,
-  RestaurantInfo,
-  RestaurantRating,
-  RestaurantReviewPreview,
-} from '@/features/restaurants';
+import { Menu } from '@/features/menu';
+
+import { RestaurantGallery } from '../components/RestaurantGallery';
+import { RestaurantHeader } from '../components/RestaurantHeader';
+import { RestaurantHero } from '../components/RestaurantHero';
+import { RestaurantHours } from '../components/RestaurantHours';
+import { RestaurantInfo } from '../components/RestaurantInfo';
+import { RestaurantRating } from '../components/RestaurantRating';
+import { RestaurantReviewPreview } from '../components/RestaurantReviewPreview';
+import { MOCK_RESTAURANTS } from '../data/restaurant.mock';
 
 export function RestaurantDetailsScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
@@ -46,6 +46,7 @@ export function RestaurantDetailsScreen() {
             description={restaurant.description}
           />
         </View>
+        <Menu restaurantId={restaurant.id} />
         <RestaurantGallery images={restaurant.gallery} />
         <RestaurantHours hours={restaurant.hours} />
         <RestaurantReviewPreview reviews={restaurant.reviews} />
