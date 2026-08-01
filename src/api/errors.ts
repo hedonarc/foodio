@@ -2,10 +2,13 @@ import { isAxiosError } from 'axios';
 
 /**
  * Why a request failed, at the granularity the UI actually branches on.
- * `contract` means the server answered but not in the shape we expect — a bug
- * on one side or the other, never something the user can fix by retrying.
+ *
+ * `contract` means the server answered but not in the shape we expect, and
+ * `config` means the request never left because the app does not know where to
+ * send it. Both are bugs rather than conditions a user can retry away.
  */
-export type ApiErrorKind = 'network' | 'timeout' | 'client' | 'server' | 'contract' | 'unknown';
+export type ApiErrorKind =
+  'network' | 'timeout' | 'client' | 'server' | 'contract' | 'config' | 'unknown';
 
 export class ApiError extends Error {
   readonly kind: ApiErrorKind;
