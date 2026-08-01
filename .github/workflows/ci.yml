@@ -4,8 +4,8 @@ on:
   push:
     branches: [main, 'release/**']
   pull_request:
-    # Feature branches target the active release branch, not main, so CI has to
-    # watch both or nothing runs until the release itself is merged.
+    # release/** is watched too, so a long-lived release line still gets checked
+    # rather than going dark until it merges back into main.
     branches: [main, 'release/**']
 
 jobs:
