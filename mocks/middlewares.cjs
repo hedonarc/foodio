@@ -4,10 +4,6 @@
  * CommonJS on purpose: package.json declares `"type": "module"`, so a `.js`
  * file here would be parsed as ESM and `module.exports` would throw.
  *
- * Latency comes from the CLI's `--delay`. This file exists for the thing the
- * CLI cannot do: make requests *fail*, so the app's error and retry paths are
- * exercised against a real HTTP response rather than only in theory.
- *
  *   MOCK_FAIL_RATE=0.3 pnpm api     # ~30% of reads fail with a 503
  *   curl -H 'x-mock-fail: 500' ...  # force one response to a given status
  */
@@ -22,28 +18,61 @@ const MESSAGES = {
   503: 'The kitchen is temporarily unreachable.',
 };
 
-/** Error body shape — must match what the app's Axios client normalises. */
 function errorBody(status) {
-  return {
-    error: {
-      status,
-      message: MESSAGES[status] ?? 'Request failed.',
-    },
-  };
+  return { error: { status, message: MESSAGES[status] ?? 'Request failed.' } };
 }
 
-module.exports = function chaos(req, res, next) {
+/**
+ * A restaurant kitchen the client cannot see, so order status advances on the
+ * server as it would in production rather than being faked in the app. Seconds
+ * rather than minutes so the flow is watchable while developing.
+ */
+const TIMELINE = [
+  { after: 0, status: 'placed' },
+  { after: 20, status: 'accepted' },
+  { after: 45, status: 'preparing' },
+  { after: 90, status: 'ready' },
+  { after: 120, status: 'out_for_delivery' },
+  { after: 180, status: 'delivered' },
+];
+
+const SETTLED = new Set(['delivered', 'rejected', 'cancelled']);
+
+function progressed(order) {
+  if (!order || typeof order !== 'object' || !order.placedAt) return order;
+  if (SETTLED.has(order.status)) return order;
+
+  const elapsedSeconds = (Date.now() - Date.parse(order.placedAt)) / 1000;
+  const reached = TIMELINE.filter((step) => elapsedSeconds >= step.after).pop();
+
+  return reached ? { ...order, status: reached.status } : order;
+}
+
+const isOrdersRead = (req) => req.method === 'GET' && req.path.startsWith('/orders');
+const isOrderCreate = (req) => req.method === 'POST' && req.path.startsWith('/orders');
+
+module.exports = function mockApi(req, res, next) {
   const forced = Number.parseInt(req.get('x-mock-fail') ?? '', 10);
   if (Number.isInteger(forced) && forced >= 400 && forced <= 599) {
     res.status(forced).jsonp(errorBody(forced));
     return;
   }
 
-  // Only reads are sampled. Randomly losing a write would corrupt db.json,
-  // and a mutation that half-succeeds is not a failure mode worth faking.
+  // Only reads are sampled. Randomly losing a write would corrupt db.json.
   if (FAIL_RATE > 0 && req.method === 'GET' && Math.random() < FAIL_RATE) {
     res.status(503).jsonp(errorBody(503));
     return;
+  }
+
+  // The server owns status and placedAt; clients submit neither.
+  if (isOrderCreate(req) && req.body && typeof req.body === 'object') {
+    req.body.status = 'placed';
+    req.body.placedAt = new Date().toISOString();
+  }
+
+  if (isOrdersRead(req)) {
+    const send = res.jsonp.bind(res);
+    res.jsonp = (body) => send(Array.isArray(body) ? body.map(progressed) : progressed(body));
   }
 
   next();

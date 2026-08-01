@@ -65,6 +65,74 @@
     "replaceTitle": "Start a new cart?",
     "replaceMessage": "Your cart has items from {{restaurant}}. Each restaurant delivers its own orders, so you can only order from one at a time.",
     "replaceConfirm": "Start new cart",
-    "checkoutComingSoon": "Checkout is coming next."
+    "checkout": "Go to checkout"
+  },
+  "address": {
+    "title": "Delivery address",
+    "save": "Save address",
+    "useMyLocation": "Use my current location",
+    "locating": "Finding you…",
+    "locationTitle": "Location",
+    "locationWhy": "We use your location to check which restaurants can deliver to you.",
+    "locationSet": "Set to {{latitude}}, {{longitude}}",
+    "locationDenied": "Location permission was denied. Enable it in Settings to continue.",
+    "locationFailed": "We could not determine your location. Please try again.",
+    "needsLocation": "Set your location to save this address.",
+    "fields": {
+      "label": "Label",
+      "line1": "Address",
+      "line2": "Apartment, floor (optional)",
+      "city": "City",
+      "postcode": "Postcode",
+      "notes": "Notes for the driver (optional)"
+    },
+    "errors": {
+      "label": "Give this address a short name.",
+      "line1": "Enter the street address.",
+      "line2": "That is too long.",
+      "city": "Enter the city.",
+      "postcode": "Enter the postcode.",
+      "notes": "That is too long."
+    }
+  },
+  "checkout": {
+    "title": "Checkout",
+    "deliverTo": "Deliver to",
+    "addAddress": "Add a delivery address",
+    "payment": "Payment",
+    "cashOnDelivery": "Cash on delivery",
+    "summary": "Order summary",
+    "placeOrder": "Place order · {{total}}",
+    "placing": "Placing order…",
+    "blockers": {
+      "empty-cart": "Your cart is empty.",
+      "restaurant-unavailable": "We could not load this restaurant. Please try again.",
+      "restaurant-closed": "This restaurant is closed right now.",
+      "no-address": "Add a delivery address to continue.",
+      "outOfRange": "You are {{distance}}km away and this restaurant delivers up to {{radius}}km.",
+      "priceChanged": "Some prices changed: {{items}}. Review your cart before ordering.",
+      "priceChangedLine": "{{name}} {{was}} → {{now}}"
+    }
+  },
+  "order": {
+    "title": "Your order",
+    "notFound": "We could not find that order.",
+    "fromRestaurant": "From {{restaurant}}",
+    "cancel": "Cancel order",
+    "backToBrowsing": "Back to browsing",
+    "status": {
+      "placed": "Order placed",
+      "accepted": "Accepted by the restaurant",
+      "preparing": "Being prepared",
+      "ready": "Ready for delivery",
+      "out_for_delivery": "Out for delivery",
+      "delivered": "Delivered",
+      "rejected": "Rejected",
+      "cancelled": "Cancelled"
+    },
+    "ended": {
+      "rejected": "The restaurant could not take this order.",
+      "cancelled": "You cancelled this order."
+    }
   }
 }

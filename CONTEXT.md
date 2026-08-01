@@ -89,3 +89,9 @@ A _customer_ withdrawing an Order. Never collapse Rejected and Cancelled into on
 **Delivery Address**:
 Where the customer wants an Order delivered. It decides whether a Restaurant is Deliverable, so it is needed _before_ checkout, not merely at the end of it.
 _Avoid_: Shipping address, location
+
+**Checkout**:
+The act of turning a Cart into an Order. Always a verb — the noun for what comes out is an Order.
+
+**Blocker**:
+A reason a Cart cannot become an Order right now: no Delivery Address, a Closed Restaurant, an address outside the Delivery Area, or a Price that has changed since the item was added. Blockers are listed together, not one at a time, so a customer sees everything standing between them and their food.
