@@ -5,7 +5,6 @@ import { Stack } from 'expo-router';
 
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 
-import { logDebug } from '@/lib/logger';
 import { QueryProvider } from '@/providers/QueryProvider';
 import { OnboardingStep, useOnboardingStore } from '@/stores/onboarding.store';
 import { colors } from '@/theme';
@@ -17,11 +16,11 @@ import '@/i18n';
 /**
  * Onboarding is gated by which routes exist, not by navigation calls.
  *
- * Previously the root index redirected and the permission screens also
- * navigated, so a single state change triggered two navigations to the same
- * place and they cancelled out. A redirect from a background screen cannot
- * dismiss the stack on top of it either. Guards avoid both problems: when
- * `(onboarding)` stops existing, the router has nowhere to be but `index`.
+ * The root index used to redirect while the permission screens also navigated,
+ * so one state change triggered two navigations to the same place. A redirect
+ * from a background screen cannot dismiss the stack on top of it either.
+ * Guards avoid both problems: when `(onboarding)` stops existing, the router
+ * has nowhere to be but `index`.
  */
 export default function RootLayout() {
   const step = useOnboardingStore((state) => state.step);
@@ -45,13 +44,6 @@ export default function RootLayout() {
   }
 
   const hasOnboarded = step === OnboardingStep.Complete;
-
-  logDebug(
-    'root.layout',
-    `step=${step} hasOnboarded=${hasOnboarded} mounts=[${
-      hasOnboarded ? 'index, restaurant/[id], cart' : '(onboarding)'
-    }]`,
-  );
 
   return (
     <QueryProvider>

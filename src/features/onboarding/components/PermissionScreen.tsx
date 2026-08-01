@@ -5,7 +5,6 @@ import { useTranslation } from 'react-i18next';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { Button, Link, Text } from '@/components/ui';
-import { logDebug } from '@/lib/logger';
 
 export type PermissionScreenProps = {
   illustration: ReactNode;
@@ -24,18 +23,6 @@ export function PermissionScreen({
 }: PermissionScreenProps) {
   const { t } = useTranslation();
 
-  // Logged at the press itself, before the handler, so a silent Skip can be
-  // told apart from a Skip whose handler ran and went nowhere.
-  const handleSkip = () => {
-    logDebug('onboarding', `SKIP pressed on ${titleKey}`);
-    onSkip();
-  };
-
-  const handleAllow = () => {
-    logDebug('onboarding', `ALLOW pressed on ${titleKey}`);
-    onAllow();
-  };
-
   return (
     <SafeAreaView className="flex-1 bg-white">
       <View className="flex-1 items-center justify-center px-8">
@@ -51,9 +38,9 @@ export function PermissionScreen({
       </View>
 
       <View className="gap-4 px-8 pb-12">
-        <Button onPress={handleAllow}>{t('common.allow')}</Button>
+        <Button onPress={onAllow}>{t('common.allow')}</Button>
 
-        <Link onPress={handleSkip}>{t('common.skip')}</Link>
+        <Link onPress={onSkip}>{t('common.skip')}</Link>
       </View>
     </SafeAreaView>
   );
