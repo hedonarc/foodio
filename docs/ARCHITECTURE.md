@@ -25,6 +25,7 @@ The application is organized by **features**, not by technical layers.
 ├── app/
 ├── assets/
 ├── docs/
+├── mocks/
 ├── scripts/
 ├── src/
 ├── tests/
@@ -87,6 +88,29 @@ assets/
 ```
 
 No business logic.
+
+---
+
+# mocks/
+
+The local stand-in for a backend, served by json-server via `pnpm api`.
+
+```
+mocks/
+
+    db.json
+
+    routes.json
+
+    middlewares.cjs
+```
+
+`routes.json` maps the URLs the app is written against onto json-server's
+resources, so the client is coupled to our contract rather than to the mock
+tool. `middlewares.cjs` injects failures. Never import from this folder — the
+app reaches it over HTTP like any other API.
+
+See [ADR-0001](./adr/0001-json-server-owns-the-api-contract.md).
 
 ---
 

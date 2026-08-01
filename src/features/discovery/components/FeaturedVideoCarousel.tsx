@@ -2,18 +2,20 @@ import { FlatList, View } from 'react-native';
 
 import { useTranslation } from 'react-i18next';
 
+import { ErrorState, LoadingState } from '@/components/shared';
 import { Text } from '@/components/ui';
 
-import type { FeaturedVideo } from '../types/featuredVideo.types';
+import { useFeaturedVideos } from '../hooks/useFeaturedVideos';
 
 import { FeaturedVideoCard } from './FeaturedVideoCard';
 
-type FeaturedVideoCarouselProps = {
-  videos: FeaturedVideo[];
-};
-
-export function FeaturedVideoCarousel({ videos }: FeaturedVideoCarouselProps) {
+export function FeaturedVideoCarousel() {
   const { t } = useTranslation();
+  const { data: videos, isPending, error, refetch } = useFeaturedVideos();
+
+  // Featured content is promotional: if there is none, show nothing rather
+  // than an empty shelf drawing attention to the gap.
+  if (!isPending && !error && (!videos || videos.length === 0)) return null;
 
   return (
     <View className="mb-6">
@@ -22,14 +24,17 @@ export function FeaturedVideoCarousel({ videos }: FeaturedVideoCarouselProps) {
           {t('home.featuredVideos')}
         </Text>
       </View>
-      <FlatList
-        data={videos}
-        keyExtractor={(item) => item.id}
-        horizontal
-        showsHorizontalScrollIndicator={false}
-        contentContainerClassName=""
-        renderItem={({ item }) => <FeaturedVideoCard video={item} />}
-      />
+      {isPending ? <LoadingState /> : null}
+      {error ? <ErrorState error={error} onRetry={refetch} /> : null}
+      {videos && videos.length > 0 ? (
+        <FlatList
+          data={videos}
+          keyExtractor={(item) => item.id}
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          renderItem={({ item }) => <FeaturedVideoCard video={item} />}
+        />
+      ) : null}
     </View>
   );
 }

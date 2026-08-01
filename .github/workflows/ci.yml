@@ -2,9 +2,11 @@ name: CI
 
 on:
   push:
-    branches: [main]
+    branches: [main, 'release/**']
   pull_request:
-    branches: [main]
+    # release/** is watched too, so a long-lived release line still gets checked
+    # rather than going dark until it merges back into main.
+    branches: [main, 'release/**']
 
 jobs:
   lint:
@@ -44,3 +46,15 @@ jobs:
           cache: pnpm
       - run: pnpm install
       - run: pnpm tsc --noEmit
+
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: lts/*
+          cache: pnpm
+      - run: pnpm install
+      - run: pnpm test --ci

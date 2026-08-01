@@ -1,20 +1,21 @@
 import { View } from 'react-native';
 
-import type { MenuCategory } from '@/features/menu/types/menu.types';
+import type { MenuCategory } from '../types/menu.types';
 
 import { MenuItemCard } from './MenuItemCard';
 import { MenuSectionHeader } from './MenuSectionHeader';
 
 type MenuCategorySectionProps = {
   category: MenuCategory;
+  currency: string;
 };
 
-export function MenuCategorySection({ category }: MenuCategorySectionProps) {
+export function MenuCategorySection({ category, currency }: MenuCategorySectionProps) {
   return (
     <View>
       <MenuSectionHeader title={category.name} />
-      {category.items.map((item) => (
-        <MenuItemCard key={item.id} item={item} />
+      {category.menuItems.map((item) => (
+        <MenuItemCard key={item.id} item={item} currency={currency} />
       ))}
     </View>
   );

@@ -9,6 +9,7 @@
     "allowJs": false,
     "baseUrl": ".",
     "ignoreDeprecations": "6.0",
+    "types": ["jest"],
     "paths": {
       "@/*": ["src/*"],
       "@assets/*": ["assets/*"]

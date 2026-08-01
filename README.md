@@ -35,6 +35,12 @@ Install dependencies
 pnpm install
 ```
 
+Start the mock API (in its own terminal — the app needs it)
+
+```bash
+pnpm api
+```
+
 Start development server
 
 ```bash
@@ -52,6 +58,40 @@ Run iOS
 ```bash
 pnpm ios
 ```
+
+---
+
+---
+
+## Mock API
+
+There is no backend. `pnpm api` runs [json-server](https://github.com/typicode/json-server)
+against `mocks/db.json`, with `mocks/routes.json` mapping the URLs the app
+actually wants onto it — the contract is ours, json-server just serves it. See
+[docs/adr/0001](docs/adr/0001-json-server-owns-the-api-contract.md).
+
+The app finds the API automatically: with `EXPO_PUBLIC_API_URL` unset it derives
+the dev machine's address from Expo, so an Android emulator or a physical device
+works without editing anything. Copy `.env.example` to `.env` only when you need
+to point at a deployed API.
+
+Responses are delayed 400ms so loading states are real. To exercise failure
+paths:
+
+```bash
+MOCK_FAIL_RATE=0.3 pnpm api
+```
+
+---
+
+## Testing
+
+```bash
+pnpm test
+```
+
+Jest via `jest-expo`. Tests live beside the code they cover, as `*.test.ts`.
+Cover business logic, hooks and utilities; avoid snapshots.
 
 ---
 

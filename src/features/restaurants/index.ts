@@ -5,6 +5,7 @@ export * from './components/RestaurantHours';
 export * from './components/RestaurantInfo';
 export * from './components/RestaurantRating';
 export * from './components/RestaurantReviewPreview';
-export * from './data/restaurant.mock';
+export * from './hooks/useRestaurant';
+export * from './hooks/useRestaurants';
 export * from './screens/RestaurantDetailsScreen';
 export * from './types/restaurant.types';
