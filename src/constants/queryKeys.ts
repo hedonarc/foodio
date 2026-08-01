@@ -10,4 +10,9 @@ export const queryKeys = {
     all: ['featuredVideos'] as const,
     list: () => [...queryKeys.featuredVideos.all, 'list'] as const,
   },
+  orders: {
+    all: ['orders'] as const,
+    list: () => [...queryKeys.orders.all, 'list'] as const,
+    detail: (orderId: string) => [...queryKeys.orders.all, 'detail', orderId] as const,
+  },
 } as const;

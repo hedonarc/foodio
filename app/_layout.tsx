@@ -69,6 +69,9 @@ function RootNavigator() {
         <Stack.Screen name="index" />
         <Stack.Screen name="restaurant/[id]" />
         <Stack.Screen name="cart" />
+        <Stack.Screen name="checkout" />
+        <Stack.Screen name="address" />
+        <Stack.Screen name="order/[id]" />
       </Stack.Protected>
     </Stack>
   );
