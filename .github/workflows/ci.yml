@@ -2,9 +2,11 @@ name: CI
 
 on:
   push:
-    branches: [main]
+    branches: [main, 'release/**']
   pull_request:
-    branches: [main]
+    # Feature branches target the active release branch, not main, so CI has to
+    # watch both or nothing runs until the release itself is merged.
+    branches: [main, 'release/**']
 
 jobs:
   lint:
@@ -44,3 +46,15 @@ jobs:
           cache: pnpm
       - run: pnpm install
       - run: pnpm tsc --noEmit
+
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: lts/*
+          cache: pnpm
+      - run: pnpm install
+      - run: pnpm test --ci

@@ -1,0 +1,3 @@
+{
+  "/restaurants/:restaurantId/menu": "/menuCategories?restaurantId=:restaurantId&_embed=menuItems&_sort=position"
+}

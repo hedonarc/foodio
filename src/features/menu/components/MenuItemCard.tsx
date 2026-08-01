@@ -3,16 +3,23 @@ import { View } from 'react-native';
 import { Image } from 'expo-image';
 import { Ionicons } from '@expo/vector-icons';
 
+import { useTranslation } from 'react-i18next';
+
 import { Text } from '@/components/ui';
-import type { MenuItem } from '@/features/menu/types/menu.types';
+import { colors } from '@/theme';
+
+import type { MenuItem } from '../types/menu.types';
 
 import { MenuPrice } from './MenuPrice';
 
 type MenuItemCardProps = {
   item: MenuItem;
+  currency: string;
 };
 
-export function MenuItemCard({ item }: MenuItemCardProps) {
+export function MenuItemCard({ item, currency }: MenuItemCardProps) {
+  const { t } = useTranslation();
+
   return (
     <View className="flex-row items-start py-3">
       <View className="mr-3 h-20 w-20 flex-shrink-0 overflow-hidden rounded-xl bg-gray-200">
@@ -21,6 +28,7 @@ export function MenuItemCard({ item }: MenuItemCardProps) {
           style={{ width: '100%', height: '100%' }}
           contentFit="cover"
           transition={200}
+          accessibilityIgnoresInvertColors
         />
       </View>
       <View className="flex-1">
@@ -29,17 +37,17 @@ export function MenuItemCard({ item }: MenuItemCardProps) {
             {item.name}
           </Text>
           {item.isPopular ? (
-            <View className="ml-2 rounded-full bg-amber-100 px-2 py-0.5">
-              <Text variant="caption" className="font-semibold text-amber-700">
-                Popular
+            <View className="ml-2 rounded-full bg-warning-100 px-2 py-0.5">
+              <Text variant="caption" className="font-semibold text-warning-700">
+                {t('menu.popularBadge')}
               </Text>
             </View>
           ) : null}
         </View>
         {item.rating !== undefined ? (
           <View className="mt-0.5 flex-row items-center">
-            <Ionicons name="star" size={11} color="#F59E0B" />
-            <Text variant="caption" className="ml-0.5 font-semibold text-amber-700">
+            <Ionicons name="star" size={11} color={colors.warning[500]} />
+            <Text variant="caption" className="ml-0.5 font-semibold text-warning-700">
               {item.rating.toFixed(1)}
             </Text>
           </View>
@@ -48,7 +56,7 @@ export function MenuItemCard({ item }: MenuItemCardProps) {
           {item.description}
         </Text>
         <View className="mt-2">
-          <MenuPrice price={item.price} />
+          <MenuPrice priceMinor={item.priceMinor} currency={currency} />
         </View>
       </View>
     </View>

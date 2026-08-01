@@ -35,4 +35,11 @@ export const colors = {
   error: {
     500: '#F44336',
   },
+
+  /** Ratings, "popular" badges — anything that draws the eye without alarming. */
+  warning: {
+    100: '#FEF3C7',
+    500: '#F59E0B',
+    700: '#B45309',
+  },
 } as const;

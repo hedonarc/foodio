@@ -1,7 +1,12 @@
 {
   "common": {
     "allow": "Allow",
-    "skip": "Skip"
+    "skip": "Skip",
+    "loading": "Loading",
+    "retry": "Try again"
+  },
+  "errors": {
+    "unknown": "Something went wrong. Please try again."
   },
   "onboarding": {
     "location": {
@@ -17,13 +22,26 @@
     "title": "Foodio",
     "searchPlaceholder": "Search for food or restaurants...",
     "featuredVideos": "Featured Videos",
-    "restaurants": "Restaurants Near You"
+    "restaurants": "Restaurants Near You",
+    "noRestaurants": "No restaurants available right now."
   },
   "restaurant": {
     "detailsTitle": "Restaurant Details",
-    "idLabel": "Restaurant ID:"
+    "idLabel": "Restaurant ID:",
+    "notFound": "We could not find that restaurant.",
+    "open": "Open now",
+    "closed": "Closed",
+    "freeDelivery": "Free delivery",
+    "deliveryFee": "{{fee}} delivery",
+    "deliveryEstimate": "{{min}}–{{max}} min",
+    "hours": "Hours",
+    "recentReviews": "Recent Reviews",
+    "ratingOutOfFive": "Rated {{rating}} out of 5",
+    "closedAllDay": "Closed"
   },
   "menu": {
-    "title": "Menu"
+    "title": "Menu",
+    "empty": "This restaurant has not published a menu yet.",
+    "popularBadge": "Popular"
   }
 }

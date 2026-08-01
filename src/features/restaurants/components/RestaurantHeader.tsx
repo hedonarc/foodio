@@ -4,6 +4,7 @@ import { useRouter } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
 
 import { Text } from '@/components/ui';
+import { colors } from '@/theme';
 
 type RestaurantHeaderProps = {
   name: string;
@@ -19,7 +20,7 @@ export function RestaurantHeader({ name }: RestaurantHeaderProps) {
         accessibilityRole="button"
         className="mr-3 h-9 w-9 items-center justify-center rounded-full bg-gray-100 active:bg-gray-200"
       >
-        <Ionicons name="chevron-back" size={20} color="#111827" />
+        <Ionicons name="chevron-back" size={20} color={colors.gray[900]} />
       </Pressable>
       <Text variant="subheading" className="flex-1 text-gray-900" numberOfLines={1}>
         {name}

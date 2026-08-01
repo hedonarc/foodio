@@ -3,6 +3,7 @@ import { View } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 
 import { Text } from '@/components/ui';
+import { colors } from '@/theme';
 
 type RestaurantRatingProps = {
   rating: number;
@@ -21,11 +22,11 @@ export function RestaurantRating({ rating, reviewCount }: RestaurantRatingProps)
       </Text>
       <View className="flex-row items-center mr-2">
         {Array.from({ length: fullStars }).map((_, i) => (
-          <Ionicons key={`full-${i}`} name="star" size={16} color="#F59E0B" />
+          <Ionicons key={`full-${i}`} name="star" size={16} color={colors.warning[500]} />
         ))}
-        {hasHalf && <Ionicons name="star-half" size={16} color="#F59E0B" />}
+        {hasHalf && <Ionicons name="star-half" size={16} color={colors.warning[500]} />}
         {Array.from({ length: emptyStars }).map((_, i) => (
-          <Ionicons key={`empty-${i}`} name="star-outline" size={16} color="#D1D5DB" />
+          <Ionicons key={`empty-${i}`} name="star-outline" size={16} color={colors.gray[300]} />
         ))}
       </View>
       <Text variant="caption" className="text-gray-400">
