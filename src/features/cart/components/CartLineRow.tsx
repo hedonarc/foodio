@@ -23,7 +23,6 @@ export function CartLineRow({ line, currency }: CartLineRowProps) {
   const incrementLine = useCartStore((state) => state.incrementLine);
   const decrementLine = useCartStore((state) => state.decrementLine);
 
-  // The price the customer was shown when they added it, times quantity.
   const lineTotalMinor = line.unitPriceMinor * line.quantity;
 
   return (

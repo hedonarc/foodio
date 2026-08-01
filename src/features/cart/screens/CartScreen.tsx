@@ -4,7 +4,6 @@ import { useRouter } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
 
 import { useTranslation } from 'react-i18next';
-import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { EmptyState } from '@/components/shared';
 import { Text } from '@/components/ui';
@@ -25,7 +24,7 @@ export function CartScreen() {
   const isEmpty = lines.length === 0 || restaurant === null;
 
   return (
-    <SafeAreaView className="flex-1 bg-white" edges={['top', 'left', 'right']}>
+    <View className="flex-1 bg-white">
       <View className="flex-row items-center px-4 py-3">
         <Pressable
           onPress={() => router.back()}
@@ -55,7 +54,11 @@ export function CartScreen() {
       {isEmpty ? (
         <EmptyState message={t('cart.empty')} className="flex-1 items-center justify-center px-8" />
       ) : (
-        <ScrollView showsVerticalScrollIndicator={false} contentContainerClassName="px-4 pb-8">
+        <ScrollView
+          showsVerticalScrollIndicator={false}
+          contentContainerClassName="px-4"
+          contentContainerStyle={{ paddingBottom: 32 }}
+        >
           <Text variant="caption" className="mb-2 text-gray-400">
             {t('cart.fromRestaurant', { restaurant: restaurant.name })}
           </Text>
@@ -74,6 +77,6 @@ export function CartScreen() {
           </Text>
         </ScrollView>
       )}
-    </SafeAreaView>
+    </View>
   );
 }

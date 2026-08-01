@@ -1,9 +1,4 @@
-/**
- * Format an ISO 8601 calendar date (`2026-07-18`) for display.
- *
- * Rendered in UTC on purpose: `new Date('2026-07-18')` is midnight UTC, so
- * formatting it in a negative-offset timezone would show the 17th.
- */
+/** UTC on purpose: an ISO date is midnight UTC and would shift a day west of it. */
 export function formatDate(isoDate: string, locale?: string): string {
   const date = new Date(isoDate);
   if (Number.isNaN(date.getTime())) return isoDate;

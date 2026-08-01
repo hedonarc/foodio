@@ -23,23 +23,19 @@ export const deliveryEstimateSchema = z.object({
   maxMinutes: z.number().int(),
 });
 
-/**
- * What a restaurant list needs to know. The detail response is a superset, so
- * the two can never drift apart the way parallel hand-written types do.
- */
+/** The detail response extends this, so the two cannot drift. */
 export const restaurantSummarySchema = z.object({
   id: z.string(),
   name: z.string(),
   cuisines: z.array(z.string()),
   rating: z.number(),
   reviewCount: z.number().int(),
-  /** ISO 4217. Every price on this restaurant is denominated in it. */
+  /** ISO 4217. */
   currency: z.string(),
   deliveryFeeMinor: z.number().int(),
   deliveryEstimate: deliveryEstimateSchema,
   latitude: z.number(),
   longitude: z.number(),
-  /** How far this restaurant's own staff are willing to deliver. */
   deliveryRadiusMeters: z.number().int(),
   image: z.string(),
 });

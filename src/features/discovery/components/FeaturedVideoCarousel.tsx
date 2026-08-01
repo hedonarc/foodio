@@ -13,8 +13,7 @@ export function FeaturedVideoCarousel() {
   const { t } = useTranslation();
   const { data: videos, isPending, error, refetch } = useFeaturedVideos();
 
-  // Featured content is promotional: if there is none, show nothing rather
-  // than an empty shelf drawing attention to the gap.
+  // Promotional: an empty shelf draws attention to the gap.
   if (!isPending && !error && (!videos || videos.length === 0)) return null;
 
   return (

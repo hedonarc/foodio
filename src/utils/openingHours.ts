@@ -6,7 +6,7 @@ export type OpeningHours = {
   closesAt: string;
 };
 
-/** Consecutive days that share the same hours, collapsed back into one row. */
+/** Consecutive days sharing the same hours. */
 export type OpeningHoursGroup = {
   days: number[];
   opensAt: string;
@@ -20,12 +20,7 @@ function toMinutes(time: string): number {
   return Number(hours) * 60 + Number(minutes);
 }
 
-/**
- * Whether the restaurant is open at `at`, in the device's timezone.
- *
- * A period whose closing time is not after its opening time runs past
- * midnight, so it also covers the small hours of the following day.
- */
+/** A period closing no later than it opens runs past midnight. */
 export function isOpenAt(hours: readonly OpeningHours[], at: Date): boolean {
   const day = at.getDay();
   const nowMinutes = at.getHours() * 60 + at.getMinutes();
@@ -47,14 +42,7 @@ export function isOpenAt(hours: readonly OpeningHours[], at: Date): boolean {
   });
 }
 
-/**
- * Collapse per-day hours into display rows, so seven identical entries read as
- * a single "Mon – Sun" line rather than seven repeated ones.
- *
- * Grouping starts at Monday: a week that reads Mon…Sun matches how opening
- * hours are written down, whereas Date#getDay()'s Sunday-first order would
- * split a Mon–Fri block across the two ends of the list.
- */
+/** Monday-first, so a Mon–Fri block stays contiguous rather than splitting. */
 export function groupOpeningHours(hours: readonly OpeningHours[]): OpeningHoursGroup[] {
   const weekOrder = [1, 2, 3, 4, 5, 6, 0];
   const byDay = new Map(hours.map((period) => [period.dayOfWeek, period]));

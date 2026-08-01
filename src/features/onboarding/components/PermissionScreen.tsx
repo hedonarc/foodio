@@ -2,7 +2,6 @@ import { View } from 'react-native';
 
 import type { ReactNode } from 'react';
 import { useTranslation } from 'react-i18next';
-import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { Button, Link, Text } from '@/components/ui';
 
@@ -24,7 +23,7 @@ export function PermissionScreen({
   const { t } = useTranslation();
 
   return (
-    <SafeAreaView className="flex-1 bg-white">
+    <View className="flex-1 bg-white">
       <View className="flex-1 items-center justify-center px-8">
         {illustration}
 
@@ -37,11 +36,11 @@ export function PermissionScreen({
         </Text>
       </View>
 
-      <View className="gap-4 px-8 pb-12">
+      <View className="gap-4 px-8 pb-6">
         <Button onPress={onAllow}>{t('common.allow')}</Button>
 
         <Link onPress={onSkip}>{t('common.skip')}</Link>
       </View>
-    </SafeAreaView>
+    </View>
   );
 }

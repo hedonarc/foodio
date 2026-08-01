@@ -10,10 +10,7 @@ import { selectItemCount, selectTotalMinor, useCartStore } from '@/stores/cart.s
 import { colors } from '@/theme';
 import { formatMoney } from '@/utils/currency';
 
-/**
- * Persistent route back to the cart. Without it a customer who navigates away
- * from a restaurant has no way to reach what they already added.
- */
+/** Persistent route back to the cart from anywhere in the app. */
 export function CartBar() {
   const { t, i18n } = useTranslation();
   const router = useRouter();
@@ -25,7 +22,7 @@ export function CartBar() {
   if (itemCount === 0 || !currency) return null;
 
   return (
-    <View className="absolute inset-x-0 bottom-0 px-4 pb-6 pt-2">
+    <View className="absolute inset-x-0 bottom-0 px-4 pb-3 pt-2">
       <Pressable
         onPress={() => router.push('/cart')}
         accessibilityRole="button"

@@ -5,7 +5,6 @@ import { useTranslation } from 'react-i18next';
 import { colors } from '@/theme';
 
 type LoadingStateProps = {
-  /** Announced to screen readers in place of the spinner. */
   label?: string;
   className?: string;
 };

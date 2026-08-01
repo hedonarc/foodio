@@ -11,10 +11,6 @@ import { useRestaurantMenu } from '../hooks/useRestaurantMenu';
 import { MenuCategorySection } from './MenuCategorySection';
 
 type MenuProps = {
-  /**
-   * The owning restaurant. Carries the currency every price here is rendered
-   * in, and is what a cart line gets bound to when an item is added.
-   */
   restaurant: CartRestaurant;
 };
 

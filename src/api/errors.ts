@@ -1,12 +1,6 @@
 import { isAxiosError } from 'axios';
 
-/**
- * Why a request failed, at the granularity the UI actually branches on.
- *
- * `contract` means the server answered but not in the shape we expect, and
- * `config` means the request never left because the app does not know where to
- * send it. Both are bugs rather than conditions a user can retry away.
- */
+/** `contract` is a shape mismatch, `config` a request that never left. */
 export type ApiErrorKind =
   'network' | 'timeout' | 'client' | 'server' | 'contract' | 'config' | 'unknown';
 
@@ -27,7 +21,6 @@ export class ApiError extends Error {
   }
 }
 
-/** Error envelope returned by the mock API's middleware. */
 function readServerMessage(payload: unknown): string | null {
   if (typeof payload !== 'object' || payload === null) return null;
 
