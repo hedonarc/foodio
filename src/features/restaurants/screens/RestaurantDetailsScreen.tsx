@@ -4,7 +4,7 @@ import { useLocalSearchParams } from 'expo-router';
 
 import type { PropsWithChildren } from 'react';
 import { useTranslation } from 'react-i18next';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { EmptyState, ErrorState, LoadingState } from '@/components/shared';
 import { CartBar, type CartRestaurant } from '@/features/cart';
@@ -19,9 +19,13 @@ import { RestaurantRating } from '../components/RestaurantRating';
 import { RestaurantReviewPreview } from '../components/RestaurantReviewPreview';
 import { useRestaurant } from '../hooks/useRestaurant';
 
+/** Height of the CartBar overlay, so scrolled content can clear it. */
+const CART_BAR_CLEARANCE = 96;
+
 export function RestaurantDetailsScreen() {
   const { t } = useTranslation();
   const { id } = useLocalSearchParams<{ id: string }>();
+  const insets = useSafeAreaInsets();
   const { data: restaurant, isPending, error, refetch } = useRestaurant(id);
 
   if (isPending) {
@@ -66,7 +70,10 @@ export function RestaurantDetailsScreen() {
   return (
     <SafeAreaView className="flex-1 bg-white" edges={['top', 'left', 'right']}>
       <RestaurantHeader name={restaurant.name} />
-      <ScrollView showsVerticalScrollIndicator={false} contentContainerClassName="pb-24">
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={{ paddingBottom: insets.bottom + CART_BAR_CLEARANCE }}
+      >
         <RestaurantHero image={restaurant.image} name={restaurant.name} />
         <RestaurantRating rating={restaurant.rating} reviewCount={restaurant.reviewCount} />
         <View className="border-b border-gray-100">

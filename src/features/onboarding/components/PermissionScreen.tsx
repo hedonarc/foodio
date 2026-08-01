@@ -2,7 +2,7 @@ import { View } from 'react-native';
 
 import type { ReactNode } from 'react';
 import { useTranslation } from 'react-i18next';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { Button, Link, Text } from '@/components/ui';
 
@@ -14,6 +14,9 @@ export type PermissionScreenProps = {
   onSkip: () => void;
 };
 
+/** Space below the buttons when the system draws nothing under them. */
+const BOTTOM_GAP = 24;
+
 export function PermissionScreen({
   illustration,
   titleKey,
@@ -22,9 +25,14 @@ export function PermissionScreen({
   onSkip,
 }: PermissionScreenProps) {
   const { t } = useTranslation();
+  const insets = useSafeAreaInsets();
 
   return (
-    <SafeAreaView className="flex-1 bg-white">
+    // The bottom edge is handled below rather than here, so the gap under the
+    // buttons is explicit and the same on both platforms. Android draws
+    // edge-to-edge, and with three-button navigation the bar is tall enough to
+    // cover them entirely.
+    <SafeAreaView className="flex-1 bg-white" edges={['top', 'left', 'right']}>
       <View className="flex-1 items-center justify-center px-8">
         {illustration}
 
@@ -37,7 +45,7 @@ export function PermissionScreen({
         </Text>
       </View>
 
-      <View className="gap-4 px-8 pb-12">
+      <View className="gap-4 px-8" style={{ paddingBottom: insets.bottom + BOTTOM_GAP }}>
         <Button onPress={onAllow}>{t('common.allow')}</Button>
 
         <Link onPress={onSkip}>{t('common.skip')}</Link>
