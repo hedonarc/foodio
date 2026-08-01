@@ -4,20 +4,23 @@ import { useTranslation } from 'react-i18next';
 
 import { EmptyState, ErrorState, LoadingState } from '@/components/shared';
 import { Text } from '@/components/ui';
+import type { CartRestaurant } from '@/features/cart';
 
 import { useRestaurantMenu } from '../hooks/useRestaurantMenu';
 
 import { MenuCategorySection } from './MenuCategorySection';
 
 type MenuProps = {
-  restaurantId: string;
-  /** ISO 4217 code from the owning restaurant — every price here uses it. */
-  currency: string;
+  /**
+   * The owning restaurant. Carries the currency every price here is rendered
+   * in, and is what a cart line gets bound to when an item is added.
+   */
+  restaurant: CartRestaurant;
 };
 
-export function Menu({ restaurantId, currency }: MenuProps) {
+export function Menu({ restaurant }: MenuProps) {
   const { t } = useTranslation();
-  const { data: categories, isPending, error, refetch } = useRestaurantMenu(restaurantId);
+  const { data: categories, isPending, error, refetch } = useRestaurantMenu(restaurant.id);
 
   return (
     <View className="px-4 pb-4">
@@ -26,7 +29,7 @@ export function Menu({ restaurantId, currency }: MenuProps) {
       </Text>
       <MenuBody
         categories={categories}
-        currency={currency}
+        restaurant={restaurant}
         isPending={isPending}
         error={error}
         onRetry={refetch}
@@ -37,13 +40,13 @@ export function Menu({ restaurantId, currency }: MenuProps) {
 
 type MenuBodyProps = {
   categories: ReturnType<typeof useRestaurantMenu>['data'];
-  currency: string;
+  restaurant: CartRestaurant;
   isPending: boolean;
   error: unknown;
   onRetry: () => void;
 };
 
-function MenuBody({ categories, currency, isPending, error, onRetry }: MenuBodyProps) {
+function MenuBody({ categories, restaurant, isPending, error, onRetry }: MenuBodyProps) {
   const { t } = useTranslation();
 
   if (isPending) return <LoadingState />;
@@ -53,7 +56,7 @@ function MenuBody({ categories, currency, isPending, error, onRetry }: MenuBodyP
   return (
     <View>
       {categories.map((category) => (
-        <MenuCategorySection key={category.id} category={category} currency={currency} />
+        <MenuCategorySection key={category.id} category={category} restaurant={restaurant} />
       ))}
     </View>
   );

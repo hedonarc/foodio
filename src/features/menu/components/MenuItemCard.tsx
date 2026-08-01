@@ -6,6 +6,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { useTranslation } from 'react-i18next';
 
 import { Text } from '@/components/ui';
+import { AddToCartControl, type CartRestaurant } from '@/features/cart';
 import { colors } from '@/theme';
 
 import type { MenuItem } from '../types/menu.types';
@@ -14,10 +15,10 @@ import { MenuPrice } from './MenuPrice';
 
 type MenuItemCardProps = {
   item: MenuItem;
-  currency: string;
+  restaurant: CartRestaurant;
 };
 
-export function MenuItemCard({ item, currency }: MenuItemCardProps) {
+export function MenuItemCard({ item, restaurant }: MenuItemCardProps) {
   const { t } = useTranslation();
 
   return (
@@ -55,8 +56,17 @@ export function MenuItemCard({ item, currency }: MenuItemCardProps) {
         <Text variant="caption" className="mt-1 text-gray-500" numberOfLines={2}>
           {item.description}
         </Text>
-        <View className="mt-2">
-          <MenuPrice priceMinor={item.priceMinor} currency={currency} />
+        <View className="mt-2 flex-row items-center justify-between">
+          <MenuPrice priceMinor={item.priceMinor} currency={restaurant.currency} />
+          <AddToCartControl
+            restaurant={restaurant}
+            item={{
+              id: item.id,
+              name: item.name,
+              image: item.image,
+              priceMinor: item.priceMinor,
+            }}
+          />
         </View>
       </View>
     </View>

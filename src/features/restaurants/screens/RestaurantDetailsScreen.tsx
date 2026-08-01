@@ -7,6 +7,7 @@ import { useTranslation } from 'react-i18next';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { EmptyState, ErrorState, LoadingState } from '@/components/shared';
+import { CartBar, type CartRestaurant } from '@/features/cart';
 import { Menu } from '@/features/menu';
 
 import { RestaurantGallery } from '../components/RestaurantGallery';
@@ -54,20 +55,29 @@ export function RestaurantDetailsScreen() {
     );
   }
 
+  // What a cart line needs to bind itself to this restaurant.
+  const cartRestaurant: CartRestaurant = {
+    id: restaurant.id,
+    name: restaurant.name,
+    currency: restaurant.currency,
+    deliveryFeeMinor: restaurant.deliveryFeeMinor,
+  };
+
   return (
     <SafeAreaView className="flex-1 bg-white" edges={['top', 'left', 'right']}>
       <RestaurantHeader name={restaurant.name} />
-      <ScrollView showsVerticalScrollIndicator={false}>
+      <ScrollView showsVerticalScrollIndicator={false} contentContainerClassName="pb-24">
         <RestaurantHero image={restaurant.image} name={restaurant.name} />
         <RestaurantRating rating={restaurant.rating} reviewCount={restaurant.reviewCount} />
         <View className="border-b border-gray-100">
           <RestaurantInfo restaurant={restaurant} />
         </View>
-        <Menu restaurantId={restaurant.id} currency={restaurant.currency} />
+        <Menu restaurant={cartRestaurant} />
         <RestaurantGallery images={restaurant.gallery} />
         <RestaurantHours openingHours={restaurant.openingHours} />
         <RestaurantReviewPreview reviews={restaurant.reviews} />
       </ScrollView>
+      <CartBar />
     </SafeAreaView>
   );
 }
