@@ -25,7 +25,11 @@
     "searchPlaceholder": "Search for food or restaurants...",
     "featuredVideos": "Featured Videos",
     "restaurants": "Restaurants Near You",
-    "noRestaurants": "No restaurants available right now."
+    "noRestaurants": "No restaurants available right now.",
+    "searchLabel": "Search restaurants",
+    "clearSearch": "Clear search",
+    "searchResults": "Results for “{{query}}”",
+    "noResults": "Nothing matched “{{query}}”."
   },
   "restaurant": {
     "detailsTitle": "Restaurant Details",
@@ -134,5 +138,9 @@
       "rejected": "The restaurant could not take this order.",
       "cancelled": "You cancelled this order."
     }
+  },
+  "orders": {
+    "title": "Your orders",
+    "empty": "You have not ordered anything yet."
   }
 }

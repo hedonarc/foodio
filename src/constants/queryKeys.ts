@@ -1,7 +1,7 @@
 export const queryKeys = {
   restaurants: {
     all: ['restaurants'] as const,
-    list: () => [...queryKeys.restaurants.all, 'list'] as const,
+    list: (query?: string) => [...queryKeys.restaurants.all, 'list', query ?? ''] as const,
     detail: (restaurantId: string) =>
       [...queryKeys.restaurants.all, 'detail', restaurantId] as const,
     menu: (restaurantId: string) => [...queryKeys.restaurants.all, 'menu', restaurantId] as const,

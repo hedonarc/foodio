@@ -72,6 +72,7 @@ function RootNavigator() {
         <Stack.Screen name="checkout" />
         <Stack.Screen name="address" />
         <Stack.Screen name="order/[id]" />
+        <Stack.Screen name="orders" />
       </Stack.Protected>
     </Stack>
   );

@@ -6,6 +6,7 @@ export type { CheckoutBlocker, CheckoutReview } from './lib/reviewCheckout';
 export { reviewCheckout } from './lib/reviewCheckout';
 export { AddressScreen } from './screens/AddressScreen';
 export { CheckoutScreen } from './screens/CheckoutScreen';
+export { OrdersScreen } from './screens/OrdersScreen';
 export { OrderStatusScreen } from './screens/OrderStatusScreen';
 export type { AddressFormValues, DeliveryAddress } from './types/address.types';
 export { addressFormSchema, deliveryAddressSchema } from './types/address.types';
