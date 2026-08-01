@@ -28,7 +28,12 @@
     "plugins": [
       "expo-font",
       "expo-image",
-      "expo-location",
+      [
+        "expo-location",
+        {
+          "locationWhenInUsePermission": "Foodio uses your location to show which restaurants deliver to your address."
+        }
+      ],
       "expo-router",
       [
         "expo-notifications",
