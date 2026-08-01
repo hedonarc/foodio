@@ -1,6 +1,9 @@
 name: CI
 
 on:
+  schedule:
+    # Weekly, so third-party link rot surfaces without waiting for a push.
+    - cron: '0 6 * * 1'
   push:
     branches: [main, 'release/**']
   pull_request:
@@ -58,3 +61,18 @@ jobs:
           cache: pnpm
       - run: pnpm install
       - run: pnpm test --ci
+
+  urls:
+    # Hot-linked media rots silently — expo-image's placeholder looks exactly
+    # like a slow network. Scheduled so it is caught without a push.
+    if: github.event_name != 'schedule' || github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: lts/*
+          cache: pnpm
+      - run: pnpm install
+      - run: pnpm check:urls
