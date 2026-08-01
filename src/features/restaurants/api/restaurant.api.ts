@@ -4,8 +4,11 @@ import { parseResponse } from '@/api/parse';
 import type { Restaurant, RestaurantSummary } from '../types/restaurant.types';
 import { restaurantSchema, restaurantSummaryListSchema } from '../types/restaurant.types';
 
-export async function fetchRestaurants(): Promise<RestaurantSummary[]> {
-  const { data } = await apiClient.get<unknown>('/restaurants');
+export async function fetchRestaurants(query?: string): Promise<RestaurantSummary[]> {
+  const trimmed = query?.trim();
+  const { data } = await apiClient.get<unknown>('/restaurants', {
+    ...(trimmed ? { params: { q: trimmed } } : {}),
+  });
   return parseResponse(restaurantSummaryListSchema, data, 'GET /restaurants');
 }
 

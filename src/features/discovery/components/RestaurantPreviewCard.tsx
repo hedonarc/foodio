@@ -8,14 +8,17 @@ import { useTranslation } from 'react-i18next';
 
 import { Text } from '@/components/ui';
 import type { RestaurantSummary } from '@/features/restaurants';
+import { cn } from '@/lib/cn';
 import { colors } from '@/theme';
 import { formatMoney } from '@/utils/currency';
 
 type RestaurantPreviewCardProps = {
   restaurant: RestaurantSummary;
+  /** Search results read as a vertical list rather than a carousel. */
+  wide?: boolean;
 };
 
-export function RestaurantPreviewCard({ restaurant }: RestaurantPreviewCardProps) {
+export function RestaurantPreviewCard({ restaurant, wide = false }: RestaurantPreviewCardProps) {
   const router = useRouter();
   const { t, i18n } = useTranslation();
 
@@ -35,7 +38,10 @@ export function RestaurantPreviewCard({ restaurant }: RestaurantPreviewCardProps
       onPress={handlePress}
       accessibilityRole="button"
       accessibilityLabel={restaurant.name}
-      className="mr-4 w-56 overflow-hidden rounded-2xl bg-white shadow-sm border border-gray-100 active:opacity-90"
+      className={cn(
+        'overflow-hidden rounded-2xl border border-gray-100 bg-white shadow-sm active:opacity-90',
+        wide ? 'mb-3 w-full' : 'mr-4 w-56',
+      )}
     >
       <View className="h-36 w-full bg-gray-200">
         <Image
