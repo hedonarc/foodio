@@ -86,16 +86,16 @@ function RootNavigator() {
         <Stack.Screen name="(onboarding)" />
       </Stack.Protected>
 
-      <Stack.Protected guard={hasOnboarded && role.kind === 'serve'}>
+      <Stack.Protected guard={hasOnboarded && role.kind === 'kitchen'}>
         <Stack.Screen
-          name="(serving)"
+          name="(kitchen)"
           options={{ contentStyle: { backgroundColor: colors.white } }}
         />
       </Stack.Protected>
 
-      <Stack.Protected guard={hasOnboarded && role.kind === 'deliver'}>
+      <Stack.Protected guard={hasOnboarded && role.kind === 'delivery'}>
         <Stack.Screen
-          name="(delivering)"
+          name="(delivery)"
           options={{ contentStyle: { backgroundColor: colors.white } }}
         />
       </Stack.Protected>

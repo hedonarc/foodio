@@ -1,7 +1,11 @@
 import { z } from 'zod';
 
-/** What a person may do at one Restaurant. See docs/adr/0003 — never shared. */
-export const CAPABILITIES = ['serve', 'deliver'] as const;
+/**
+ * Where in one Restaurant a person may work. See docs/adr/0003 — never shared.
+ * Nouns, not verbs: an entitlement names a place you belong to, and the switcher
+ * reads "Taco Fiesta · Kitchen" rather than joining a place to an activity.
+ */
+export const CAPABILITIES = ['kitchen', 'delivery'] as const;
 
 export const capabilitySchema = z.enum(CAPABILITIES);
 
@@ -36,12 +40,12 @@ export type Session = z.infer<typeof sessionSchema>;
  */
 export type ActiveRole =
   | { kind: 'customer' }
-  | { kind: 'serve'; restaurantId: string }
-  | { kind: 'deliver'; restaurantId: string };
+  | { kind: 'kitchen'; restaurantId: string }
+  | { kind: 'delivery'; restaurantId: string };
 
 export const CUSTOMER_ROLE: ActiveRole = { kind: 'customer' };
 
-/** One entry per capability: serving and delivering are different jobs. */
+/** One entry per capability: the kitchen and delivery are different jobs. */
 export type RoleOption = {
   role: ActiveRole;
   restaurantId: string | null;
@@ -64,7 +68,7 @@ export function sameRole(a: ActiveRole, b: ActiveRole): boolean {
   return a.restaurantId === b.restaurantId;
 }
 
-/** A remembered role the person no longer holds falls back to ordering. */
+/** A remembered role the person no longer holds falls back to customer. */
 export function resolveRole(person: Person | null, remembered: ActiveRole | null): ActiveRole {
   if (!person || !remembered || remembered.kind === 'customer') return CUSTOMER_ROLE;
 

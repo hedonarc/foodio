@@ -1,5 +1,5 @@
 import { Stack } from 'expo-router';
 
-export default function WorkLayout() {
+export default function KitchenLayout() {
   return <Stack screenOptions={{ headerShown: false }} />;
 }

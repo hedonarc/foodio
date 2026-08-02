@@ -184,14 +184,14 @@
     "pickerHint": "Choose who to be. This is a development affordance — nothing is verified.",
     "customerOnly": "Customer",
     "signedInAs": "Signed in as",
-    "ordering": "Ordering",
-    "serving": "serving",
-    "delivering": "delivering",
+    "customer": "Customer",
+    "kitchen": "Kitchen",
+    "delivery": "Delivery",
     "chipHint": "Opens your account and role menu"
   },
   "work": {
-    "servingSubtitle": "Incoming orders",
-    "deliveringSubtitle": "Ready for delivery",
+    "kitchenSubtitle": "Incoming orders",
+    "deliverySubtitle": "Ready for delivery",
     "noOrders": "No orders right now."
   }
 }
