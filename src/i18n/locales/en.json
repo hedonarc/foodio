@@ -157,5 +157,11 @@
     "marketingBadge": "From the restaurant",
     "customerClipLabel": "Customer clip backed by a delivered order, from {{restaurant}}. {{caption}}",
     "restaurantClipLabel": "{{restaurant}}'s own clip. {{caption}}"
+  },
+  "tabs": {
+    "home": "Home",
+    "clips": "Clips",
+    "cart": "Cart",
+    "orders": "Orders"
   }
 }

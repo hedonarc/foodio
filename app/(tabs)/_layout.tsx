@@ -21,7 +21,7 @@ export default function TabsLayout() {
       <Tabs.Screen
         name="index"
         options={{
-          title: t('home.title'),
+          title: t('tabs.home'),
           tabBarIcon: ({ color, size }) => (
             <Ionicons name="home-outline" size={size} color={color} />
           ),
@@ -30,7 +30,7 @@ export default function TabsLayout() {
       <Tabs.Screen
         name="clips"
         options={{
-          title: t('clips.title'),
+          title: t('tabs.clips'),
           tabBarIcon: ({ color, size }) => (
             <Ionicons name="play-circle-outline" size={size} color={color} />
           ),
@@ -39,7 +39,7 @@ export default function TabsLayout() {
       <Tabs.Screen
         name="cart"
         options={{
-          title: t('cart.title'),
+          title: t('tabs.cart'),
           ...(itemCount > 0 ? { tabBarBadge: itemCount } : {}),
           tabBarIcon: ({ color, size }) => (
             <Ionicons name="bag-handle-outline" size={size} color={color} />
@@ -49,7 +49,7 @@ export default function TabsLayout() {
       <Tabs.Screen
         name="orders"
         options={{
-          title: t('orders.title'),
+          title: t('tabs.orders'),
           tabBarIcon: ({ color, size }) => (
             <Ionicons name="receipt-outline" size={size} color={color} />
           ),
