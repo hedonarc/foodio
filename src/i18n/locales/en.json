@@ -164,7 +164,9 @@
     "marketingBadge": "From the restaurant",
     "customerClipLabel": "Customer clip backed by a delivered order, from {{restaurant}}. {{caption}}",
     "restaurantClipLabel": "{{restaurant}}'s own clip. {{caption}}",
-    "notFound": "This clip is gone."
+    "notFound": "This clip is gone.",
+    "dishHeading": "How it looked · How it came",
+    "dishYours": "A customer"
   },
   "tabs": {
     "home": "Home",
