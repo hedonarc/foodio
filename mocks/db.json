@@ -1564,49 +1564,153 @@
       "image": "https://images.unsplash.com/photo-1559314809-0d155014e29e?auto=format&fit=crop&w=600&q=80"
     }
   ],
-  "featuredVideos": [
+  "orders": [],
+  "clips": [
     {
-      "id": "vid-1",
+      "id": "clip-r1",
       "restaurantId": "rest-1",
       "restaurantName": "Taco Fiesta",
-      "title": "Sizzling Birria Tacos with Consomé",
-      "thumbnail": "https://images.unsplash.com/photo-1551504734-5ee1c4a1479b?auto=format&fit=crop&w=600&q=80"
+      "mediaUrl": "https://videos.pexels.com/video-files/4676745/4676745-hd_720_1366_25fps.mp4",
+      "thumbnailUrl": "https://images.unsplash.com/photo-1551504734-5ee1c4a1479b?auto=format&fit=crop&w=600&q=80",
+      "caption": "Sizzling Birria Tacos with Consomé",
+      "durationSeconds": 12,
+      "postedAt": "2026-07-20T10:00:00.000Z",
+      "author": {
+        "kind": "restaurant"
+      },
+      "menuItemId": "r1-pop-1"
     },
     {
-      "id": "vid-2",
+      "id": "clip-r2",
       "restaurantId": "rest-2",
       "restaurantName": "Bella Italia Ristorante",
-      "title": "Handmade Truffle Pasta wheel",
-      "thumbnail": "https://images.unsplash.com/photo-1606350383072-4b031d6bd834?auto=format&fit=crop&w=600&q=80"
+      "mediaUrl": "https://videos.pexels.com/video-files/5288344/5288344-hd_720_1280_30fps.mp4",
+      "thumbnailUrl": "https://images.unsplash.com/photo-1606350383072-4b031d6bd834?auto=format&fit=crop&w=600&q=80",
+      "caption": "Handmade Truffle Pasta wheel",
+      "durationSeconds": 9,
+      "postedAt": "2026-07-22T10:00:00.000Z",
+      "author": {
+        "kind": "restaurant"
+      },
+      "menuItemId": "r2-pop-1"
     },
     {
-      "id": "vid-3",
+      "id": "clip-r3",
       "restaurantId": "rest-3",
       "restaurantName": "Sakura Sushi Bar",
-      "title": "Dragon Roll Flame Show",
-      "thumbnail": "https://images.unsplash.com/photo-1611143669185-af224c5e3252?auto=format&fit=crop&w=600&q=80"
+      "mediaUrl": "https://videos.pexels.com/video-files/5615179/5615179-hd_720_1366_30fps.mp4",
+      "thumbnailUrl": "https://images.unsplash.com/photo-1611143669185-af224c5e3252?auto=format&fit=crop&w=600&q=80",
+      "caption": "Dragon Roll Flame Show",
+      "durationSeconds": 15,
+      "postedAt": "2026-07-24T10:00:00.000Z",
+      "author": {
+        "kind": "restaurant"
+      },
+      "menuItemId": "r3-pop-1"
     },
     {
-      "id": "vid-4",
+      "id": "clip-r4",
       "restaurantId": "rest-4",
       "restaurantName": "Burger & Craft Grill",
-      "title": "Ultimate Double Cheese Smash Burger",
-      "thumbnail": "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&fit=crop&w=600&q=80"
+      "mediaUrl": "https://videos.pexels.com/video-files/6247888/6247888-hd_720_1280_24fps.mp4",
+      "thumbnailUrl": "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&fit=crop&w=600&q=80",
+      "caption": "Ultimate Double Cheese Smash Burger",
+      "durationSeconds": 11,
+      "postedAt": "2026-07-26T10:00:00.000Z",
+      "author": {
+        "kind": "restaurant"
+      },
+      "menuItemId": "r4-pop-1"
     },
     {
-      "id": "vid-5",
+      "id": "clip-r5",
       "restaurantId": "rest-5",
       "restaurantName": "Green Leaf Bowls",
-      "title": "Fresh Acai Superfood Bowl Assembly",
-      "thumbnail": "https://images.unsplash.com/photo-1590301157890-4810ed352733?auto=format&fit=crop&w=600&q=80"
+      "mediaUrl": "https://videos.pexels.com/video-files/6353432/6353432-hd_720_1280_60fps.mp4",
+      "thumbnailUrl": "https://images.unsplash.com/photo-1590301157890-4810ed352733?auto=format&fit=crop&w=600&q=80",
+      "caption": "Fresh Acai Superfood Bowl Assembly",
+      "durationSeconds": 8,
+      "postedAt": "2026-07-28T10:00:00.000Z",
+      "author": {
+        "kind": "restaurant"
+      }
     },
     {
-      "id": "vid-6",
+      "id": "clip-r6",
       "restaurantId": "rest-9",
       "restaurantName": "Sweet Tooth Bakery",
-      "title": "Molten Chocolate Lava Cake Drizzle",
-      "thumbnail": "https://images.unsplash.com/photo-1606313564200-e75d5e30476c?auto=format&fit=crop&w=600&q=80"
+      "mediaUrl": "https://videos.pexels.com/video-files/6420982/6420982-hd_720_1366_30fps.mp4",
+      "thumbnailUrl": "https://images.unsplash.com/photo-1606313564200-e75d5e30476c?auto=format&fit=crop&w=600&q=80",
+      "caption": "Molten Chocolate Lava Cake Drizzle",
+      "durationSeconds": 13,
+      "postedAt": "2026-07-30T10:00:00.000Z",
+      "author": {
+        "kind": "restaurant"
+      }
+    },
+    {
+      "id": "clip-c1",
+      "restaurantId": "rest-1",
+      "restaurantName": "Taco Fiesta",
+      "menuItemId": "r1-pop-1",
+      "mediaUrl": "https://videos.pexels.com/video-files/7246453/7246453-hd_720_1280_50fps.mp4",
+      "thumbnailUrl": "https://images.unsplash.com/photo-1626700051175-6818013e1d4f?auto=format&fit=crop&w=600&q=80",
+      "caption": "What actually turned up — Birria Tacos",
+      "durationSeconds": 7,
+      "postedAt": "2026-07-27T18:30:00.000Z",
+      "author": {
+        "kind": "customer",
+        "orderId": "order-seed-1",
+        "displayName": "Maria G."
+      }
+    },
+    {
+      "id": "clip-c2",
+      "restaurantId": "rest-2",
+      "restaurantName": "Bella Italia Ristorante",
+      "menuItemId": "r2-pop-1",
+      "mediaUrl": "https://videos.pexels.com/video-files/7599852/7599852-hd_720_1280_25fps.mp4",
+      "thumbnailUrl": "https://images.unsplash.com/photo-1473093295043-cdd812d0e601?auto=format&fit=crop&w=600&q=80",
+      "caption": "What actually turned up — Truffle Tagliatelle",
+      "durationSeconds": 10,
+      "postedAt": "2026-07-29T18:30:00.000Z",
+      "author": {
+        "kind": "customer",
+        "orderId": "order-seed-2",
+        "displayName": "James T."
+      }
+    },
+    {
+      "id": "clip-c3",
+      "restaurantId": "rest-3",
+      "restaurantName": "Sakura Sushi Bar",
+      "menuItemId": "r3-pop-1",
+      "mediaUrl": "https://videos.pexels.com/video-files/7929034/7929034-hd_720_1280_24fps.mp4",
+      "thumbnailUrl": "https://images.unsplash.com/photo-1611143669185-af224c5e3252?auto=format&fit=crop&w=600&q=80",
+      "caption": "What actually turned up — Dragon Roll",
+      "durationSeconds": 6,
+      "postedAt": "2026-07-30T18:30:00.000Z",
+      "author": {
+        "kind": "customer",
+        "orderId": "order-seed-3",
+        "displayName": "Aiko N."
+      }
+    },
+    {
+      "id": "clip-c4",
+      "restaurantId": "rest-4",
+      "restaurantName": "Burger & Craft Grill",
+      "menuItemId": "r4-pop-1",
+      "mediaUrl": "https://videos.pexels.com/video-files/7930814/7930814-hd_720_1280_24fps.mp4",
+      "thumbnailUrl": "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&fit=crop&w=600&q=80",
+      "caption": "What actually turned up — Double Smash Burger",
+      "durationSeconds": 9,
+      "postedAt": "2026-07-31T18:30:00.000Z",
+      "author": {
+        "kind": "customer",
+        "orderId": "order-seed-4",
+        "displayName": "Derek P."
+      }
     }
-  ],
-  "orders": []
+  ]
 }

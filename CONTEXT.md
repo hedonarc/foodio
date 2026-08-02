@@ -60,6 +60,18 @@ How a customer finds something to eat before they have a Restaurant in mind. Dis
 Describes a Restaurant that both delivers to the customer's Delivery Address and is currently Open. Only a Deliverable Restaurant can receive an Order.
 _Avoid_: Nearby, available — proximity does not imply a Restaurant will deliver to you
 
+### Clips
+
+**Clip**:
+A short video about a Restaurant's food, authored either by the Restaurant or by a customer. A Restaurant's Clip is marketing; a customer's is a receipt — the gap between the two is what Foodio exists to show.
+_Avoid_: Reel, Story, Post, Video
+
+**Clip Author**:
+Who made a Clip — a Restaurant, or a customer. A customer's Clip carries the delivered Order it came from, so its credibility is structural: a Clip with no Order cannot claim to be a receipt, and there is no separate "verified" flag able to disagree with reality.
+
+**Ours and theirs**:
+When a Restaurant's Clip and a customer's Clip reference the same Menu Item, that dish can show both. This is the comparison at its sharpest — the food as advertised, beside the food as delivered.
+
 ### Ordering
 
 **Cart**:

@@ -6,9 +6,9 @@ export const queryKeys = {
       [...queryKeys.restaurants.all, 'detail', restaurantId] as const,
     menu: (restaurantId: string) => [...queryKeys.restaurants.all, 'menu', restaurantId] as const,
   },
-  featuredVideos: {
-    all: ['featuredVideos'] as const,
-    list: () => [...queryKeys.featuredVideos.all, 'list'] as const,
+  clips: {
+    all: ['clips'] as const,
+    list: () => [...queryKeys.clips.all, 'list'] as const,
   },
   orders: {
     all: ['orders'] as const,

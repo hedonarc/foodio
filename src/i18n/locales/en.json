@@ -23,13 +23,13 @@
   "home": {
     "title": "Foodio",
     "searchPlaceholder": "Search for food or restaurants...",
-    "featuredVideos": "Featured Videos",
     "restaurants": "Restaurants Near You",
     "noRestaurants": "No restaurants available right now.",
     "searchLabel": "Search restaurants",
     "clearSearch": "Clear search",
     "searchResults": "Results for “{{query}}”",
-    "noResults": "Nothing matched “{{query}}”."
+    "noResults": "Nothing matched “{{query}}”.",
+    "clips": "Fresh from the kitchen"
   },
   "restaurant": {
     "detailsTitle": "Restaurant Details",
