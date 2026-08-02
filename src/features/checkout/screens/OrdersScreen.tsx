@@ -4,6 +4,7 @@ import { useRouter } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
 
 import { useTranslation } from 'react-i18next';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { EmptyState, ErrorState, LoadingState, ScreenHeader } from '@/components/shared';
 import { Text } from '@/components/ui';
@@ -21,8 +22,8 @@ export function OrdersScreen() {
   const { data: orders, isPending, error, refetch } = useOrders();
 
   return (
-    <View className="flex-1 bg-white">
-      <ScreenHeader title={t('orders.title')} />
+    <SafeAreaView edges={['top']} className="flex-1 bg-white">
+      <ScreenHeader title={t('orders.title')} showBack={false} />
 
       {isPending ? <LoadingState className="flex-1 items-center justify-center" /> : null}
       {error ? (
@@ -82,6 +83,6 @@ export function OrdersScreen() {
           ))}
         </ScrollView>
       ) : null}
-    </View>
+    </SafeAreaView>
   );
 }

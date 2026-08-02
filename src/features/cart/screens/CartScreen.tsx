@@ -1,8 +1,9 @@
-import { Pressable, ScrollView, View } from 'react-native';
+import { Pressable, ScrollView } from 'react-native';
 
 import { useRouter } from 'expo-router';
 
 import { useTranslation } from 'react-i18next';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { EmptyState, ScreenHeader } from '@/components/shared';
 import { Button, Text } from '@/components/ui';
@@ -22,9 +23,10 @@ export function CartScreen() {
   const isEmpty = lines.length === 0 || restaurant === null;
 
   return (
-    <View className="flex-1 bg-white">
+    <SafeAreaView edges={['top']} className="flex-1 bg-white">
       <ScreenHeader
         title={t('cart.title')}
+        showBack={false}
         action={
           isEmpty ? undefined : (
             <Pressable
@@ -67,6 +69,6 @@ export function CartScreen() {
           </Button>
         </ScrollView>
       )}
-    </View>
+    </SafeAreaView>
   );
 }
