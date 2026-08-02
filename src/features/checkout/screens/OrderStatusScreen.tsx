@@ -87,11 +87,19 @@ export function OrderStatusScreen() {
           <Text variant="bodyMedium" className="mb-2 text-gray-900">
             {t('checkout.summary')}
           </Text>
-          {order.lines.map((line) => (
-            <View key={line.menuItemId} className="flex-row justify-between py-1">
-              <Text variant="caption" className="flex-1 text-gray-600">
-                {line.quantity} × {line.name}
-              </Text>
+          {/* One dish can appear twice, differing only by instruction. */}
+          {order.lines.map((line, index) => (
+            <View key={`${line.menuItemId}-${index}`} className="flex-row justify-between py-1">
+              <View className="flex-1 pr-2">
+                <Text variant="caption" className="text-gray-600">
+                  {line.quantity} × {line.name}
+                </Text>
+                {line.instruction ? (
+                  <Text variant="caption" className="text-gray-400">
+                    {line.instruction}
+                  </Text>
+                ) : null}
+              </View>
               <Text variant="caption" className="text-gray-900">
                 {money(line.unitPriceMinor * line.quantity)}
               </Text>

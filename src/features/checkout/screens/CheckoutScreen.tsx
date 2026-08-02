@@ -68,6 +68,8 @@ export function CheckoutScreen() {
         image: line.image,
         unitPriceMinor: line.unitPriceMinor,
         quantity: line.quantity,
+        // Absent and empty should not be two ways of saying nothing.
+        ...(line.instruction ? { instruction: line.instruction } : {}),
       })),
       subtotalMinor: review.subtotalMinor,
       deliveryFeeMinor: review.deliveryFeeMinor,
@@ -132,9 +134,16 @@ export function CheckoutScreen() {
         <Section title={t('checkout.summary')}>
           {lines.map((line) => (
             <View key={line.id} className="flex-row justify-between py-1">
-              <Text variant="caption" className="flex-1 text-gray-600">
-                {line.quantity} × {line.name}
-              </Text>
+              <View className="flex-1 pr-2">
+                <Text variant="caption" className="text-gray-600">
+                  {line.quantity} × {line.name}
+                </Text>
+                {line.instruction ? (
+                  <Text variant="caption" className="text-gray-400">
+                    {line.instruction}
+                  </Text>
+                ) : null}
+              </View>
               <Text variant="caption" className="text-gray-900">
                 {money(line.unitPriceMinor * line.quantity)}
               </Text>

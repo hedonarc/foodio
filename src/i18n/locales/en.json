@@ -5,7 +5,8 @@
     "loading": "Loading",
     "retry": "Try again",
     "cancel": "Cancel",
-    "back": "Go back"
+    "back": "Go back",
+    "save": "Save"
   },
   "errors": {
     "unknown": "Something went wrong. Please try again."
@@ -76,7 +77,10 @@
     "replaceTitle": "Start a new cart?",
     "replaceMessage": "Your cart has items from {{restaurant}}. Each restaurant delivers its own orders, so you can only order from one at a time.",
     "replaceConfirm": "Start new cart",
-    "checkout": "Go to checkout"
+    "checkout": "Go to checkout",
+    "addNote": "Add a note",
+    "addNoteLabel": "Add a note to {{name}}",
+    "editNoteLabel": "Edit note: {{note}}"
   },
   "address": {
     "title": "Delivery address",
