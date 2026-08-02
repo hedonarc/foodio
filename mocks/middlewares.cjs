@@ -119,8 +119,7 @@ module.exports = function mockApi(req, res, next) {
     const asRestaurant = req.query.forRestaurantId;
     const person = findPerson(req, personId);
     const entitled =
-      asRestaurant &&
-      (person?.entitlements ?? []).some((e) => e.restaurantId === asRestaurant);
+      asRestaurant && (person?.entitlements ?? []).some((e) => e.restaurantId === asRestaurant);
 
     if (asRestaurant && !entitled) {
       respondLater(res, 403, errorBody(403));
