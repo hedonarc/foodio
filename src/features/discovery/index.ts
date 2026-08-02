@@ -5,6 +5,7 @@ export { RestaurantPreviewCard } from './components/RestaurantPreviewCard';
 export { SearchBar } from './components/SearchBar';
 export { SectionHeader } from './components/SectionHeader';
 export { useClips } from './hooks/useClips';
+export { ClipsFeedScreen } from './screens/ClipsFeedScreen';
 export { HomeScreen } from './screens/HomeScreen';
 export type { Clip, ClipAuthor } from './types/clip.types';
 export { isCustomerClip } from './types/clip.types';
