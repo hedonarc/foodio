@@ -41,7 +41,8 @@
           "icon": "./assets/icon.png"
         }
       ],
-      "expo-splash-screen"
+      "expo-splash-screen",
+      "expo-video"
     ]
   }
 }

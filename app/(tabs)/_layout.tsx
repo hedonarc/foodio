@@ -28,6 +28,15 @@ export default function TabsLayout() {
         }}
       />
       <Tabs.Screen
+        name="clips"
+        options={{
+          title: t('clips.title'),
+          tabBarIcon: ({ color, size }) => (
+            <Ionicons name="play-circle-outline" size={size} color={color} />
+          ),
+        }}
+      />
+      <Tabs.Screen
         name="cart"
         options={{
           title: t('cart.title'),

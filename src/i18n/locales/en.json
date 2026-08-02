@@ -142,5 +142,20 @@
   "orders": {
     "title": "Your orders",
     "empty": "You have not ordered anything yet."
+  },
+  "clips": {
+    "title": "Clips",
+    "play": "Play clip",
+    "endTitle": "You're all caught up",
+    "endBody": "New clips land here as restaurants and customers post them.",
+    "browseRestaurants": "Browse restaurants",
+    "empty": "Clips from restaurants and customers will land here.",
+    "muteAll": "Mute all clips",
+    "unmuteAll": "Unmute all clips",
+    "viewMenu": "View menu",
+    "receiptBadge": "Ordered and delivered",
+    "marketingBadge": "From the restaurant",
+    "customerClipLabel": "Customer clip backed by a delivered order, from {{restaurant}}. {{caption}}",
+    "restaurantClipLabel": "{{restaurant}}'s own clip. {{caption}}"
   }
 }
