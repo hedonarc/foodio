@@ -10,7 +10,7 @@ import { CartBar } from '@/features/cart';
 import { useDebounce } from '@/hooks/useDebounce';
 import { colors } from '@/theme';
 
-import { FeaturedVideoCarousel } from '../components/FeaturedVideoCarousel';
+import { ClipCarousel } from '../components/ClipCarousel';
 import { RestaurantCarousel } from '../components/RestaurantCarousel';
 import { SearchBar } from '../components/SearchBar';
 
@@ -47,7 +47,7 @@ export function HomeScreen() {
           </Pressable>
         </View>
 
-        {isSearching ? null : <FeaturedVideoCarousel />}
+        {isSearching ? null : <ClipCarousel />}
 
         <RestaurantCarousel query={query} />
       </ScrollView>

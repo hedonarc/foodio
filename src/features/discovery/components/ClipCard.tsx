@@ -4,18 +4,18 @@ import { Image } from 'expo-image';
 
 import { Text } from '@/components/ui';
 
-import type { FeaturedVideo } from '../types/featuredVideo.types';
+import type { Clip } from '../types/clip.types';
 
-type FeaturedVideoCardProps = {
-  video: FeaturedVideo;
+type ClipCardProps = {
+  clip: Clip;
 };
 
-export function FeaturedVideoCard({ video }: FeaturedVideoCardProps) {
+export function ClipCard({ clip }: ClipCardProps) {
   return (
     <View className="mr-3 w-40 overflow-hidden rounded-2xl bg-white shadow-sm border border-gray-100 relative">
       <View className="relative h-60 w-full bg-gray-200">
         <Image
-          source={{ uri: video.thumbnail }}
+          source={{ uri: clip.thumbnailUrl }}
           style={{ width: '100%', height: '100%' }}
           contentFit="cover"
           transition={200}
@@ -30,7 +30,7 @@ export function FeaturedVideoCard({ video }: FeaturedVideoCardProps) {
               textShadowRadius: 2,
             }}
           >
-            {video.restaurantName}
+            {clip.restaurantName}
           </Text>
         </View>
       </View>
