@@ -27,10 +27,13 @@ export const orderLineSchema = z.object({
   image: z.string(),
   unitPriceMinor: z.number().int(),
   quantity: z.number().int().positive(),
+  /** Optional: orders placed before instructions existed carry none. */
+  instruction: z.string().optional(),
 });
 
 export const orderSchema = z.object({
-  id: z.string(),
+  /** json-server assigns a number; every caller wants a string. */
+  id: z.coerce.string(),
   restaurantId: z.string(),
   restaurantName: z.string(),
   currency: z.string(),

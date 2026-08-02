@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { Pressable, View } from 'react-native';
 
 import { Image } from 'expo-image';
@@ -12,6 +13,8 @@ import { formatMoney } from '@/utils/currency';
 
 import type { CartLine } from '../types/cart.types';
 
+import { InstructionSheet } from './InstructionSheet';
+
 type CartLineRowProps = {
   line: CartLine;
   currency: string;
@@ -22,6 +25,9 @@ export function CartLineRow({ line, currency }: CartLineRowProps) {
 
   const incrementLine = useCartStore((state) => state.incrementLine);
   const decrementLine = useCartStore((state) => state.decrementLine);
+  const setLineInstruction = useCartStore((state) => state.setLineInstruction);
+
+  const [editing, setEditing] = useState(false);
 
   const lineTotalMinor = line.unitPriceMinor * line.quantity;
 
@@ -44,6 +50,31 @@ export function CartLineRow({ line, currency }: CartLineRowProps) {
         <Text variant="caption" className="mt-0.5 text-gray-400">
           {formatMoney(line.unitPriceMinor, currency, i18n.language)}
         </Text>
+
+        <Pressable
+          onPress={() => setEditing(true)}
+          accessibilityRole="button"
+          accessibilityLabel={
+            line.instruction
+              ? t('cart.editNoteLabel', { note: line.instruction })
+              : t('cart.addNoteLabel', { name: line.name })
+          }
+          hitSlop={4}
+          className="mt-1 flex-row items-center active:opacity-60"
+        >
+          <Ionicons
+            name={line.instruction ? 'chatbox-ellipses' : 'chatbox-ellipses-outline'}
+            size={12}
+            color={line.instruction ? colors.gray[700] : colors.gray[400]}
+          />
+          <Text
+            variant="caption"
+            className={line.instruction ? 'ml-1 flex-1 text-gray-700' : 'ml-1 flex-1 text-gray-400'}
+            numberOfLines={2}
+          >
+            {line.instruction || t('cart.addNote')}
+          </Text>
+        </Pressable>
       </View>
 
       <View className="ml-3 items-end">
@@ -78,6 +109,17 @@ export function CartLineRow({ line, currency }: CartLineRowProps) {
           </Pressable>
         </View>
       </View>
+
+      <InstructionSheet
+        visible={editing}
+        name={line.name}
+        initial={line.instruction}
+        onCancel={() => setEditing(false)}
+        onSave={(next) => {
+          setLineInstruction(line.id, next);
+          setEditing(false);
+        }}
+      />
     </View>
   );
 }
