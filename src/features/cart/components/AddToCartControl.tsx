@@ -5,7 +5,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { useTranslation } from 'react-i18next';
 
 import { Text } from '@/components/ui';
-import { selectIsFromOtherRestaurant, selectLineOf, useCartStore } from '@/stores/cart.store';
+import { selectIsFromOtherRestaurant, selectPlainLineOf, useCartStore } from '@/stores/cart.store';
 import { colors } from '@/theme';
 
 import type { AddableMenuItem, CartRestaurant } from '../types/cart.types';
@@ -19,7 +19,8 @@ type AddToCartControlProps = {
 export function AddToCartControl({ restaurant, item }: AddToCartControlProps) {
   const { t } = useTranslation();
 
-  const line = useCartStore(selectLineOf(item.id));
+  // Plain-line-only: a noted line is stepped from the cart, not the menu row.
+  const line = useCartStore(selectPlainLineOf(item.id));
   const heldByOtherRestaurant = useCartStore(selectIsFromOtherRestaurant(restaurant.id));
   const addItem = useCartStore((state) => state.addItem);
   const incrementLine = useCartStore((state) => state.incrementLine);

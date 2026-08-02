@@ -4,6 +4,7 @@ import {
   selectIsEmpty,
   selectIsFromOtherRestaurant,
   selectItemCount,
+  selectPlainLineOf,
   selectQuantityOf,
   selectSubtotalMinor,
   selectTotalMinor,
@@ -214,5 +215,132 @@ describe('selectQuantityOf', () => {
     state().addItem(tacos, birria);
 
     expect(selectQuantityOf('r1-pop-1')(state())).toBe(2);
+  });
+});
+
+describe('instructions and line identity', () => {
+  const birria = item('r1-pop-1', 1499);
+  const add = (instruction?: string, quantity?: number) =>
+    useCartStore.getState().addItem(tacos, birria, { instruction, quantity });
+
+  it('splits lines when instructions differ', () => {
+    add();
+    add('no onions');
+
+    expect(state().lines).toHaveLength(2);
+    expect(selectItemCount(state())).toBe(2);
+  });
+
+  it('merges lines when instructions are identical', () => {
+    add('no onions');
+    add('no onions');
+
+    expect(state().lines).toHaveLength(1);
+    expect(state().lines[0]?.quantity).toBe(2);
+  });
+
+  it('merges on trimmed whitespace but not on case', () => {
+    add('no onions');
+    add('  no onions  ');
+    add('No Onions');
+
+    expect(state().lines).toHaveLength(2);
+    expect(selectQuantityOf('r1-pop-1')(state())).toBe(3);
+  });
+
+  it('treats a whitespace-only instruction as the plain line', () => {
+    add();
+    add('   ');
+
+    expect(state().lines).toHaveLength(1);
+    expect(state().lines[0]?.instruction).toBe('');
+  });
+
+  it('adds a plain line rather than bumping a noted one', () => {
+    add('no onions');
+    add();
+
+    expect(state().lines.map((line) => line.instruction)).toEqual(['no onions', '']);
+  });
+
+  it('adds the requested quantity in one go', () => {
+    add('extra hot', 3);
+
+    expect(selectItemCount(state())).toBe(3);
+  });
+
+  it('counts every line for a dish, not just the first', () => {
+    add();
+    add('no onions', 2);
+
+    expect(selectQuantityOf('r1-pop-1')(state())).toBe(3);
+  });
+
+  it('subtotal spans split lines', () => {
+    add();
+    add('no onions');
+
+    expect(selectSubtotalMinor(state())).toBe(2998);
+  });
+});
+
+describe('setLineInstruction', () => {
+  const birria = item('r1-pop-1', 1499);
+
+  it('edits in place when nothing collides', () => {
+    useCartStore.getState().addItem(tacos, birria, { instruction: 'no onions' });
+    const [line] = state().lines;
+
+    useCartStore.getState().setLineInstruction(line!.id, 'extra hot');
+
+    expect(state().lines).toHaveLength(1);
+    expect(state().lines[0]?.instruction).toBe('extra hot');
+  });
+
+  it('folds quantity into the collision and drops the edited line', () => {
+    useCartStore.getState().addItem(tacos, birria, { instruction: 'no onions' });
+    useCartStore.getState().addItem(tacos, birria, { quantity: 2 });
+    const noted = state().lines.find((line) => line.instruction === 'no onions');
+
+    useCartStore.getState().setLineInstruction(noted!.id, '');
+
+    expect(state().lines).toHaveLength(1);
+    expect(state().lines[0]?.quantity).toBe(3);
+    expect(state().lines[0]?.instruction).toBe('');
+  });
+
+  it('trims before deciding whether anything changed', () => {
+    useCartStore.getState().addItem(tacos, birria, { instruction: 'no onions' });
+    const [line] = state().lines;
+
+    useCartStore.getState().setLineInstruction(line!.id, '  no onions  ');
+
+    expect(state().lines).toHaveLength(1);
+    expect(state().lines[0]?.instruction).toBe('no onions');
+  });
+
+  it('ignores an unknown line', () => {
+    useCartStore.getState().addItem(tacos, birria);
+
+    useCartStore.getState().setLineInstruction('line-999', 'no onions');
+
+    expect(state().lines[0]?.instruction).toBe('');
+  });
+});
+
+describe('selectPlainLineOf', () => {
+  const birria = item('r1-pop-1', 1499);
+
+  it('finds the line with no instruction, ignoring noted ones', () => {
+    useCartStore.getState().addItem(tacos, birria, { instruction: 'no onions' });
+    useCartStore.getState().addItem(tacos, birria);
+
+    expect(selectPlainLineOf('r1-pop-1')(state())?.instruction).toBe('');
+  });
+
+  it('is undefined when the dish is only in the cart with an instruction', () => {
+    useCartStore.getState().addItem(tacos, birria, { instruction: 'no onions' });
+
+    expect(selectPlainLineOf('r1-pop-1')(state())).toBeUndefined();
   });
 });
