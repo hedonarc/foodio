@@ -10,7 +10,8 @@ export const clipAuthorSchema = z.discriminatedUnion('kind', [
   z.object({
     kind: z.literal('customer'),
     orderId: z.string(),
-    displayName: z.string(),
+    /** Points at a Person; the name is derived, never stored twice. */
+    personId: z.string(),
   }),
 ]);
 
