@@ -1,4 +1,5 @@
 export { createSession, fetchPeople } from './api/identity.api';
+export { IdentityChip } from './components/IdentityChip';
 export { usePeople } from './hooks/usePeople';
 export { IdentityPickerScreen } from './screens/IdentityPickerScreen';
 export type {
