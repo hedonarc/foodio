@@ -12,22 +12,26 @@ import { colors } from '@/theme';
 type ScreenHeaderProps = {
   title: string;
   action?: ReactNode;
+  /** Tab screens have nowhere to go back to. */
+  showBack?: boolean;
 };
 
-export function ScreenHeader({ title, action }: ScreenHeaderProps) {
+export function ScreenHeader({ title, action, showBack = true }: ScreenHeaderProps) {
   const { t } = useTranslation();
   const router = useRouter();
 
   return (
     <View className="flex-row items-center px-4 py-3">
-      <Pressable
-        onPress={() => router.back()}
-        accessibilityRole="button"
-        accessibilityLabel={t('common.back')}
-        className="mr-3 h-9 w-9 items-center justify-center rounded-full bg-gray-100 active:bg-gray-200"
-      >
-        <Ionicons name="chevron-back" size={20} color={colors.gray[900]} />
-      </Pressable>
+      {showBack ? (
+        <Pressable
+          onPress={() => router.back()}
+          accessibilityRole="button"
+          accessibilityLabel={t('common.back')}
+          className="mr-3 h-9 w-9 items-center justify-center rounded-full bg-gray-100 active:bg-gray-200"
+        >
+          <Ionicons name="chevron-back" size={20} color={colors.gray[900]} />
+        </Pressable>
+      ) : null}
       <Text variant="subheading" className="flex-1 text-gray-900" numberOfLines={1}>
         {title}
       </Text>

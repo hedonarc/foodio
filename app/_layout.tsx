@@ -66,13 +66,12 @@ function RootNavigator() {
       </Stack.Protected>
 
       <Stack.Protected guard={hasOnboarded}>
-        <Stack.Screen name="index" />
+        {/* No root insets: the tab bar owns the bottom edge and each tab its top. */}
+        <Stack.Screen name="(tabs)" options={{ contentStyle: { backgroundColor: colors.white } }} />
         <Stack.Screen name="restaurant/[id]" />
-        <Stack.Screen name="cart" />
         <Stack.Screen name="checkout" />
         <Stack.Screen name="address" />
         <Stack.Screen name="order/[id]" />
-        <Stack.Screen name="orders" />
       </Stack.Protected>
     </Stack>
   );

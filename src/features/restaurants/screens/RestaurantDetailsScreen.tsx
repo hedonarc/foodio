@@ -6,7 +6,7 @@ import type { PropsWithChildren } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { EmptyState, ErrorState, LoadingState } from '@/components/shared';
-import { CartBar, type CartRestaurant } from '@/features/cart';
+import { CART_BAR_CLEARANCE, CartBar, type CartRestaurant } from '@/features/cart';
 import { Menu } from '@/features/menu';
 
 import { RestaurantGallery } from '../components/RestaurantGallery';
@@ -17,8 +17,6 @@ import { RestaurantInfo } from '../components/RestaurantInfo';
 import { RestaurantRating } from '../components/RestaurantRating';
 import { RestaurantReviewPreview } from '../components/RestaurantReviewPreview';
 import { useRestaurant } from '../hooks/useRestaurant';
-
-const CART_BAR_CLEARANCE = 96;
 
 export function RestaurantDetailsScreen() {
   const { t } = useTranslation();

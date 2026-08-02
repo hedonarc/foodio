@@ -10,7 +10,13 @@ import { selectItemCount, selectTotalMinor, useCartStore } from '@/stores/cart.s
 import { colors } from '@/theme';
 import { formatMoney } from '@/utils/currency';
 
-/** Persistent route back to the cart from anywhere in the app. */
+/** Space a screen must reserve below its content so the bar covers nothing. */
+export const CART_BAR_CLEARANCE = 96;
+
+/**
+ * The tab-less fallback: where the tab bar is hidden, this carries the cart.
+ * Screens with the tab bar use the Cart tab instead — never both.
+ */
 export function CartBar() {
   const { t, i18n } = useTranslation();
   const router = useRouter();
