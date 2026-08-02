@@ -1,10 +1,12 @@
 export { ClipCard } from './components/ClipCard';
+export { DishClips } from './components/DishClips';
 export { RestaurantCarousel } from './components/RestaurantCarousel';
 export { RestaurantClips } from './components/RestaurantClips';
 export { RestaurantPreviewCard } from './components/RestaurantPreviewCard';
 export { SearchBar } from './components/SearchBar';
 export { SectionHeader } from './components/SectionHeader';
 export { useClips } from './hooks/useClips';
+export { useMenuItemClips } from './hooks/useMenuItemClips';
 export { useRestaurantClips } from './hooks/useRestaurantClips';
 export { ClipsFeedScreen } from './screens/ClipsFeedScreen';
 export { ClipViewerScreen } from './screens/ClipViewerScreen';

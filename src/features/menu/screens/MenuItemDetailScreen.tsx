@@ -9,7 +9,8 @@ import { useTranslation } from 'react-i18next';
 
 import { ErrorState, LoadingState, ScreenHeader } from '@/components/shared';
 import { Button, Text, TextField } from '@/components/ui';
-// Deep import: the restaurants barrel reaches back into this feature.
+// Deep imports: these barrels reach back into this feature.
+import { DishClips } from '@/features/discovery/components/DishClips';
 import { useRestaurant } from '@/features/restaurants/hooks/useRestaurant';
 import { selectIsFromOtherRestaurant, useCartStore } from '@/stores/cart.store';
 import { colors } from '@/theme';
@@ -156,6 +157,8 @@ function Loaded({ item, currency, restaurant }: LoadedProps) {
             multiline
             className="mt-6"
           />
+
+          <DishClips menuItemId={item.id} />
         </View>
       </ScrollView>
 
