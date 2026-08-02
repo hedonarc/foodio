@@ -9,6 +9,7 @@ import { EmptyState, ErrorState, ScreenHeader } from '@/components/shared';
 import { Button, Text } from '@/components/ui';
 import { useRestaurantMenu } from '@/features/menu';
 import { useRestaurant } from '@/features/restaurants';
+import { useNavigationGuard } from '@/hooks/useNavigationGuard';
 import { useAddressStore } from '@/stores/address.store';
 import { useCartStore } from '@/stores/cart.store';
 import { colors } from '@/theme';
@@ -22,6 +23,7 @@ import type { NewOrder } from '../types/order.types';
 export function CheckoutScreen() {
   const { t, i18n } = useTranslation();
   const router = useRouter();
+  const guard = useNavigationGuard();
 
   const cartRestaurant = useCartStore((state) => state.restaurant);
   const lines = useCartStore((state) => state.lines);
@@ -93,7 +95,7 @@ export function CheckoutScreen() {
 
         <Section title={t('checkout.deliverTo')}>
           <Pressable
-            onPress={() => router.push('/address')}
+            onPress={() => guard(() => router.push('/address'))}
             accessibilityRole="button"
             className="flex-row items-center rounded-2xl bg-gray-50 p-4 active:bg-gray-100"
           >

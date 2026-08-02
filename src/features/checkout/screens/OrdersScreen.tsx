@@ -8,6 +8,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { EmptyState, ErrorState, LoadingState, ScreenHeader } from '@/components/shared';
 import { Text } from '@/components/ui';
+import { useNavigationGuard } from '@/hooks/useNavigationGuard';
 import { colors } from '@/theme';
 import { formatMoney } from '@/utils/currency';
 import { formatDate } from '@/utils/date';
@@ -18,6 +19,7 @@ import { isTerminal } from '../types/order.types';
 export function OrdersScreen() {
   const { t, i18n } = useTranslation();
   const router = useRouter();
+  const guard = useNavigationGuard();
 
   const { data: orders, isPending, error, refetch } = useOrders();
 
@@ -45,7 +47,7 @@ export function OrdersScreen() {
           {orders.map((order) => (
             <Pressable
               key={order.id}
-              onPress={() => router.push(`/order/${order.id}`)}
+              onPress={() => guard(() => router.push(`/order/${order.id}`))}
               accessibilityRole="button"
               className="mb-3 rounded-2xl border border-gray-100 bg-white p-4 active:bg-gray-50"
             >

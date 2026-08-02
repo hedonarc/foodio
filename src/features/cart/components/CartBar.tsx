@@ -6,6 +6,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { useTranslation } from 'react-i18next';
 
 import { Text } from '@/components/ui';
+import { useNavigationGuard } from '@/hooks/useNavigationGuard';
 import { selectItemCount, selectTotalMinor, useCartStore } from '@/stores/cart.store';
 import { colors } from '@/theme';
 import { formatMoney } from '@/utils/currency';
@@ -20,6 +21,7 @@ export const CART_BAR_CLEARANCE = 96;
 export function CartBar() {
   const { t, i18n } = useTranslation();
   const router = useRouter();
+  const guard = useNavigationGuard();
 
   const itemCount = useCartStore(selectItemCount);
   const totalMinor = useCartStore(selectTotalMinor);
@@ -30,7 +32,7 @@ export function CartBar() {
   return (
     <View className="absolute inset-x-0 bottom-0 px-4 pb-3 pt-2">
       <Pressable
-        onPress={() => router.push('/cart')}
+        onPress={() => guard(() => router.push('/cart'))}
         accessibilityRole="button"
         accessibilityLabel={t('cart.viewWithCount', { count: itemCount })}
         className="flex-row items-center justify-between rounded-2xl bg-primary-500 px-5 py-4 shadow-lg active:bg-primary-600"
