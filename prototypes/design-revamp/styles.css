@@ -1,4 +1,4 @@
-/* THROWAWAY PROTOTYPE — three Home-screen directions for Foodio. */
+/* THROWAWAY PROTOTYPE — Home-screen design directions for Foodio (B, C, D, E, F). */
 
 * {
   box-sizing: border-box;
@@ -187,266 +187,6 @@ body {
     left: 50%;
     transform: translateX(-50%);
   }
-}
-
-/* =======================================================================
-   A — EDITORIAL
-   Warm cream ground, serif display type, one big hero, restaurants as
-   text-forward rows rather than cards. Slow and considered.
-   ======================================================================= */
-
-.v-a {
-  background: #faf6f0;
-  color: #1a1614;
-  padding-bottom: 120px;
-}
-
-.v-a .topbar {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  padding: 68px 24px 0;
-}
-
-.v-a .eyebrow {
-  font-size: 11px;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: #a1968a;
-  margin-bottom: 8px;
-}
-
-.v-a .place {
-  font-family: var(--serif);
-  font-size: 27px;
-  line-height: 1.15;
-  letter-spacing: -0.015em;
-}
-
-.v-a .place em {
-  font-style: italic;
-  color: #8a7f72;
-}
-
-.v-a .avatar {
-  width: 40px;
-  height: 40px;
-  border-radius: 999px;
-  background: #1a1614;
-  color: #faf6f0;
-  display: grid;
-  place-items: center;
-  font-size: 14px;
-  font-weight: 600;
-  flex-shrink: 0;
-}
-
-.v-a .searchline {
-  margin: 24px 24px 0;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  border-bottom: 1px solid #e3dbd0;
-  padding-bottom: 12px;
-  color: #a1968a;
-  font-size: 15px;
-}
-
-.v-a .hero {
-  margin: 30px 24px 0;
-  position: relative;
-  border-radius: 26px;
-  overflow: hidden;
-  aspect-ratio: 4 / 5;
-}
-
-.v-a .hero img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.v-a .hero .scrim {
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(to top, rgb(20 15 12 / 0.88) 0%, rgb(20 15 12 / 0.15) 45%, transparent 70%);
-}
-
-.v-a .hero .tag {
-  position: absolute;
-  top: 16px;
-  left: 16px;
-  background: #faf6f0;
-  color: #1a1614;
-  font-size: 10px;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  padding: 7px 12px;
-  border-radius: 999px;
-  font-weight: 600;
-}
-
-.v-a .hero .body {
-  position: absolute;
-  left: 22px;
-  right: 22px;
-  bottom: 22px;
-  color: #fff;
-}
-
-.v-a .hero h2 {
-  font-family: var(--serif);
-  font-size: 30px;
-  line-height: 1.1;
-  letter-spacing: -0.02em;
-  font-weight: 500;
-}
-
-.v-a .hero p {
-  margin-top: 8px;
-  font-size: 13px;
-  color: rgb(255 255 255 / 0.72);
-  line-height: 1.5;
-}
-
-.v-a .hero .meta {
-  margin-top: 14px;
-  display: flex;
-  gap: 14px;
-  font-size: 12px;
-  color: rgb(255 255 255 / 0.9);
-}
-
-.v-a .sectionhead {
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  margin: 40px 24px 16px;
-}
-
-.v-a .sectionhead h3 {
-  font-family: var(--serif);
-  font-size: 21px;
-  font-weight: 500;
-  letter-spacing: -0.01em;
-}
-
-.v-a .sectionhead a {
-  font-size: 11px;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: #a1968a;
-  text-decoration: none;
-}
-
-.v-a .rail {
-  display: flex;
-  gap: 14px;
-  overflow-x: auto;
-  padding: 0 24px;
-  scrollbar-width: none;
-}
-
-.v-a .rail::-webkit-scrollbar {
-  display: none;
-}
-
-.v-a .dish {
-  width: 138px;
-  flex-shrink: 0;
-}
-
-.v-a .dish img {
-  width: 138px;
-  height: 138px;
-  object-fit: cover;
-  border-radius: 20px;
-}
-
-.v-a .dish .n {
-  margin-top: 10px;
-  font-size: 13px;
-  font-weight: 600;
-  line-height: 1.3;
-}
-
-.v-a .dish .p {
-  margin-top: 3px;
-  font-size: 13px;
-  color: #8a7f72;
-}
-
-.v-a .row {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  margin: 0 24px;
-  padding: 18px 0;
-  border-bottom: 1px solid #ece5db;
-}
-
-.v-a .row:last-child {
-  border-bottom: 0;
-}
-
-.v-a .row .idx {
-  font-family: var(--serif);
-  font-size: 13px;
-  color: #c4b8a9;
-  width: 18px;
-  flex-shrink: 0;
-}
-
-.v-a .row .txt {
-  flex: 1;
-  min-width: 0;
-}
-
-.v-a .row h4 {
-  font-size: 16px;
-  font-weight: 600;
-  letter-spacing: -0.01em;
-}
-
-.v-a .row .sub {
-  margin-top: 4px;
-  font-size: 12px;
-  color: #8a7f72;
-}
-
-.v-a .row img {
-  width: 62px;
-  height: 62px;
-  border-radius: 16px;
-  object-fit: cover;
-  flex-shrink: 0;
-}
-
-.v-a .tabbar {
-  position: absolute;
-  bottom: 26px;
-  left: 50%;
-  transform: translateX(-50%);
-  display: flex;
-  gap: 6px;
-  background: #1a1614;
-  padding: 7px;
-  border-radius: 999px;
-  box-shadow: 0 14px 34px -8px rgb(26 22 20 / 0.5);
-}
-
-.v-a .tabbar span {
-  color: rgb(250 246 240 / 0.5);
-  font-size: 11px;
-  padding: 9px 16px;
-  border-radius: 999px;
-  letter-spacing: 0.02em;
-}
-
-.v-a .tabbar span.on {
-  background: #faf6f0;
-  color: #1a1614;
-  font-weight: 600;
 }
 
 /* =======================================================================
@@ -931,4 +671,810 @@ body {
   height: 4px;
   border-radius: 999px;
   background: var(--brand);
+}
+
+/* =======================================================================
+   D — DISH FIRST, DARK
+   B's density with the dish as the object, not the restaurant.
+   Accent: terracotta.
+   ======================================================================= */
+
+.v-d {
+  --accent: #e2603c;
+  background: #0f0e0d;
+  color: #f5f2ef;
+  padding-bottom: 110px;
+}
+
+.v-d .head {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  background: #0f0e0d;
+  padding: 60px 16px 0;
+}
+
+.v-d .addr {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.v-d .addr .l {
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  color: #7d766f;
+}
+
+.v-d .addr .a {
+  font-size: 15px;
+  font-weight: 700;
+  margin-top: 3px;
+  letter-spacing: -0.01em;
+}
+
+.v-d .addr .av {
+  width: 36px;
+  height: 36px;
+  border-radius: 999px;
+  background: var(--accent);
+  display: grid;
+  place-items: center;
+  font-size: 13px;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.v-d .search {
+  margin-top: 14px;
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  background: #1c1a18;
+  border: 1px solid #2a2724;
+  border-radius: 14px;
+  padding: 12px 14px;
+  color: #7d766f;
+  font-size: 14px;
+}
+
+.v-d .chips {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  padding: 14px 0 12px;
+  scrollbar-width: none;
+}
+
+.v-d .chips::-webkit-scrollbar {
+  display: none;
+}
+
+.v-d .chip {
+  flex-shrink: 0;
+  font-size: 13px;
+  font-weight: 600;
+  padding: 8px 15px;
+  border-radius: 999px;
+  background: #1c1a18;
+  border: 1px solid #2a2724;
+  color: #b8b0a8;
+  white-space: nowrap;
+}
+
+.v-d .chip.on {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
+}
+
+.v-d .sect {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  padding: 24px 16px 14px;
+}
+
+.v-d .sect h3 {
+  font-size: 19px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+
+.v-d .sect a {
+  font-size: 12px;
+  color: var(--accent);
+  font-weight: 700;
+  text-decoration: none;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.v-d .dgrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px 12px;
+  padding: 0 16px;
+}
+
+.v-d .dcard .imgwrap {
+  position: relative;
+  border-radius: 18px;
+  overflow: hidden;
+  aspect-ratio: 1 / 1;
+}
+
+.v-d .dcard img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.v-d .dcard .price {
+  position: absolute;
+  left: 8px;
+  bottom: 8px;
+  background: rgb(15 14 13 / 0.82);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-radius: 999px;
+  padding: 5px 10px;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.v-d .dcard .star {
+  position: absolute;
+  right: 8px;
+  top: 8px;
+  background: rgb(15 14 13 / 0.72);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-radius: 999px;
+  padding: 4px 8px;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.v-d .dcard .n {
+  margin-top: 9px;
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  line-height: 1.25;
+}
+
+.v-d .dcard .from {
+  margin-top: 3px;
+  font-size: 12px;
+  color: #7d766f;
+}
+
+.v-d .rlist {
+  padding: 0 16px;
+}
+
+.v-d .rrow {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  padding: 12px;
+  background: #17151300;
+  border-bottom: 1px solid #221f1c;
+}
+
+.v-d .rrow:last-child {
+  border-bottom: 0;
+}
+
+.v-d .rrow img {
+  width: 56px;
+  height: 56px;
+  border-radius: 14px;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+.v-d .rrow .t {
+  flex: 1;
+  min-width: 0;
+}
+
+.v-d .rrow h4 {
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+.v-d .rrow .s {
+  margin-top: 3px;
+  font-size: 12px;
+  color: #9a938c;
+}
+
+.v-d .rrow .s.dim {
+  color: #6d6660;
+}
+
+.v-d .rrow .go {
+  color: #4d4842;
+  font-size: 20px;
+}
+
+.v-d .tabbar {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: #131110;
+  border-top: 1px solid #221f1c;
+  display: flex;
+  padding: 10px 0 26px;
+}
+
+.v-d .tabbar div {
+  flex: 1;
+  text-align: center;
+  font-size: 10px;
+  color: #6d6660;
+  font-weight: 600;
+}
+
+.v-d .tabbar div .ic {
+  display: block;
+  font-size: 19px;
+  margin-bottom: 3px;
+}
+
+.v-d .tabbar div.on {
+  color: var(--accent);
+}
+
+/* =======================================================================
+   E — SINGLE COLUMN
+   B's job, calmer. No horizontal rails: filters, then one full-width card
+   per restaurant carrying its own dish thumbnails. Accent: hot orange-red.
+   ======================================================================= */
+
+.v-e {
+  --accent: #ff5a1f;
+  background: #fbfaf8;
+  color: #14161a;
+  padding-bottom: 110px;
+}
+
+.v-e .head {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  background: #fbfaf8;
+  padding: 60px 16px 0;
+  border-bottom: 1px solid #eeebe6;
+}
+
+.v-e .addr {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.v-e .addr .l {
+  font-size: 12px;
+  color: #86807a;
+}
+
+.v-e .addr .a {
+  font-size: 16px;
+  font-weight: 700;
+  margin-top: 1px;
+  letter-spacing: -0.015em;
+}
+
+.v-e .addr .av {
+  width: 36px;
+  height: 36px;
+  border-radius: 999px;
+  background: var(--accent);
+  color: #fff;
+  display: grid;
+  place-items: center;
+  font-size: 13px;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.v-e .search {
+  margin-top: 14px;
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  background: #fff;
+  border: 1px solid #e6e2dc;
+  border-radius: 999px;
+  padding: 12px 16px;
+  color: #948d86;
+  font-size: 14px;
+}
+
+.v-e .chips {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  padding: 12px 0;
+  scrollbar-width: none;
+}
+
+.v-e .chips::-webkit-scrollbar {
+  display: none;
+}
+
+.v-e .chip {
+  flex-shrink: 0;
+  font-size: 13px;
+  font-weight: 600;
+  padding: 7px 13px;
+  border-radius: 999px;
+  background: transparent;
+  border: 1px solid #ddd8d1;
+  color: #4a4640;
+  white-space: nowrap;
+}
+
+.v-e .chip.sort {
+  background: #14161a;
+  border-color: #14161a;
+  color: #fff;
+}
+
+.v-e .count {
+  padding: 18px 16px 10px;
+  font-size: 12px;
+  color: #86807a;
+  letter-spacing: 0.02em;
+}
+
+.v-e .cards {
+  padding: 0 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.v-e .ecard {
+  background: #fff;
+  border: 1px solid #eeebe6;
+  border-radius: 22px;
+  overflow: hidden;
+}
+
+.v-e .ecard .imgwrap {
+  position: relative;
+  aspect-ratio: 16 / 9;
+}
+
+.v-e .ecard .imgwrap img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.v-e .heart {
+  position: absolute;
+  right: 10px;
+  top: 10px;
+  width: 32px;
+  height: 32px;
+  border-radius: 999px;
+  background: rgb(255 255 255 / 0.94);
+  display: grid;
+  place-items: center;
+  font-size: 14px;
+}
+
+.v-e .ribbon {
+  position: absolute;
+  left: 10px;
+  bottom: 10px;
+  background: var(--accent);
+  color: #fff;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 5px 10px;
+  border-radius: 8px;
+}
+
+.v-e .pad {
+  padding: 14px 14px 16px;
+}
+
+.v-e .pad .n {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.v-e .pad h4 {
+  font-size: 17px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+
+.v-e .rate {
+  font-size: 13px;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.v-e .rate em {
+  font-style: normal;
+  color: #948d86;
+  font-weight: 500;
+}
+
+.v-e .cuis {
+  margin-top: 4px;
+  font-size: 13px;
+  color: #86807a;
+}
+
+.v-e .metarow {
+  margin-top: 9px;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 12.5px;
+  color: #4a4640;
+  font-weight: 600;
+}
+
+.v-e .thumbs {
+  margin-top: 13px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+}
+
+.v-e .thumb {
+  position: relative;
+  border-radius: 12px;
+  overflow: hidden;
+  aspect-ratio: 1 / 1;
+}
+
+.v-e .thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.v-e .thumb .tp {
+  position: absolute;
+  left: 5px;
+  bottom: 5px;
+  background: rgb(255 255 255 / 0.94);
+  border-radius: 6px;
+  padding: 3px 6px;
+  font-size: 10.5px;
+  font-weight: 700;
+}
+
+.v-e .tabbar {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: #fff;
+  border-top: 1px solid #eeebe6;
+  display: flex;
+  padding: 10px 0 26px;
+}
+
+.v-e .tabbar div {
+  flex: 1;
+  text-align: center;
+  font-size: 10px;
+  color: #9c958e;
+  font-weight: 600;
+}
+
+.v-e .tabbar div .ic {
+  display: block;
+  font-size: 19px;
+  margin-bottom: 3px;
+}
+
+.v-e .tabbar div.on {
+  color: var(--accent);
+}
+
+/* =======================================================================
+   F — CLIPS + LIST
+   C's hook without C's cost: a swipeable clip hero, then a light sheet of
+   scannable restaurants lifting over it. Accent: ember.
+   ======================================================================= */
+
+.v-f {
+  --accent: #f4623a;
+  background: #0d0b0a;
+  padding-bottom: 110px;
+}
+
+.v-f .hero {
+  position: relative;
+  height: 460px;
+}
+
+.v-f .hscroll {
+  display: flex;
+  height: 100%;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+}
+
+.v-f .hscroll::-webkit-scrollbar {
+  display: none;
+}
+
+.v-f .hslide {
+  position: relative;
+  min-width: 100%;
+  height: 100%;
+  scroll-snap-align: start;
+}
+
+.v-f .hslide img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.v-f .hgrad {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(to bottom, rgb(13 11 10 / 0.6) 0%, transparent 26%),
+    linear-gradient(to top, rgb(13 11 10 / 0.95) 4%, transparent 52%);
+}
+
+.v-f .hproof {
+  position: absolute;
+  top: 116px;
+  left: 18px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgb(13 11 10 / 0.6);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border-radius: 999px;
+  padding: 6px 12px 6px 8px;
+  font-size: 10.5px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  font-weight: 700;
+  color: rgb(255 255 255 / 0.9);
+}
+
+.v-f .hproof i {
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: #4ade80;
+  font-style: normal;
+}
+
+.v-f .hproof.ad i {
+  background: var(--accent);
+}
+
+.v-f .hbody {
+  position: absolute;
+  left: 18px;
+  right: 18px;
+  bottom: 56px;
+  color: #fff;
+}
+
+.v-f .hbody h2 {
+  font-size: 28px;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  line-height: 1.08;
+}
+
+.v-f .hbody p {
+  margin-top: 7px;
+  font-size: 13.5px;
+  color: rgb(255 255 255 / 0.74);
+}
+
+.v-f .hmeta {
+  margin-top: 13px;
+  display: flex;
+  gap: 7px;
+}
+
+.v-f .hmeta span {
+  font-size: 11.5px;
+  font-weight: 600;
+  background: rgb(255 255 255 / 0.15);
+  border: 1px solid rgb(255 255 255 / 0.15);
+  padding: 6px 10px;
+  border-radius: 999px;
+  white-space: nowrap;
+}
+
+.v-f .htop {
+  position: absolute;
+  top: 60px;
+  left: 16px;
+  right: 16px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: rgb(255 255 255 / 0.14);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  border: 1px solid rgb(255 255 255 / 0.16);
+  border-radius: 999px;
+  padding: 11px 16px;
+  font-size: 14px;
+  color: rgb(255 255 255 / 0.68);
+  z-index: 5;
+}
+
+.v-f .htop .av {
+  margin-left: auto;
+  width: 26px;
+  height: 26px;
+  border-radius: 999px;
+  background: var(--accent);
+  color: #fff;
+  display: grid;
+  place-items: center;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.v-f .dots {
+  position: absolute;
+  bottom: 30px;
+  left: 18px;
+  display: flex;
+  gap: 5px;
+}
+
+.v-f .dots i {
+  width: 5px;
+  height: 5px;
+  border-radius: 999px;
+  background: rgb(255 255 255 / 0.35);
+}
+
+.v-f .dots i.on {
+  width: 18px;
+  background: #fff;
+}
+
+.v-f .sheet {
+  position: relative;
+  margin-top: -26px;
+  background: #fbfaf8;
+  border-radius: 26px 26px 0 0;
+  padding-bottom: 10px;
+  min-height: 460px;
+}
+
+.v-f .grab {
+  width: 36px;
+  height: 4px;
+  border-radius: 999px;
+  background: #ddd8d1;
+  margin: 10px auto 0;
+}
+
+.v-f .sect {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  padding: 16px 18px 6px;
+}
+
+.v-f .sect h3 {
+  font-size: 19px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: #14161a;
+}
+
+.v-f .sect a {
+  font-size: 13px;
+  color: var(--accent);
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.v-f .frow {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  padding: 13px 18px;
+  border-bottom: 1px solid #efece7;
+}
+
+.v-f .frow:last-child {
+  border-bottom: 0;
+}
+
+.v-f .frow img {
+  width: 58px;
+  height: 58px;
+  border-radius: 15px;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+.v-f .frow .t {
+  flex: 1;
+  min-width: 0;
+}
+
+.v-f .frow h4 {
+  font-size: 15.5px;
+  font-weight: 700;
+  letter-spacing: -0.015em;
+  color: #14161a;
+}
+
+.v-f .frow .s {
+  margin-top: 3px;
+  font-size: 12.5px;
+  color: #86807a;
+}
+
+.v-f .frow .s.dim {
+  color: #a09a93;
+}
+
+.v-f .clipbadge {
+  flex-shrink: 0;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--accent);
+  background: #fff1ec;
+  border-radius: 999px;
+  padding: 5px 9px;
+}
+
+.v-f .tabbar {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: #fff;
+  border-top: 1px solid #efece7;
+  display: flex;
+  padding: 10px 0 26px;
+}
+
+.v-f .tabbar div {
+  flex: 1;
+  text-align: center;
+  font-size: 10px;
+  color: #9c958e;
+  font-weight: 600;
+}
+
+.v-f .tabbar div .ic {
+  display: block;
+  font-size: 19px;
+  margin-bottom: 3px;
+}
+
+.v-f .tabbar div.on {
+  color: var(--accent);
 }
