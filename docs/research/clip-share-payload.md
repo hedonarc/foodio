@@ -17,16 +17,30 @@ Primary sources: <https://docs.expo.dev/versions/v57.0.0/sdk/sharing/>, <https:/
 
 ## The answer, first
 
-**No — not on both platforms. It is platform-dependent, and Android is the platform that cannot do it.**
+**No.** And the question has two layers, which must not be collapsed — the answer is different at each, and both are negative.
 
-| Platform    | Video **and** caption in one share action? | Via what                                             |
-| ----------- | ------------------------------------------ | ---------------------------------------------------- |
-| **iOS**     | **Yes**                                    | RN `Share.share({ message, url: fileUri })`          |
-| **Android** | **No.** Pick one.                          | `expo-sharing` → video only. RN `Share` → text only. |
+**Layer 1 — can the API _send_ both?** Platform-dependent.
 
-This is not a "complicated but doable" finding. On Android, **neither of the two candidate APIs can put a file and a caption into the same intent**, and the reason is in the source, not in a platform limitation that a workaround routes around. See [§2](#2-android-the-two-apis-are-each-missing-the-other-half) for the proof and [§3](#3-the-android-escape-hatches-and-why-they-fail) for the escape hatches that were checked and rejected.
+| Platform    | Video **and** caption in one share action? | Via what                                                                               |
+| ----------- | ------------------------------------------ | -------------------------------------------------------------------------------------- |
+| **iOS**     | **Yes**                                    | RN `Share.share({ message, url: fileUri })` — `activityItems = [NSString, file NSURL]` |
+| **Android** | **No.** Pick one.                          | `expo-sharing` → video only. RN `Share` → text only.                                   |
 
-**What it means for [#25](https://github.com/hedonarc/foodio/issues/25):** the decision was "the payload is the video itself, with attribution in the accompanying text." On Android that payload is **not expressible with first-party packages**. The video ships; the attribution does not. Since attribution-in-text was the corrected fallback after watermarking was ruled out, Android currently has **no attribution channel at all** for a shared clip. That is a real dent in the decision, not a detail — details are in [§8](#8-what-this-does-to-25).
+This half is settled at the source level, not inferred. See [§2](#2-android-the-two-apis-are-each-missing-the-other-half) for the Android proof, [§4](#4-ios-the-api-sends-both) for the iOS mechanism, and [§3](#3-the-android-escape-hatches-and-why-they-fail) for escape hatches checked and rejected.
+
+**Layer 2 — do the target apps _render_ both?** **[COMMUNITY] Reportedly not, and this is where iOS's "yes" stops being a yes.** Delivering two `activityItems` guarantees the activity receives both; it guarantees nothing about what the activity does with them, and the reports for our three target apps say one item is silently dropped:
+
+| Receiving app | iOS, given `[text, video file]`                                                                              | Source                                                                                                                                                                                                                                                                            |
+| ------------- | ------------------------------------------------------------------------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Messages**  | **Video wins, text is dropped.** (Image + text: both survive — video specifically is the broken case.)       | [Apple forum 727907](https://developer.apple.com/forums/thread/727907), Apr 2023, **0 replies, never answered**                                                                                                                                                                   |
+| **WhatsApp**  | **Text wins, video is dropped.**                                                                             | [plus_plugins#261](https://github.com/fluttercommunity/plus_plugins/issues/261) (2021, files); [react-native-share#1487](https://github.com/react-native-share/react-native-share/issues/1487) (2023-11-23, **`video/mp4` specifically**) — closed by a stale bot, never answered |
+| **Instagram** | **Caption discarded by design since 2015.** Meta's docs contain no caption field for feed or stories at all. | [InstagramPlugin#44](https://github.com/vstirbu/InstagramPlugin/issues/44) (2015); absence across <https://developers.facebook.com/docs/instagram-platform/sharing-to-feed>                                                                                                       |
+
+**So the honest headline: a playable video and its caption cannot be relied on to arrive together in any of the three target apps, on either platform.** Android cannot even send both. iOS can send both, and then WhatsApp drops the video while Messages drops the text — note that these two fail in _opposite directions_, so there is not even a single "safe" item to prefer.
+
+**[INFERENCE]** The Layer-2 evidence is **[COMMUNITY]**, not documentation, and the strongest reports are 2021–2023. It is the best evidence that exists — no vendor documents this — but it is exactly the kind of claim that must be re-tested on a device before anything is built on it. That test is item 1 in [§12](#12-what-could-not-be-settled-by-reading).
+
+**What it means for [#25](https://github.com/hedonarc/foodio/issues/25):** the decision was "the payload is the video itself, with attribution in the accompanying text." Android cannot express that payload with first-party packages at all. iOS can express it, and the receiving apps then appear to discard half of it. Since attribution-in-text was the corrected fallback _after_ watermarking was ruled out, and watermarking remains impossible in SDK 57 ([§7](#7-watermarking-still-no-and-now-for-a-documented-reason)), **a shared clip may well carry no attribution anywhere, on either platform**. That is not a complication of the decision — it removes its second half. Details in [§8](#8-what-this-does-to-25).
 
 ---
 
@@ -165,7 +179,7 @@ See [§8](#8-what-this-does-to-25). Summarised there with its version and New Ar
 
 ---
 
-## 4. iOS: yes, and here is the mechanism
+## 4. iOS: the API sends both
 
 **[SRC]** `react-native@0.86.2`, `Libraries/Share/Share.js` → `NativeActionSheetManager.showShareActionSheetWithOptions({ message, url, subject, … })`, and `React/CoreModules/RCTActionSheetManager.mm` assembles **both** into one activity item array:
 
