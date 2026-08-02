@@ -3,6 +3,7 @@ import { Pressable, View } from 'react-native';
 
 import { useEvent } from 'expo';
 import { Image } from 'expo-image';
+import { LinearGradient } from 'expo-linear-gradient';
 import { useRouter } from 'expo-router';
 import { useVideoPlayer, VideoView } from 'expo-video';
 import { Ionicons } from '@expo/vector-icons';
@@ -113,6 +114,15 @@ export function ClipFeedCell({
       >
         <Ionicons name={muted ? 'volume-mute' : 'volume-high'} size={18} color={colors.white} />
       </Pressable>
+
+      {/* Food clips are often bright and pale — white text alone is unreadable
+          over them. The scrim guarantees contrast whatever the footage does. */}
+      <LinearGradient
+        colors={['transparent', 'rgba(0,0,0,0.35)', 'rgba(0,0,0,0.8)']}
+        locations={[0, 0.45, 1]}
+        pointerEvents="none"
+        style={{ position: 'absolute', left: 0, right: 0, bottom: 0, height: 260 }}
+      />
 
       <View className="absolute inset-x-0 bottom-0 p-4 pb-5">
         <View

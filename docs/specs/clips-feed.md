@@ -27,6 +27,11 @@ a Browse-restaurants route; `EmptyState` (no "be the first" — there is no
 posting flow); `ErrorState` with retry. Offline leans on nothing: there is no
 "is this cached?" API, so a stalled clip simply shows its poster.
 
+**Legibility**: the bottom overlay sits on a `LinearGradient` scrim
+(transparent → 80% black). Found on a physical Galaxy A15 — food footage is
+frequently bright and pale, and white text alone vanished over it. The scrim
+makes contrast a property of the layout rather than a hope about the footage.
+
 **Home**: the clip shelf came off — the tab is the surface now. `ClipCarousel`
 is unused pending the restaurant-page slice, which reworks it into the
 labelled shelves of [#26](https://github.com/hedonarc/foodio/issues/26).
