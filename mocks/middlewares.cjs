@@ -10,6 +10,19 @@
 
 const FAIL_RATE = Number.parseFloat(process.env.MOCK_FAIL_RATE ?? '0') || 0;
 
+/**
+ * Must match `--delay` in the `api` script. A middleware that responds here
+ * never reaches json-server's delay, so without this every failure returns in
+ * about a millisecond — and the failures are exactly the responses whose
+ * loading states we most need to see.
+ */
+const DELAY_MS = Number.parseInt(process.env.MOCK_DELAY_MS ?? '400', 10) || 0;
+
+/** Answers at the same speed json-server would, instead of instantly. */
+function respondLater(res, status, body) {
+  setTimeout(() => res.status(status).jsonp(body), DELAY_MS);
+}
+
 const MESSAGES = {
   400: 'Bad request.',
   401: 'Not authenticated.',
@@ -54,13 +67,13 @@ const isOrderCreate = (req) => req.method === 'POST' && req.path.startsWith('/or
 module.exports = function mockApi(req, res, next) {
   const forced = Number.parseInt(req.get('x-mock-fail') ?? '', 10);
   if (Number.isInteger(forced) && forced >= 400 && forced <= 599) {
-    res.status(forced).jsonp(errorBody(forced));
+    respondLater(res, forced, errorBody(forced));
     return;
   }
 
   // Only reads are sampled. Randomly losing a write would corrupt db.json.
   if (FAIL_RATE > 0 && req.method === 'GET' && Math.random() < FAIL_RATE) {
-    res.status(503).jsonp(errorBody(503));
+    respondLater(res, 503, errorBody(503));
     return;
   }
 
