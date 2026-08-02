@@ -396,7 +396,6 @@ function screenCart() {
   return { app, chrome, cls: 's-cart' };
 }
 
-
 /* ================= Checkout — review before placing ======================== */
 
 function screenCheckout() {
@@ -553,7 +552,10 @@ const screenEl = document.getElementById('screen');
 
 function render() {
   const key = new URLSearchParams(location.search).get('screen') ?? 'Home';
-  const i = Math.max(0, SCREENS.findIndex((sc) => sc[0].toLowerCase() === key.toLowerCase()));
+  const i = Math.max(
+    0,
+    SCREENS.findIndex((sc) => sc[0].toLowerCase() === key.toLowerCase()),
+  );
   const [name, sub, fn] = SCREENS[i];
   const { app, chrome, cls } = fn();
 
@@ -578,7 +580,8 @@ document.getElementById('next').onclick = () => go(1);
 
 document.addEventListener('keydown', (e) => {
   const t = e.target;
-  if (t instanceof HTMLInputElement || t instanceof HTMLTextAreaElement || t?.isContentEditable) return;
+  if (t instanceof HTMLInputElement || t instanceof HTMLTextAreaElement || t?.isContentEditable)
+    return;
   if (e.key === 'ArrowLeft') go(-1);
   if (e.key === 'ArrowRight') go(1);
 });

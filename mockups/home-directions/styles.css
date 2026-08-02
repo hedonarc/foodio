@@ -8,8 +8,7 @@
 }
 
 :root {
-  --sans:
-    -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', Roboto, sans-serif;
+  --sans: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', Roboto, sans-serif;
   --serif: ui-serif, 'New York', Georgia, 'Times New Roman', serif;
   --mono: ui-monospace, 'SF Mono', Menlo, monospace;
   --brand: #ff9800;
@@ -1376,7 +1375,12 @@ body {
   position: absolute;
   inset: 0;
   height: 62%;
-  background: linear-gradient(to bottom, rgb(16 14 13 / 0.55) 0%, rgb(16 14 13 / 0.8) 45%, #100e0d 96%);
+  background: linear-gradient(
+    to bottom,
+    rgb(16 14 13 / 0.55) 0%,
+    rgb(16 14 13 / 0.8) 45%,
+    #100e0d 96%
+  );
 }
 
 .v-i .content {
@@ -2250,10 +2254,34 @@ body {
   height: 160%;
   transform: rotate(-9deg);
   background:
-    repeating-linear-gradient(0deg, transparent 0px, transparent 54px, rgb(151 177 224 / 0.055) 54px, rgb(151 177 224 / 0.055) 55px),
-    repeating-linear-gradient(90deg, transparent 0px, transparent 54px, rgb(151 177 224 / 0.055) 54px, rgb(151 177 224 / 0.055) 55px),
-    repeating-linear-gradient(0deg, transparent 0px, transparent 215px, rgb(151 177 224 / 0.05) 215px, rgb(151 177 224 / 0.05) 217px),
-    repeating-linear-gradient(90deg, transparent 0px, transparent 215px, rgb(151 177 224 / 0.05) 215px, rgb(151 177 224 / 0.05) 217px);
+    repeating-linear-gradient(
+      0deg,
+      transparent 0px,
+      transparent 54px,
+      rgb(151 177 224 / 0.055) 54px,
+      rgb(151 177 224 / 0.055) 55px
+    ),
+    repeating-linear-gradient(
+      90deg,
+      transparent 0px,
+      transparent 54px,
+      rgb(151 177 224 / 0.055) 54px,
+      rgb(151 177 224 / 0.055) 55px
+    ),
+    repeating-linear-gradient(
+      0deg,
+      transparent 0px,
+      transparent 215px,
+      rgb(151 177 224 / 0.05) 215px,
+      rgb(151 177 224 / 0.05) 217px
+    ),
+    repeating-linear-gradient(
+      90deg,
+      transparent 0px,
+      transparent 215px,
+      rgb(151 177 224 / 0.05) 215px,
+      rgb(151 177 224 / 0.05) 217px
+    );
 }
 
 /* one avenue cutting the grid, the way real cities disobey their own plan */
@@ -2264,7 +2292,13 @@ body {
   top: 52%;
   width: 110%;
   height: 3px;
-  background: linear-gradient(90deg, transparent, rgb(151 177 224 / 0.13) 15%, rgb(151 177 224 / 0.13) 85%, transparent);
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgb(151 177 224 / 0.13) 15%,
+    rgb(151 177 224 / 0.13) 85%,
+    transparent
+  );
   transform: rotate(23deg);
 }
 
@@ -2337,7 +2371,12 @@ body {
   height: 64px;
   margin: -32px 0 0 -32px;
   border-radius: 50%;
-  background: radial-gradient(circle, rgb(255 214 152 / 0.32), rgb(255 190 110 / 0.1) 55%, transparent 72%);
+  background: radial-gradient(
+    circle,
+    rgb(255 214 152 / 0.32),
+    rgb(255 190 110 / 0.1) 55%,
+    transparent 72%
+  );
   animation: v-l-breathe 4.2s ease-in-out infinite alternate;
   display: block;
 }
@@ -2349,7 +2388,9 @@ body {
   margin: -4.5px 0 0 -4.5px;
   border-radius: 50%;
   background: #fff7ea;
-  box-shadow: 0 0 10px rgb(255 240 214 / 0.9), 0 0 26px rgb(255 190 110 / 0.55);
+  box-shadow:
+    0 0 10px rgb(255 240 214 / 0.9),
+    0 0 26px rgb(255 190 110 / 0.55);
   display: block;
 }
 
@@ -2405,11 +2446,17 @@ body {
   font-size: 10px;
   font-weight: 600;
   color: rgb(214 224 240 / 0.68);
-  text-shadow: 0 1px 3px rgb(0 0 0 / 0.9), 0 0 14px rgb(0 0 0 / 0.7);
+  text-shadow:
+    0 1px 3px rgb(0 0 0 / 0.9),
+    0 0 14px rgb(0 0 0 / 0.7);
 }
 
-.v-l .tag.lab-r { left: 13px; }
-.v-l .tag.lab-l { right: 13px; }
+.v-l .tag.lab-r {
+  left: 13px;
+}
+.v-l .tag.lab-l {
+  right: 13px;
+}
 
 .v-l .tag.sel {
   font-size: 11.5px;
@@ -2418,8 +2465,12 @@ body {
   color: #ffdba4;
 }
 
-.v-l .tag.sel.lab-l { right: 30px; }
-.v-l .tag.sel.lab-r { left: 30px; }
+.v-l .tag.sel.lab-l {
+  right: 30px;
+}
+.v-l .tag.sel.lab-r {
+  left: 30px;
+}
 
 /* ---- chrome: address pill + peek card ---- */
 
@@ -2446,8 +2497,14 @@ body {
   animation: v-l-fadedown 0.5s ease-out both;
 }
 
-.v-l .toppill .ic { color: var(--accent); font-size: 14px; }
-.v-l .toppill .car { color: rgb(214 224 240 / 0.4); font-size: 11px; }
+.v-l .toppill .ic {
+  color: var(--accent);
+  font-size: 14px;
+}
+.v-l .toppill .car {
+  color: rgb(214 224 240 / 0.4);
+  font-size: 11px;
+}
 
 .v-l .peek {
   position: absolute;
@@ -2497,7 +2554,9 @@ body {
   border: 1px solid rgb(151 177 224 / 0.12);
 }
 
-.v-l .pt { min-width: 0; }
+.v-l .pt {
+  min-width: 0;
+}
 
 .v-l .pt h2 {
   font-size: 19px;
@@ -2515,8 +2574,13 @@ body {
   text-overflow: ellipsis;
 }
 
-.v-l .pmeta b { color: var(--accent); font-weight: 700; }
-.v-l .pmeta.dim { color: rgb(205 215 232 / 0.48); }
+.v-l .pmeta b {
+  color: var(--accent);
+  font-weight: 700;
+}
+.v-l .pmeta.dim {
+  color: rgb(205 215 232 / 0.48);
+}
 
 .v-l .dish {
   display: flex;
@@ -2537,7 +2601,10 @@ body {
   flex-shrink: 0;
 }
 
-.v-l .dt { flex: 1; min-width: 0; }
+.v-l .dt {
+  flex: 1;
+  min-width: 0;
+}
 
 .v-l .dt h4 {
   font-size: 14px;
@@ -2573,24 +2640,50 @@ body {
 }
 
 @keyframes v-l-breathe {
-  from { opacity: 0.55; transform: scale(0.88); }
-  to { opacity: 1; transform: scale(1.1); }
+  from {
+    opacity: 0.55;
+    transform: scale(0.88);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1.1);
+  }
 }
 
 @keyframes v-l-ripple {
-  0% { transform: scale(0.42); opacity: 0.9; }
-  70% { opacity: 0.25; }
-  100% { transform: scale(1.5); opacity: 0; }
+  0% {
+    transform: scale(0.42);
+    opacity: 0.9;
+  }
+  70% {
+    opacity: 0.25;
+  }
+  100% {
+    transform: scale(1.5);
+    opacity: 0;
+  }
 }
 
 @keyframes v-l-fadedown {
-  from { opacity: 0; transform: translate(-50%, -8px); }
-  to { opacity: 1; transform: translate(-50%, 0); }
+  from {
+    opacity: 0;
+    transform: translate(-50%, -8px);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
 }
 
 @keyframes v-l-peekup {
-  from { opacity: 0; transform: translateY(36px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(36px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 /* ================= M — One (judgment deck, near-black stage) =============== */

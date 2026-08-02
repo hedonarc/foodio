@@ -8,8 +8,7 @@
 }
 
 :root {
-  --sans:
-    -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', Roboto, sans-serif;
+  --sans: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', Roboto, sans-serif;
   --serif: ui-serif, 'New York', Georgia, 'Times New Roman', serif;
   --mono: ui-monospace, 'SF Mono', Menlo, monospace;
   --brand: #ff9800;

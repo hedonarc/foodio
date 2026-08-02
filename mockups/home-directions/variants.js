@@ -316,7 +316,9 @@ function variantH() {
 function variantI() {
   const pick = restaurants[0];
   const dish = pick.items.find((i) => i.isPopular) ?? pick.items[0];
-  const alts = restaurants.slice(1, 3).map((r) => ({ r, d: r.items.find((i) => i.isPopular) ?? r.items[0] }));
+  const alts = restaurants
+    .slice(1, 3)
+    .map((r) => ({ r, d: r.items.find((i) => i.isPopular) ?? r.items[0] }));
 
   const chrome = `
     <div class="cta">
@@ -492,7 +494,13 @@ function variantK() {
   };
 
   // Dial spans 6:30 -> 8:30; now sits at 20%, the chosen 7:30 at 50%.
-  const labels = [{ t: '6:30' }, { t: '7:00' }, { t: '7:30', on: true }, { t: '8:00' }, { t: '8:30' }];
+  const labels = [
+    { t: '6:30' },
+    { t: '7:00' },
+    { t: '7:30', on: true },
+    { t: '8:00' },
+    { t: '8:30' },
+  ];
   const ticks = Array.from(
     { length: 25 },
     (_, i) => `<i class="${i % 6 === 0 ? 'maj' : ''}${i < 5 ? ' past' : ''}"></i>`,
@@ -734,7 +742,8 @@ document.getElementById('next').onclick = () => go(1);
 
 document.addEventListener('keydown', (e) => {
   const t = e.target;
-  if (t instanceof HTMLInputElement || t instanceof HTMLTextAreaElement || t?.isContentEditable) return;
+  if (t instanceof HTMLInputElement || t instanceof HTMLTextAreaElement || t?.isContentEditable)
+    return;
   if (e.key === 'ArrowLeft') go(-1);
   if (e.key === 'ArrowRight') go(1);
 });
