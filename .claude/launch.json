@@ -4,7 +4,13 @@
     {
       "name": "design-prototype",
       "runtimeExecutable": "python3",
-      "runtimeArgs": ["-m", "http.server", "4173", "--directory", "prototypes/design-revamp"],
+      "runtimeArgs": [
+        "-m",
+        "http.server",
+        "4173",
+        "--directory",
+        "mockups"
+      ],
       "port": 4173
     }
   ]
