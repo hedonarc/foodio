@@ -12,6 +12,10 @@ export const queryKeys = {
     byRestaurant: (restaurantId: string) =>
       [...queryKeys.clips.all, 'restaurant', restaurantId] as const,
   },
+  menuItems: {
+    all: ['menuItems'] as const,
+    detail: (menuItemId: string) => [...queryKeys.menuItems.all, 'detail', menuItemId] as const,
+  },
   orders: {
     all: ['orders'] as const,
     list: () => [...queryKeys.orders.all, 'list'] as const,

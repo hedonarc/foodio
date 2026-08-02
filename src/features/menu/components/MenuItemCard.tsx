@@ -1,12 +1,14 @@
-import { View } from 'react-native';
+import { Pressable, View } from 'react-native';
 
 import { Image } from 'expo-image';
+import { useRouter } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
 
 import { useTranslation } from 'react-i18next';
 
 import { Text } from '@/components/ui';
 import { AddToCartControl, type CartRestaurant } from '@/features/cart';
+import { useNavigationGuard } from '@/hooks/useNavigationGuard';
 import { colors } from '@/theme';
 
 import type { MenuItem } from '../types/menu.types';
@@ -20,9 +22,16 @@ type MenuItemCardProps = {
 
 export function MenuItemCard({ item, restaurant }: MenuItemCardProps) {
   const { t } = useTranslation();
+  const router = useRouter();
+  const guard = useNavigationGuard();
 
   return (
-    <View className="flex-row items-start py-3">
+    <Pressable
+      onPress={() => guard(() => router.push(`/menu-item/${item.id}`))}
+      accessibilityRole="button"
+      accessibilityLabel={item.name}
+      className="flex-row items-start py-3 active:opacity-70"
+    >
       <View className="mr-3 h-20 w-20 flex-shrink-0 overflow-hidden rounded-xl bg-gray-200">
         <Image
           source={{ uri: item.image }}
@@ -69,6 +78,6 @@ export function MenuItemCard({ item, restaurant }: MenuItemCardProps) {
           />
         </View>
       </View>
-    </View>
+    </Pressable>
   );
 }
