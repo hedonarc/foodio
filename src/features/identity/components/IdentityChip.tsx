@@ -45,16 +45,29 @@ export function IdentityChip() {
 
   return (
     <>
+      {/* The chevron is the affordance: an avatar alone reads as decoration,
+          not as a control. Pill rather than a circle so the two read as one
+          object — and it inverts on press, which a bare avatar cannot. */}
       <Pressable
         onPress={() => setOpen(true)}
         accessibilityRole="button"
         accessibilityLabel={person.displayName}
+        accessibilityHint={t('identity.chipHint')}
+        accessibilityState={{ expanded: open }}
         hitSlop={8}
-        className="h-11 w-11 items-center justify-center rounded-full bg-primary-500 active:bg-primary-600"
+        className="h-11 flex-row items-center rounded-full border border-gray-200 bg-white pl-1 pr-2.5 active:bg-gray-100"
       >
-        <Text variant="label" className="text-white">
-          {person.displayName.charAt(0)}
-        </Text>
+        <View className="h-9 w-9 items-center justify-center rounded-full bg-primary-500">
+          <Text variant="label" className="text-white">
+            {person.displayName.charAt(0)}
+          </Text>
+        </View>
+        <Ionicons
+          name={open ? 'chevron-up' : 'chevron-down'}
+          size={14}
+          color={colors.gray[500]}
+          style={{ marginLeft: 4 }}
+        />
       </Pressable>
       <IdentityMenu visible={open} onClose={() => setOpen(false)} />
     </>

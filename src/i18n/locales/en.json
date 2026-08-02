@@ -186,7 +186,8 @@
     "signedInAs": "Signed in as",
     "ordering": "Ordering",
     "serving": "serving",
-    "delivering": "delivering"
+    "delivering": "delivering",
+    "chipHint": "Opens your account and role menu"
   },
   "work": {
     "servingSubtitle": "Incoming orders",
