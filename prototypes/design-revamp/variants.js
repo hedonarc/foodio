@@ -1,5 +1,6 @@
-/* THROWAWAY PROTOTYPE — Home directions, ?variant=B|C|D|E|F.
-   A (editorial) was cut. Letters stay stable so feedback keeps its meaning. */
+/* THROWAWAY PROTOTYPE — Home directions, ?variant=B|C|D|F|G|H|I.
+   A (editorial) and E (single column) were cut. Letters stay stable so
+   feedback keeps its meaning. */
 
 const { restaurants, clips } = window.FOODIO;
 
@@ -196,77 +197,6 @@ function variantD() {
   return { app, chrome, cls: 'v-d' };
 }
 
-/* ================= E — Single column, no carousels =========================
-   B's job, calmer. One full-width card per restaurant, filters instead of
-   horizontal rails, dish thumbs inside each card. Accent: hot orange-red.
-   ========================================================================= */
-
-function variantE() {
-  const filters = ['Sort', 'Free delivery', 'Under 30 min', '4.5+', 'Open now'];
-
-  const chrome = `
-    <div class="tabbar">
-      <div class="on"><span class="ic">&#9750;</span>Home</div>
-      <div><span class="ic">&#9654;</span>Clips</div>
-      <div><span class="ic">&#9812;</span>Cart</div>
-      <div><span class="ic">&#9776;</span>Orders</div>
-    </div>`;
-
-  const app = `
-    <div class="app v-e">
-      <div class="head">
-        <div class="addr">
-          <div><div class="l">Deliver to</div><div class="a">124 Taco Lane &#9662;</div></div>
-          <div class="av">M</div>
-        </div>
-        <div class="search"><span>&#9906;</span> Search for food or restaurants</div>
-        <div class="chips">
-          ${filters.map((f, i) => `<div class="chip ${i === 0 ? 'sort' : ''}">${f}${i === 0 ? ' &#9662;' : ''}</div>`).join('')}
-        </div>
-      </div>
-
-      <div class="count">${restaurants.length} restaurants deliver to you</div>
-
-      <div class="cards">
-        ${restaurants
-          .map(
-            (r) => `
-          <div class="ecard">
-            <div class="imgwrap">
-              <img src="${r.image}" alt="" />
-              <div class="heart">&#9825;</div>
-              ${r.deliveryFeeMinor === 0 ? '<div class="ribbon">Free delivery</div>' : ''}
-            </div>
-            <div class="pad">
-              <div class="n"><h4>${r.name}</h4><span class="rate">&#9733; ${r.rating} <em>(${r.reviewCount})</em></span></div>
-              <div class="cuis">${r.cuisines.join(' · ')}</div>
-              <div class="metarow">
-                <span>&#9201; ${eta(r)}</span>
-                <span>&#8226;</span>
-                <span>${fee(r.deliveryFeeMinor)}</span>
-              </div>
-              <div class="thumbs">
-                ${r.items
-                  .slice(0, 3)
-                  .map(
-                    (i) => `
-                  <div class="thumb">
-                    <img src="${i.image}" alt="" />
-                    <div class="tp">${money(i.priceMinor)}</div>
-                  </div>`,
-                  )
-                  .join('')}
-              </div>
-            </div>
-          </div>`,
-          )
-          .join('')}
-      </div>
-    </div>`;
-
-  return { app, chrome, cls: 'v-e' };
-}
-
 /* ================= F — Clips hero + list ===================================
    C's emotional hook without making browsing slow. A swipeable clip hero on
    top, a light sheet of scannable restaurants lifting over it underneath.
@@ -336,14 +266,202 @@ function variantF() {
   return { app, chrome, cls: 'v-f' };
 }
 
+/* ================= G — Proof =============================================
+   The thesis as a layout. Every card is split: what the kitchen advertised,
+   beside what actually turned up. No other app can render this, because no
+   other app has the customer clip tied to a delivered Order.
+   ========================================================================= */
+
+function variantG() {
+  const pairFor = (id) => {
+    const cs = clipsFor(id);
+    return {
+      ad: cs.find((c) => c.author?.kind === 'restaurant'),
+      real: cs.find((c) => c.author?.kind === 'customer'),
+    };
+  };
+
+  const withProof = restaurants.filter((r) => pairFor(r.id).real);
+  const rest = restaurants.filter((r) => !pairFor(r.id).real);
+
+  const card = (r) => {
+    const { ad, real } = pairFor(r.id);
+    const dish = r.items.find((i) => i.id === (real?.menuItemId ?? ad?.menuItemId)) ?? r.items[0];
+
+    return `
+      <div class="pcard">
+        <div class="split">
+          <figure>
+            <img src="${ad?.thumbnail ?? r.image}" alt="" />
+            <figcaption>The photo</figcaption>
+          </figure>
+          <figure>
+            <img src="${real.thumbnail}" alt="" />
+            <figcaption class="real">What arrived</figcaption>
+          </figure>
+        </div>
+        <div class="pbody">
+          <div class="ptop">
+            <h4>${dish.name}</h4>
+            <span class="pprice">${money(dish.priceMinor)}</span>
+          </div>
+          <div class="pfrom">${r.name} &middot; &#9733; ${r.rating} &middot; ${eta(r)}</div>
+        </div>
+      </div>`;
+  };
+
+  const chrome = `
+    <div class="tabbar">
+      <div class="on"><span class="ic">&#9750;</span>Home</div>
+      <div><span class="ic">&#9654;</span>Clips</div>
+      <div><span class="ic">&#9812;</span>Cart</div>
+      <div><span class="ic">&#9776;</span>Orders</div>
+    </div>`;
+
+  const app = `
+    <div class="app v-g">
+      <div class="head">
+        <div class="row">
+          <h1>See it<br />before you<br />order it.</h1>
+          <div class="av">M</div>
+        </div>
+        <div class="search"><span>&#9906;</span> Search dishes</div>
+      </div>
+
+      <div class="sect"><h3>${withProof.length} dishes with proof</h3><a href="#">Filters</a></div>
+      ${withProof.map(card).join('')}
+
+      <div class="sect"><h3>No photos yet</h3><a href="#">All</a></div>
+      <div class="empties">
+        ${rest
+          .map(
+            (r) => `
+          <div class="erow">
+            <img src="${r.image}" alt="" />
+            <div class="t">
+              <h4>${r.name}</h4>
+              <div class="s">${r.cuisines.join(' · ')} &middot; ${eta(r)}</div>
+            </div>
+            <div class="first">Be first</div>
+          </div>`,
+          )
+          .join('')}
+      </div>
+    </div>`;
+
+  return { app, chrome, cls: 'v-g' };
+}
+
+/* ================= H — Gallery ===========================================
+   Subtraction. No cards, no borders, no shadows, no badges. Type does the
+   work and the food is a small plate beside it. Scroll is the only verb.
+   ========================================================================= */
+
+function variantH() {
+  const chrome = `
+    <div class="hbar">
+      <span class="on">Eat</span><span>Clips</span><span>Cart</span><span>Orders</span>
+    </div>`;
+
+  const app = `
+    <div class="app v-h">
+      <div class="mast">
+        <div class="loc">Mission District &#9662;</div>
+        <div class="dot">M</div>
+      </div>
+
+      <div class="lede">Ten kitchens<br />are open.</div>
+
+      ${restaurants
+        .map(
+          (r, i) => `
+        <div class="entry">
+          <div class="num">${String(i + 1).padStart(2, '0')}</div>
+          <div class="ebody">
+            <h2>${r.name}</h2>
+            <div class="line">${r.cuisines.join(', ')}</div>
+            <div class="line dim">${eta(r)} &nbsp;·&nbsp; ${fee(r.deliveryFeeMinor)} &nbsp;·&nbsp; ${r.rating}</div>
+          </div>
+          <img src="${r.image}" alt="" />
+        </div>`,
+        )
+        .join('')}
+
+      <div class="foot">Foodio</div>
+    </div>`;
+
+  return { app, chrome, cls: 'v-h' };
+}
+
+/* ================= I — Decided ===========================================
+   Ten choices is not a feature. The app already knows the time, the address
+   and the last order, so it picks one and stands behind it. Everything else
+   is collapsed behind a single link.
+   ========================================================================= */
+
+function variantI() {
+  const pick = restaurants[0];
+  const dish = pick.items.find((i) => i.isPopular) ?? pick.items[0];
+  const alts = restaurants.slice(1, 3).map((r) => ({ r, d: r.items.find((i) => i.isPopular) ?? r.items[0] }));
+
+  const chrome = `
+    <div class="cta">
+      <div class="ctaline">
+        <span>${dish.name}</span>
+        <b>${money(dish.priceMinor)}</b>
+      </div>
+      <div class="ctabtn">Order &middot; arrives ${pick.maxMinutes} min</div>
+    </div>`;
+
+  const app = `
+    <div class="app v-i">
+      <img class="bg" src="${dish.image}" alt="" />
+      <div class="veil"></div>
+
+      <div class="content">
+        <div class="clock">7:04 PM &middot; Mission District</div>
+        <div class="say">Dinner is<br />sorted.</div>
+
+        <div class="pickcard">
+          <div class="plabel">Because you loved it last Tuesday</div>
+          <h2>${dish.name}</h2>
+          <div class="pmeta">${pick.name} &nbsp;·&nbsp; &#9733; ${pick.rating} &nbsp;·&nbsp; ${fee(pick.deliveryFeeMinor)}</div>
+        </div>
+
+        <div class="orlabel">Or</div>
+        <div class="alts">
+          ${alts
+            .map(
+              ({ r, d }) => `
+            <div class="alt">
+              <img src="${d.image}" alt="" />
+              <div class="t">
+                <h4>${d.name}</h4>
+                <div class="s">${r.name} &middot; ${eta(r)}</div>
+              </div>
+              <div class="p">${money(d.priceMinor)}</div>
+            </div>`,
+            )
+            .join('')}
+        </div>
+
+        <div class="browse">Browse all ${restaurants.length} kitchens</div>
+      </div>
+    </div>`;
+
+  return { app, chrome, cls: 'v-i' };
+}
+
 /* ---------------- switcher ---------------- */
 
 const VARIANTS = [
   ['B', 'Marketplace', variantB],
   ['C', 'Clips first', variantC],
   ['D', 'Dish first', variantD],
-  ['E', 'Single column', variantE],
   ['F', 'Clips + list', variantF],
+  ['G', 'Proof', variantG],
+  ['H', 'Gallery', variantH],
+  ['I', 'Decided', variantI],
 ];
 
 const screen = document.getElementById('screen');
