@@ -45,6 +45,7 @@ const line = (overrides: Partial<CartLine> = {}): CartLine => ({
   image: '',
   unitPriceMinor: 1499,
   quantity: 1,
+  instruction: '',
   ...overrides,
 });
 

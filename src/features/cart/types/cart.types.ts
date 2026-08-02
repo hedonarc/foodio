@@ -16,7 +16,7 @@ export type AddableMenuItem = {
 };
 
 export type CartLine = {
-  /** The line's own id, so duplicates with different options can coexist later. */
+  /** The line's own id — one dish can hold several lines, one per instruction. */
   id: string;
   menuItemId: string;
   name: string;
@@ -24,4 +24,17 @@ export type CartLine = {
   /** Snapshot at add time — the Cart must not reprice under the customer. */
   unitPriceMinor: number;
   quantity: number;
+  /**
+   * What the customer asked for. Empty is a value, not an absence: the plain
+   * line is simply the one with no instruction.
+   */
+  instruction: string;
 };
+
+/**
+ * Identity is dish *and* instruction. Trimmed, because trailing whitespace is
+ * invisible and merging on it never surprises anyone — but never case-folded,
+ * since capitalisation is a deliberate keystroke.
+ */
+export const sameLine = (line: CartLine, menuItemId: string, instruction: string): boolean =>
+  line.menuItemId === menuItemId && line.instruction === instruction.trim();
