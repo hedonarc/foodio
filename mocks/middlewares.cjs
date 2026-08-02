@@ -31,6 +31,7 @@ function respondLater(res, status, body) {
 const MESSAGES = {
   400: 'Bad request.',
   401: 'Not authenticated.',
+  403: 'You do not work here.',
   404: 'Not found.',
   500: 'Something went wrong on our end.',
   503: 'The kitchen is temporarily unreachable.',
@@ -113,8 +114,23 @@ module.exports = function mockApi(req, res, next) {
       return;
     }
 
-    // Scope the collection before the router, so X-Total-Count stays honest.
-    if (!isOrderItem(req)) req.query.customerId = personId;
+    // Staff read a Restaurant's orders; customers read their own. The scope
+    // comes from the token's entitlements, never from a client-supplied param.
+    const asRestaurant = req.query.forRestaurantId;
+    const person = findPerson(req, personId);
+    const entitled =
+      asRestaurant && (person?.entitlements ?? []).some((e) => e.restaurantId === asRestaurant);
+
+    if (asRestaurant && !entitled) {
+      respondLater(res, 403, errorBody(403));
+      return;
+    }
+
+    if (!isOrderItem(req)) {
+      delete req.query.forRestaurantId;
+      if (entitled) req.query.restaurantId = asRestaurant;
+      else req.query.customerId = personId;
+    }
 
     const send = res.jsonp.bind(res);
     res.jsonp = (body) => {

@@ -25,5 +25,7 @@ export const queryKeys = {
     all: ['orders'] as const,
     list: () => [...queryKeys.orders.all, 'list'] as const,
     detail: (orderId: string) => [...queryKeys.orders.all, 'detail', orderId] as const,
+    forRestaurant: (restaurantId: string) =>
+      [...queryKeys.orders.all, 'restaurant', restaurantId] as const,
   },
 } as const;

@@ -38,6 +38,8 @@ function RootNavigator() {
   const hydrate = useOnboardingStore((state) => state.hydrate);
 
   const sessionHydrated = useSessionStore((state) => state.isHydrated);
+  // The active role picks the navigator; switching resets to its home (#59).
+  const role = useSessionStore((state) => state.role);
   const hydrateSession = useSessionStore((state) => state.hydrate);
 
   useEffect(() => {
@@ -84,7 +86,21 @@ function RootNavigator() {
         <Stack.Screen name="(onboarding)" />
       </Stack.Protected>
 
-      <Stack.Protected guard={hasOnboarded}>
+      <Stack.Protected guard={hasOnboarded && role.kind === 'serve'}>
+        <Stack.Screen
+          name="(serving)"
+          options={{ contentStyle: { backgroundColor: colors.white } }}
+        />
+      </Stack.Protected>
+
+      <Stack.Protected guard={hasOnboarded && role.kind === 'deliver'}>
+        <Stack.Screen
+          name="(delivering)"
+          options={{ contentStyle: { backgroundColor: colors.white } }}
+        />
+      </Stack.Protected>
+
+      <Stack.Protected guard={hasOnboarded && role.kind === 'customer'}>
         {/* No root insets: the tab bar owns the bottom edge and each tab its top. */}
         <Stack.Screen name="(tabs)" options={{ contentStyle: { backgroundColor: colors.white } }} />
         <Stack.Screen name="restaurant/[id]" />

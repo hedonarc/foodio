@@ -187,5 +187,10 @@
     "ordering": "Ordering",
     "serving": "serving",
     "delivering": "delivering"
+  },
+  "work": {
+    "servingSubtitle": "Incoming orders",
+    "deliveringSubtitle": "Ready for delivery",
+    "noOrders": "No orders right now."
   }
 }
