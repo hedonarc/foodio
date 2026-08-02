@@ -1,0 +1,35 @@
+<!doctype html>
+<!--
+  THROWAWAY PROTOTYPE — not production code, not React Native.
+  Three radically different visual directions for Foodio's Home screen,
+  switchable via ?variant=A|B|C. Real data from mocks/db.json.
+  Question it answers: what should the app look like after the revamp?
+-->
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>Foodio — design directions</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="stage">
+      <div class="phone">
+        <div class="phone-notch" aria-hidden="true"></div>
+        <div class="screen" id="screen"></div>
+      </div>
+    </div>
+
+    <nav class="switcher" aria-label="Prototype variant switcher">
+      <button id="prev" aria-label="Previous variant">&larr;</button>
+      <span class="switcher-label">
+        <b id="vkey">A</b>
+        <span id="vname">Editorial</span>
+      </span>
+      <button id="next" aria-label="Next variant">&rarr;</button>
+    </nav>
+
+    <script src="data.js"></script>
+    <script src="variants.js"></script>
+  </body>
+</html>
