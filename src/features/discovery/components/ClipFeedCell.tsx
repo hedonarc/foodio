@@ -22,9 +22,17 @@ type ClipFeedCellProps = {
   height: number;
   isActive: boolean;
   reduceMotion: boolean;
+  /** Off when the viewer was opened from the restaurant page — the menu is one back away. */
+  showViewMenu?: boolean;
 };
 
-export function ClipFeedCell({ clip, height, isActive, reduceMotion }: ClipFeedCellProps) {
+export function ClipFeedCell({
+  clip,
+  height,
+  isActive,
+  reduceMotion,
+  showViewMenu = true,
+}: ClipFeedCellProps) {
   const { t } = useTranslation();
   const router = useRouter();
   const insets = useSafeAreaInsets();
@@ -131,17 +139,19 @@ export function ClipFeedCell({ clip, height, isActive, reduceMotion }: ClipFeedC
           {clip.caption}
         </Text>
 
-        <Pressable
-          onPress={() => router.push(`/restaurant/${clip.restaurantId}`)}
-          accessibilityRole="button"
-          accessibilityLabel={t('clips.viewMenu')}
-          className="mt-3 flex-row items-center justify-between self-start rounded-2xl bg-white/95 px-4 py-2.5 active:bg-white"
-        >
-          <Text variant="label" className="text-gray-900">
-            {t('clips.viewMenu')}
-          </Text>
-          <Ionicons name="chevron-forward" size={16} color={colors.gray[700]} />
-        </Pressable>
+        {showViewMenu ? (
+          <Pressable
+            onPress={() => router.push(`/restaurant/${clip.restaurantId}`)}
+            accessibilityRole="button"
+            accessibilityLabel={t('clips.viewMenu')}
+            className="mt-3 flex-row items-center justify-between self-start rounded-2xl bg-white/95 px-4 py-2.5 active:bg-white"
+          >
+            <Text variant="label" className="text-gray-900">
+              {t('clips.viewMenu')}
+            </Text>
+            <Ionicons name="chevron-forward" size={16} color={colors.gray[700]} />
+          </Pressable>
+        ) : null}
       </View>
     </View>
   );

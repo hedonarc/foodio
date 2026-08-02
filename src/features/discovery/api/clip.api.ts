@@ -8,3 +8,10 @@ export async function fetchClips(): Promise<Clip[]> {
   const { data } = await apiClient.get<unknown>('/clips?_sort=postedAt&_order=desc');
   return parseResponse(clipListSchema, data, 'GET /clips');
 }
+
+export async function fetchClipsByRestaurant(restaurantId: string): Promise<Clip[]> {
+  const { data } = await apiClient.get<unknown>(
+    `/clips?restaurantId=${encodeURIComponent(restaurantId)}&_sort=postedAt&_order=desc`,
+  );
+  return parseResponse(clipListSchema, data, 'GET /clips?restaurantId');
+}
