@@ -98,7 +98,7 @@
       "description": "Family-owned Italian trattoria serving handmade pasta and Neapolitan pizzas since 1992. Every dish is crafted with imported Italian ingredients.",
       "address": "55 Via Roma, North Beach, San Francisco, CA 94133",
       "gallery": [
-        "https://images.unsplash.com/photo-1621996346565-e3d5d6281318?auto=format&fit=crop&w=600&q=80",
+        "https://images.unsplash.com/photo-1579926545913-448d525562db?auto=format&fit=crop&w=600&q=80",
         "https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&w=600&q=80",
         "https://images.unsplash.com/photo-1484723091739-30a097e8f929?auto=format&fit=crop&w=600&q=80"
       ],
@@ -168,7 +168,7 @@
       "address": "8 Sakura Street, Japantown, San Francisco, CA 94115",
       "gallery": [
         "https://images.unsplash.com/photo-1611143669185-af224c5e3252?auto=format&fit=crop&w=600&q=80",
-        "https://images.unsplash.com/photo-1617196034183-421b4040ed20?auto=format&fit=crop&w=600&q=80",
+        "https://images.unsplash.com/photo-1617196034738-26c5f7c977ce?auto=format&fit=crop&w=600&q=80",
         "https://images.unsplash.com/photo-1569050467447-ce54b3bbc37d?auto=format&fit=crop&w=600&q=80"
       ],
       "openingHours": [
@@ -1118,7 +1118,7 @@
       "name": "Salmon Nigiri",
       "description": "Two pieces of fresh salmon over seasoned sushi rice.",
       "priceMinor": 700,
-      "image": "https://images.unsplash.com/photo-1617196034183-421b4040ed20?auto=format&fit=crop&w=600&q=80"
+      "image": "https://images.unsplash.com/photo-1562158074-d49fbeffcc91?auto=format&fit=crop&w=600&q=80"
     },
     {
       "id": "r3-sus-2",
