@@ -43,6 +43,8 @@ built on real `db.json` content for Taco Fiesta. Switch with `?screen=`.
 | Restaurant | sticky category rail, dish rows, ours-vs-theirs clip shelf |
 | Dish | quantity + instructions, paired clips, a real review |
 | Cart | line items with instructions, delivery block, tax-correct totals |
+| Checkout | deliver-to + cash-on-delivery cards, order summary, place order |
+| Order | real order-seed-1 content, status timeline held at a mid-progress state |
 
 Palette is closed to exactly B's eight tokens (`#fff #0f1115 #7c828d #8a909a
 #9aa0a8 #eceef1 #f2f3f5 #43484f`) plus `var(--brand)` for accent — nothing

@@ -239,6 +239,20 @@ body {
   text-overflow: ellipsis;
 }
 
+/* The account control: avatar + chevron read as one control, not a bare
+   portrait. Matches the real app's IdentityChip pill exactly. */
+.s-home .addr .chip {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  flex-shrink: 0;
+  height: 44px;
+  padding: 4px 10px 4px 4px;
+  border-radius: 999px;
+  border: 1px solid #eceef1;
+  background: #fff;
+}
+
 .s-home .addr .av {
   width: 36px;
   height: 36px;
@@ -250,6 +264,11 @@ body {
   font-size: 13px;
   font-weight: 700;
   flex-shrink: 0;
+}
+
+.s-home .addr .chev {
+  font-size: 14px;
+  color: #9aa0a8;
 }
 
 .s-home .search {
@@ -1621,4 +1640,410 @@ body {
   font-size: 15px;
   font-weight: 700;
   letter-spacing: -0.01em;
+}
+
+/* =======================================================================
+   CHECKOUT — review before placing. Cards for deliver-to and payment,
+   a plain summary, one primary action in chrome.
+   ======================================================================= */
+
+.s-checkout {
+  background: #fff;
+  color: #0f1115;
+  padding-bottom: 100px;
+}
+
+.s-checkout .head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 56px 16px 0;
+}
+
+.s-checkout .back {
+  width: 34px;
+  height: 34px;
+  border-radius: 999px;
+  background: #f2f3f5;
+  display: grid;
+  place-items: center;
+  font-size: 17px;
+}
+
+.s-checkout .head h1 {
+  font-size: 19px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+
+.s-checkout .from {
+  padding: 14px 16px 0;
+  font-size: 13px;
+  color: #7c828d;
+}
+
+.s-checkout .from b {
+  color: #0f1115;
+  font-weight: 700;
+}
+
+.s-checkout .sect {
+  padding: 20px 16px 8px;
+}
+
+.s-checkout .sect h3 {
+  font-size: 13px;
+  font-weight: 700;
+  color: #43484f;
+}
+
+.s-checkout .card {
+  margin: 0 16px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: #f2f3f5;
+  border-radius: 14px;
+  padding: 14px;
+}
+
+.s-checkout .card .ic {
+  font-size: 18px;
+  color: #7c828d;
+  width: 18px;
+  text-align: center;
+}
+
+.s-checkout .card .t {
+  flex: 1;
+  min-width: 0;
+}
+
+.s-checkout .card h4 {
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.s-checkout .card .s {
+  margin-top: 2px;
+  font-size: 12px;
+  color: #7c828d;
+}
+
+.s-checkout .card .go {
+  color: #9aa0a8;
+  font-size: 18px;
+}
+
+.s-checkout .lines {
+  padding: 0 16px;
+}
+
+.s-checkout .crow {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  padding: 8px 0;
+  font-size: 13px;
+}
+
+.s-checkout .ct {
+  color: #43484f;
+}
+
+.s-checkout .ci {
+  grid-column: 1;
+  margin-top: 2px;
+  font-size: 12px;
+  color: #9aa0a8;
+}
+
+.s-checkout .cp {
+  color: #0f1115;
+  font-weight: 600;
+}
+
+.s-checkout .sum {
+  margin: 10px 16px 0;
+  padding-top: 12px;
+  border-top: 1px solid #eceef1;
+}
+
+.s-checkout .srow {
+  display: flex;
+  justify-content: space-between;
+  padding: 5px 0;
+  font-size: 13px;
+  color: #7c828d;
+}
+
+.s-checkout .srow b {
+  color: #0f1115;
+  font-weight: 600;
+}
+
+.s-checkout .srow.tot {
+  margin-top: 4px;
+  padding-top: 10px;
+  border-top: 1px solid #eceef1;
+  font-size: 15px;
+}
+
+.s-checkout .srow.tot span {
+  color: #0f1115;
+  font-weight: 700;
+}
+
+.s-checkout .srow.tot b {
+  font-size: 17px;
+  font-weight: 800;
+}
+
+.s-checkout .bar {
+  position: absolute;
+  left: 12px;
+  right: 12px;
+  bottom: 16px;
+}
+
+.s-checkout .cta {
+  background: var(--brand);
+  color: #fff;
+  text-align: center;
+  font-size: 15px;
+  font-weight: 700;
+  padding: 16px;
+  border-radius: 14px;
+  box-shadow: 0 10px 28px -8px rgb(255 152 0 / 0.5);
+}
+
+/* =======================================================================
+   ORDER STATUS — real order-seed-1 content, status held at a mid-progress
+   state for the timeline. No chrome: this screen scrolls to its own end.
+   ======================================================================= */
+
+.s-order {
+  background: #fff;
+  color: #0f1115;
+  padding-bottom: 40px;
+}
+
+.s-order .head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 56px 16px 0;
+}
+
+.s-order .back {
+  width: 34px;
+  height: 34px;
+  border-radius: 999px;
+  background: #f2f3f5;
+  display: grid;
+  place-items: center;
+  font-size: 17px;
+}
+
+.s-order .head h1 {
+  font-size: 19px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+
+.s-order .status {
+  padding: 18px 16px 0;
+}
+
+.s-order .status h2 {
+  font-size: 24px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+
+.s-order .status .from {
+  margin-top: 4px;
+  font-size: 13px;
+  color: #7c828d;
+}
+
+.s-order .status .from b {
+  color: #0f1115;
+  font-weight: 700;
+}
+
+.s-order .timeline {
+  margin: 22px 16px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.s-order .tstep {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 14px;
+  color: #9aa0a8;
+}
+
+.s-order .tstep .dot {
+  width: 20px;
+  height: 20px;
+  border-radius: 999px;
+  border: 1.5px solid #eceef1;
+  display: grid;
+  place-items: center;
+  font-size: 11px;
+  color: #fff;
+  flex-shrink: 0;
+}
+
+.s-order .tstep.done .dot {
+  background: var(--brand);
+  border-color: var(--brand);
+}
+
+.s-order .tstep.done .lb {
+  color: #0f1115;
+  font-weight: 600;
+}
+
+.s-order .tstep.cur .lb {
+  color: var(--brand);
+  font-weight: 700;
+}
+
+.s-order .sect {
+  padding: 22px 16px 8px;
+}
+
+.s-order .sect h3 {
+  font-size: 13px;
+  font-weight: 700;
+  color: #43484f;
+}
+
+.s-order .card {
+  margin: 0 16px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: #f2f3f5;
+  border-radius: 14px;
+  padding: 14px;
+}
+
+.s-order .card .ic {
+  font-size: 18px;
+  color: #7c828d;
+  width: 18px;
+  text-align: center;
+}
+
+.s-order .card .t {
+  flex: 1;
+  min-width: 0;
+}
+
+.s-order .card h4 {
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.s-order .card .s {
+  margin-top: 2px;
+  font-size: 12px;
+  color: #7c828d;
+}
+
+.s-order .lines {
+  padding: 0 16px;
+}
+
+.s-order .orow {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  padding: 9px 0;
+  border-bottom: 1px solid #eceef1;
+}
+
+.s-order .orow:last-child {
+  border-bottom: 0;
+}
+
+.s-order .orow img {
+  width: 42px;
+  height: 42px;
+  border-radius: 11px;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+.s-order .orow .t {
+  flex: 1;
+  min-width: 0;
+}
+
+.s-order .orow h4 {
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.s-order .orow .s {
+  margin-top: 2px;
+  font-size: 12px;
+  color: #7c828d;
+}
+
+.s-order .orow .p {
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.s-order .sum {
+  margin: 4px 16px 0;
+  padding-top: 12px;
+  border-top: 1px solid #eceef1;
+}
+
+.s-order .srow {
+  display: flex;
+  justify-content: space-between;
+  padding: 5px 0;
+  font-size: 13px;
+  color: #7c828d;
+}
+
+.s-order .srow b {
+  color: #0f1115;
+  font-weight: 600;
+}
+
+.s-order .srow.tot {
+  margin-top: 4px;
+  padding-top: 10px;
+  border-top: 1px solid #eceef1;
+  font-size: 15px;
+}
+
+.s-order .srow.tot span {
+  color: #0f1115;
+  font-weight: 700;
+}
+
+.s-order .srow.tot b {
+  font-size: 17px;
+  font-weight: 800;
+}
+
+.s-order .ghost {
+  margin: 22px 16px 0;
+  text-align: center;
+  font-size: 14px;
+  font-weight: 600;
+  color: #7c828d;
+  padding: 14px;
+  border-radius: 14px;
+  border: 1px solid #eceef1;
 }

@@ -62,7 +62,7 @@ function screenHome() {
             <div class="l">DELIVER TO</div>
             <div class="a">124 Taco Lane &#9662;</div>
           </div>
-          <div class="av">M</div>
+          <div class="chip"><span class="av">M</span><span class="chev">&#8964;</span></div>
         </div>
         <div class="search"><span class="si">&#9906;</span> Search for food or restaurants</div>
         <div class="chips">
@@ -397,6 +397,147 @@ function screenCart() {
 }
 
 
+/* ================= Checkout — review before placing ======================== */
+
+function screenCheckout() {
+  const r = restaurants.find((x) => x.id === 'rest-1');
+  const dish = (id) => r.items.find((i) => i.id === id);
+
+  const lines = [
+    { d: dish('r1-pop-1'), qty: 2, note: 'extra consomé, no onions' },
+    { d: dish('r1-taco-1'), qty: 3, note: '' },
+    { d: dish('r1-pop-3'), qty: 1, note: '' },
+  ];
+
+  const subtotal = lines.reduce((n, l) => n + l.d.priceMinor * l.qty, 0);
+  const total = subtotal + r.deliveryFeeMinor;
+
+  const line = (l) => `
+    <div class="crow">
+      <div class="ct">${l.qty} &times; ${l.d.name}</div>
+      ${l.note ? `<div class="ci">${l.note}</div>` : ''}
+      <div class="cp">${money(l.d.priceMinor * l.qty)}</div>
+    </div>`;
+
+  const app = `
+    <div class="app s-checkout">
+      <div class="head">
+        <div class="back">&#8249;</div>
+        <h1>Checkout</h1>
+      </div>
+
+      <div class="from">From <b>${r.name}</b></div>
+
+      <div class="sect"><h3>Deliver to</h3></div>
+      <div class="card tap">
+        <span class="ic">&#8962;</span>
+        <div class="t">
+          <h4>Home</h4>
+          <div class="s">124 Taco Lane, Mission District, 94110</div>
+        </div>
+        <span class="go">&#8250;</span>
+      </div>
+
+      <div class="sect"><h3>Payment</h3></div>
+      <div class="card">
+        <span class="ic">$</span>
+        <div class="t"><h4>Cash on delivery</h4></div>
+      </div>
+
+      <div class="sect"><h3>Order summary</h3></div>
+      <div class="lines">${lines.map(line).join('')}</div>
+      <div class="sum">
+        <div class="srow"><span>Subtotal</span><b>${money(subtotal)}</b></div>
+        <div class="srow"><span>Delivery fee</span><b>${money(r.deliveryFeeMinor)}</b></div>
+        <div class="srow tot"><span>Total</span><b>${money(total)}</b></div>
+      </div>
+    </div>`;
+
+  const chrome = `
+    <div class="bar">
+      <div class="cta">Place order &middot; ${money(total)}</div>
+    </div>`;
+
+  return { app, chrome, cls: 's-checkout' };
+}
+
+/* ================= Order status ============================================
+   Real order-seed-1 content (Taco Fiesta, real address/lines/total). Status
+   is hardcoded to 'out_for_delivery' rather than the seed's 'delivered' so
+   the timeline shows real mid-progress — the same "plausible current state"
+   convention used for the deck position in variant M and the clock in K.
+   ========================================================================= */
+
+function screenOrder() {
+  const o = window.FOODIO.orders.find((x) => x.id === 'order-seed-1');
+  const status = 'out_for_delivery';
+
+  const PROGRESSION = ['placed', 'accepted', 'preparing', 'ready', 'out_for_delivery', 'delivered'];
+  const LABEL = {
+    placed: 'Order placed',
+    accepted: 'Accepted by the kitchen',
+    preparing: 'Preparing your food',
+    ready: 'Ready for delivery',
+    out_for_delivery: 'Out for delivery',
+    delivered: 'Delivered',
+  };
+  const reached = PROGRESSION.indexOf(status);
+
+  const step = (s, i) => `
+    <div class="tstep${i <= reached ? ' done' : ''}${i === reached ? ' cur' : ''}">
+      <span class="dot">${i <= reached ? '&#10003;' : ''}</span>
+      <span class="lb">${LABEL[s]}</span>
+    </div>`;
+
+  const line = (l, i) => `
+    <div class="orow">
+      <img src="${l.image}" alt="" />
+      <div class="t">
+        <h4>${l.name}</h4>
+        <div class="s">${l.quantity} &times; ${money(l.unitPriceMinor)}</div>
+      </div>
+      <div class="p">${money(l.unitPriceMinor * l.quantity)}</div>
+    </div>`;
+
+  const app = `
+    <div class="app s-order">
+      <div class="head">
+        <div class="back">&#8249;</div>
+        <h1>Order</h1>
+      </div>
+
+      <div class="status">
+        <h2>${LABEL[status]}</h2>
+        <div class="from">From <b>${o.restaurantName}</b></div>
+      </div>
+
+      <div class="timeline">${PROGRESSION.map(step).join('')}</div>
+
+      <div class="sect"><h3>Delivering to</h3></div>
+      <div class="card">
+        <span class="ic">&#8962;</span>
+        <div class="t">
+          <h4>${o.address.label}</h4>
+          <div class="s">${o.address.line1}, ${o.address.city} ${o.address.postcode}</div>
+        </div>
+      </div>
+
+      <div class="sect"><h3>Order summary</h3></div>
+      <div class="lines">${o.lines.map(line).join('')}</div>
+      <div class="sum">
+        <div class="srow"><span>Subtotal</span><b>${money(o.subtotalMinor)}</b></div>
+        <div class="srow"><span>Delivery fee</span><b>${money(o.deliveryFeeMinor)}</b></div>
+        <div class="srow tot"><span>Total</span><b>${money(o.totalMinor)}</b></div>
+      </div>
+
+      <div class="ghost">Back to browsing</div>
+    </div>`;
+
+  const chrome = '';
+
+  return { app, chrome, cls: 's-order' };
+}
+
 /* ---------------- switcher ---------------- */
 
 const SCREENS = [
@@ -404,6 +545,8 @@ const SCREENS = [
   ['Restaurant', 'detail', screenRestaurant],
   ['Dish', 'detail', screenDish],
   ['Cart', 'checkout', screenCart],
+  ['Checkout', 'review', screenCheckout],
+  ['Order', 'status', screenOrder],
 ];
 
 const screenEl = document.getElementById('screen');
