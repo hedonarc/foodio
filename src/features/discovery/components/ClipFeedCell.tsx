@@ -12,6 +12,7 @@ import { useTranslation } from 'react-i18next';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { Text } from '@/components/ui';
+import { useNavigationGuard } from '@/hooks/useNavigationGuard';
 import { usePlaybackStore } from '@/stores/playback.store';
 import { colors } from '@/theme';
 
@@ -25,6 +26,11 @@ type ClipFeedCellProps = {
   reduceMotion: boolean;
   /** Off when the viewer was opened from the restaurant page — the menu is one back away. */
   showViewMenu?: boolean;
+  /**
+   * True where nothing else owns the bottom edge. In the Clips tab the tab bar
+   * does, so the overlay must not inset twice.
+   */
+  ownsBottomEdge?: boolean;
 };
 
 export function ClipFeedCell({
@@ -33,9 +39,11 @@ export function ClipFeedCell({
   isActive,
   reduceMotion,
   showViewMenu = true,
+  ownsBottomEdge = false,
 }: ClipFeedCellProps) {
   const { t } = useTranslation();
   const router = useRouter();
+  const guard = useNavigationGuard();
   const insets = useSafeAreaInsets();
 
   const muted = usePlaybackStore((state) => state.muted);
@@ -121,10 +129,19 @@ export function ClipFeedCell({
         colors={['transparent', 'rgba(0,0,0,0.35)', 'rgba(0,0,0,0.8)']}
         locations={[0, 0.45, 1]}
         pointerEvents="none"
-        style={{ position: 'absolute', left: 0, right: 0, bottom: 0, height: 260 }}
+        style={{
+          position: 'absolute',
+          left: 0,
+          right: 0,
+          bottom: 0,
+          height: 260 + (ownsBottomEdge ? insets.bottom : 0),
+        }}
       />
 
-      <View className="absolute inset-x-0 bottom-0 p-4 pb-5">
+      <View
+        style={{ paddingBottom: 20 + (ownsBottomEdge ? insets.bottom : 0) }}
+        className="absolute inset-x-0 bottom-0 p-4"
+      >
         <View
           className={
             isCustomerClip(clip)
@@ -151,7 +168,7 @@ export function ClipFeedCell({
 
         {showViewMenu ? (
           <Pressable
-            onPress={() => router.push(`/restaurant/${clip.restaurantId}`)}
+            onPress={() => guard(() => router.push(`/restaurant/${clip.restaurantId}`))}
             accessibilityRole="button"
             accessibilityLabel={t('clips.viewMenu')}
             className="mt-3 flex-row items-center justify-between self-start rounded-2xl bg-white/95 px-4 py-2.5 active:bg-white"

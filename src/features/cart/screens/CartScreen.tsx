@@ -7,6 +7,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { EmptyState, ScreenHeader } from '@/components/shared';
 import { Button, Text } from '@/components/ui';
+import { useNavigationGuard } from '@/hooks/useNavigationGuard';
 import { useCartStore } from '@/stores/cart.store';
 
 import { CartLineRow } from '../components/CartLineRow';
@@ -15,6 +16,7 @@ import { CartSummary } from '../components/CartSummary';
 export function CartScreen() {
   const { t } = useTranslation();
   const router = useRouter();
+  const guard = useNavigationGuard();
 
   const restaurant = useCartStore((state) => state.restaurant);
   const lines = useCartStore((state) => state.lines);
@@ -64,7 +66,7 @@ export function CartScreen() {
             deliveryFeeMinor={restaurant.deliveryFeeMinor}
           />
 
-          <Button onPress={() => router.push('/checkout')} className="mt-6">
+          <Button onPress={() => guard(() => router.push('/checkout'))} className="mt-6">
             {t('cart.checkout')}
           </Button>
         </ScrollView>

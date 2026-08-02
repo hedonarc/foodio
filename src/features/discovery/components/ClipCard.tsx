@@ -7,6 +7,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { useTranslation } from 'react-i18next';
 
 import { Text } from '@/components/ui';
+import { useNavigationGuard } from '@/hooks/useNavigationGuard';
 import { colors } from '@/theme';
 
 import type { Clip } from '../types/clip.types';
@@ -21,6 +22,7 @@ type ClipCardProps = {
 export function ClipCard({ clip, showRestaurantName = true }: ClipCardProps) {
   const { t } = useTranslation();
   const router = useRouter();
+  const guard = useNavigationGuard();
 
   const label = isCustomerClip(clip)
     ? t('clips.customerClipLabel', { restaurant: clip.restaurantName, caption: clip.caption })
@@ -28,7 +30,7 @@ export function ClipCard({ clip, showRestaurantName = true }: ClipCardProps) {
 
   return (
     <Pressable
-      onPress={() => router.push(`/clip/${clip.id}`)}
+      onPress={() => guard(() => router.push(`/clip/${clip.id}`))}
       accessibilityRole="button"
       accessibilityLabel={label}
       className="relative mr-3 w-40 overflow-hidden rounded-2xl border border-gray-100 bg-white shadow-sm active:opacity-80"

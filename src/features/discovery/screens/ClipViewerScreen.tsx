@@ -45,6 +45,7 @@ export function ClipViewerScreen() {
           isActive
           reduceMotion={reduceMotion}
           showViewMenu={false}
+          ownsBottomEdge
         />
       ) : null}
 

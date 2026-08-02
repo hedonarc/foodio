@@ -32,6 +32,12 @@ posting flow); `ErrorState` with retry. Offline leans on nothing: there is no
 frequently bright and pale, and white text alone vanished over it. The scrim
 makes contrast a property of the layout rather than a hope about the footage.
 
+**Who owns the bottom edge**: video stays full-bleed, controls do not. In the
+Clips tab the tab bar owns that edge, so the overlay adds nothing; in the
+`clip/[id]` viewer nothing does, so the cell is passed `ownsBottomEdge` and
+insets itself. Applying both would double-pad — which is why it is a prop
+rather than an unconditional inset.
+
 **Home**: the clip shelf came off — the tab is the surface now. `ClipCarousel`
 is unused pending the restaurant-page slice, which reworks it into the
 labelled shelves of [#26](https://github.com/hedonarc/foodio/issues/26).

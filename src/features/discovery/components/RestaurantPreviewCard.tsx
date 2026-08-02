@@ -8,6 +8,7 @@ import { useTranslation } from 'react-i18next';
 
 import { Text } from '@/components/ui';
 import type { RestaurantSummary } from '@/features/restaurants';
+import { useNavigationGuard } from '@/hooks/useNavigationGuard';
 import { cn } from '@/lib/cn';
 import { colors } from '@/theme';
 import { formatMoney } from '@/utils/currency';
@@ -20,10 +21,11 @@ type RestaurantPreviewCardProps = {
 
 export function RestaurantPreviewCard({ restaurant, wide = false }: RestaurantPreviewCardProps) {
   const router = useRouter();
+  const guard = useNavigationGuard();
   const { t, i18n } = useTranslation();
 
   const handlePress = () => {
-    router.push(`/restaurant/${restaurant.id}`);
+    guard(() => router.push(`/restaurant/${restaurant.id}`));
   };
 
   const deliveryFee =
