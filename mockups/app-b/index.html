@@ -1,0 +1,30 @@
+<!doctype html>
+<!--
+  MOCKUP — the chosen "Marketplace" language (variant B) applied across the
+  four screens that stress a design language. Switch with ?screen=.
+-->
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>Foodio — B across the app</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="stage">
+      <div class="phone">
+        <div class="phone-notch" aria-hidden="true"></div>
+        <div class="screen" id="screen"></div>
+      </div>
+    </div>
+
+    <nav class="switcher" aria-label="Screen switcher">
+      <button id="prev" aria-label="Previous screen">&larr;</button>
+      <span class="switcher-label"><b id="skey">Home</b><span id="sname">marketplace</span></span>
+      <button id="next" aria-label="Next screen">&rarr;</button>
+    </nav>
+
+    <script src="data.js"></script>
+    <script src="screens.js"></script>
+  </body>
+</html>

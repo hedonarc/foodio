@@ -34,5 +34,16 @@ is NOT settled — `#FF9800` everywhere is scaffolding.
 
 ## app-b/ — B through the app
 
-The chosen language applied to the screens that stress it: home, restaurant
-detail, dish detail, cart. Switch with `?screen=`.
+The chosen language applied to the four screens that stress it most, all
+built on real `db.json` content for Taco Fiesta. Switch with `?screen=`.
+
+| screen | what it stresses |
+|---|---|
+| Home | the reference implementation of variant B |
+| Restaurant | sticky category rail, dish rows, ours-vs-theirs clip shelf |
+| Dish | quantity + instructions, paired clips, a real review |
+| Cart | line items with instructions, delivery block, tax-correct totals |
+
+Palette is closed to exactly B's eight tokens (`#fff #0f1115 #7c828d #8a909a
+#9aa0a8 #eceef1 #f2f3f5 #43484f`) plus `var(--brand)` for accent — nothing
+else. Radii, type scale and spacing all trace back to the chosen variant.
