@@ -31,6 +31,22 @@ _Avoid_: Schedule, availability
 **Open / Closed**:
 Whether a Restaurant is currently accepting Orders. A Closed Restaurant remains discoverable and browsable — it simply cannot receive an Order.
 
+### People
+
+**Person**:
+One human account. A Person is not a Role — the same Person orders dinner, works a Restaurant's Kitchen, and drives its deliveries, without holding three accounts.
+
+**Entitlement**:
+One Person's relationship to one Restaurant, carrying the Capabilities they hold there. Never shared across Restaurants — an Entitlement at one says nothing about any other.
+_Avoid_: Permission, grant, membership
+
+**Capability**:
+Where inside a Restaurant a Person may work: **Kitchen** or **Delivery**. A Capability names a place, not an activity, so a fourth one can be added without rewording the rest.
+
+**Role**:
+Which of a Person's surfaces the app is currently showing — **Customer**, **Kitchen**, or **Delivery**. Customer is the baseline everyone has; the other two come from Entitlements and are always qualified by the Restaurant they belong to ("Taco Fiesta · Kitchen"). Switching Role replaces the whole navigator.
+_Avoid_: Ordering, Serving, Delivering (gerunds name activities, and the switcher lists places), mode, account type, profile, persona
+
 ### Menu
 
 **Menu**:

@@ -25,14 +25,19 @@ type SessionState = {
 const encodeRole = (role: ActiveRole): string =>
   role.kind === 'customer' ? 'customer' : `${role.kind}:${role.restaurantId}`;
 
-/** Tolerates anything: a malformed value simply means ordering. */
+/**
+ * Tolerates anything: a malformed value simply means customer. That also
+ * absorbs the kitchen/delivery rename — a device still holding `serve:rest-1`
+ * decodes to nothing and lands on the customer surface, which is where an
+ * unrecognised role belongs anyway.
+ */
 export function decodeRole(value: string | null): ActiveRole | null {
   if (!value) return null;
   if (value === 'customer') return CUSTOMER_ROLE;
 
   const [kind, restaurantId] = value.split(':');
   if (!restaurantId) return null;
-  if (kind !== 'serve' && kind !== 'deliver') return null;
+  if (kind !== 'kitchen' && kind !== 'delivery') return null;
 
   return { kind, restaurantId };
 }

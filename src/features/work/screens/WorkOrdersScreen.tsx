@@ -18,7 +18,7 @@ import { formatDate } from '@/utils/date';
 import { useRestaurantOrders } from '../hooks/useRestaurantOrders';
 
 /** Delivery staff care about the tail of the order's life, not the kitchen's. */
-const DELIVERING_STATUSES: OrderStatus[] = ['ready', 'out_for_delivery', 'delivered'];
+const DELIVERY_STATUSES: OrderStatus[] = ['ready', 'out_for_delivery', 'delivered'];
 
 /**
  * Read-only for now. Advancing an Order through its statuses is a real
@@ -37,8 +37,8 @@ export function WorkOrdersScreen() {
     restaurants?.find((restaurant) => restaurant.id === restaurantId)?.name ?? '';
 
   const visible =
-    role.kind === 'deliver'
-      ? (orders ?? []).filter((order) => DELIVERING_STATUSES.includes(order.status))
+    role.kind === 'delivery'
+      ? (orders ?? []).filter((order) => DELIVERY_STATUSES.includes(order.status))
       : (orders ?? []);
 
   return (
@@ -49,7 +49,7 @@ export function WorkOrdersScreen() {
             {restaurantName}
           </Text>
           <Text variant="caption" className="mt-0.5 text-gray-500">
-            {role.kind === 'deliver' ? t('work.deliveringSubtitle') : t('work.servingSubtitle')}
+            {role.kind === 'delivery' ? t('work.deliverySubtitle') : t('work.kitchenSubtitle')}
           </Text>
         </View>
         <IdentityChip />
