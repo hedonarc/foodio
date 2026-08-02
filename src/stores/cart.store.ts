@@ -1,7 +1,8 @@
 import { create } from 'zustand';
 
 import type { AddableMenuItem, CartLine, CartRestaurant } from '@/features/cart';
-import { sameLine } from '@/features/cart';
+// Deep import: the cart barrel pulls components that import this store back.
+import { sameLine } from '@/features/cart/types/cart.types';
 
 type CartState = {
   /** Null when the Cart is empty. A Cart is always bound to one restaurant. */
