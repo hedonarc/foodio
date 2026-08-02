@@ -5,13 +5,19 @@ import { Stack } from 'expo-router';
 
 import { SafeAreaProvider, useSafeAreaInsets } from 'react-native-safe-area-context';
 
+import { setAuthTokenSource } from '@/api/client';
+import { fetchPeople } from '@/features/identity';
 import { QueryProvider } from '@/providers/QueryProvider';
 import { OnboardingStep, useOnboardingStore } from '@/stores/onboarding.store';
+import { useSessionStore } from '@/stores/session.store';
 import { colors } from '@/theme';
 
 import '../global.css';
 
 import '@/i18n';
+
+// One place attaches identity to requests; no call site asserts who is asking.
+setAuthTokenSource(() => useSessionStore.getState().token);
 
 export default function RootLayout() {
   return (
@@ -31,13 +37,26 @@ function RootNavigator() {
   const isHydrated = useOnboardingStore((state) => state.isHydrated);
   const hydrate = useOnboardingStore((state) => state.hydrate);
 
+  const sessionHydrated = useSessionStore((state) => state.isHydrated);
+  const hydrateSession = useSessionStore((state) => state.hydrate);
+
   useEffect(() => {
     if (!isHydrated) {
       void hydrate();
     }
   }, [isHydrated, hydrate]);
 
-  if (!isHydrated) {
+  useEffect(() => {
+    if (sessionHydrated) return;
+
+    // Resolve the token through the server: a stored token is a claim, not proof.
+    void hydrateSession(async (token) => {
+      const people = await fetchPeople().catch(() => []);
+      return people.find((person) => `person:${person.id}` === token) ?? null;
+    });
+  }, [sessionHydrated, hydrateSession]);
+
+  if (!isHydrated || !sessionHydrated) {
     return (
       <View className="flex-1 items-center justify-center bg-white">
         <ActivityIndicator size="large" color={colors.primary[500]} />
@@ -70,6 +89,7 @@ function RootNavigator() {
         <Stack.Screen name="(tabs)" options={{ contentStyle: { backgroundColor: colors.white } }} />
         <Stack.Screen name="restaurant/[id]" />
         <Stack.Screen name="menu-item/[id]" />
+        <Stack.Screen name="sign-in" options={{ presentation: 'modal' }} />
         {/* Full-bleed video: black, no insets — the screen places its own controls. */}
         <Stack.Screen name="clip/[id]" options={{ contentStyle: { backgroundColor: 'black' } }} />
         <Stack.Screen name="checkout" />

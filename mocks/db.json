@@ -1564,7 +1564,132 @@
       "image": "https://images.unsplash.com/photo-1559314809-0d155014e29e?auto=format&fit=crop&w=600&q=80"
     }
   ],
-  "orders": [],
+  "orders": [
+    {
+      "id": "order-seed-1",
+      "customerId": "maria",
+      "restaurantId": "rest-1",
+      "restaurantName": "Taco Fiesta",
+      "currency": "USD",
+      "status": "delivered",
+      "placedAt": "2026-07-26T15:10:31.198Z",
+      "lines": [
+        {
+          "menuItemId": "r1-pop-1",
+          "name": "Birria Tacos",
+          "image": "https://images.unsplash.com/photo-1626700051175-6818013e1d4f?auto=format&fit=crop&w=600&q=80",
+          "unitPriceMinor": 1499,
+          "quantity": 1
+        }
+      ],
+      "subtotalMinor": 1499,
+      "deliveryFeeMinor": 199,
+      "totalMinor": 1698,
+      "address": {
+        "id": "addr-seed",
+        "label": "Home",
+        "line1": "1 Market St",
+        "city": "San Francisco",
+        "postcode": "94103",
+        "latitude": 37.7749,
+        "longitude": -122.4194
+      },
+      "paymentMethod": "cash_on_delivery"
+    },
+    {
+      "id": "order-seed-2",
+      "customerId": "james",
+      "restaurantId": "rest-2",
+      "restaurantName": "Bella Italia Ristorante",
+      "currency": "USD",
+      "status": "delivered",
+      "placedAt": "2026-07-26T15:10:31.198Z",
+      "lines": [
+        {
+          "menuItemId": "r2-pop-1",
+          "name": "Truffle Tagliatelle",
+          "image": "https://images.unsplash.com/photo-1473093295043-cdd812d0e601?auto=format&fit=crop&w=600&q=80",
+          "unitPriceMinor": 2400,
+          "quantity": 1
+        }
+      ],
+      "subtotalMinor": 2400,
+      "deliveryFeeMinor": 0,
+      "totalMinor": 2400,
+      "address": {
+        "id": "addr-seed",
+        "label": "Home",
+        "line1": "1 Market St",
+        "city": "San Francisco",
+        "postcode": "94103",
+        "latitude": 37.7749,
+        "longitude": -122.4194
+      },
+      "paymentMethod": "cash_on_delivery"
+    },
+    {
+      "id": "order-seed-3",
+      "customerId": "aiko",
+      "restaurantId": "rest-3",
+      "restaurantName": "Sakura Sushi Bar",
+      "currency": "USD",
+      "status": "delivered",
+      "placedAt": "2026-07-26T15:10:31.198Z",
+      "lines": [
+        {
+          "menuItemId": "r3-pop-1",
+          "name": "Dragon Roll",
+          "image": "https://images.unsplash.com/photo-1611143669185-af224c5e3252?auto=format&fit=crop&w=600&q=80",
+          "unitPriceMinor": 1800,
+          "quantity": 1
+        }
+      ],
+      "subtotalMinor": 1800,
+      "deliveryFeeMinor": 249,
+      "totalMinor": 2049,
+      "address": {
+        "id": "addr-seed",
+        "label": "Home",
+        "line1": "1 Market St",
+        "city": "San Francisco",
+        "postcode": "94103",
+        "latitude": 37.7749,
+        "longitude": -122.4194
+      },
+      "paymentMethod": "cash_on_delivery"
+    },
+    {
+      "id": "order-seed-4",
+      "customerId": "derek",
+      "restaurantId": "rest-4",
+      "restaurantName": "Burger & Craft Grill",
+      "currency": "USD",
+      "status": "delivered",
+      "placedAt": "2026-07-26T15:10:31.198Z",
+      "lines": [
+        {
+          "menuItemId": "r4-pop-1",
+          "name": "Double Smash Burger",
+          "image": "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&fit=crop&w=600&q=80",
+          "unitPriceMinor": 1350,
+          "quantity": 1
+        }
+      ],
+      "subtotalMinor": 1350,
+      "deliveryFeeMinor": 99,
+      "totalMinor": 1449,
+      "address": {
+        "id": "addr-seed",
+        "label": "Home",
+        "line1": "1 Market St",
+        "city": "San Francisco",
+        "postcode": "94103",
+        "latitude": 37.7749,
+        "longitude": -122.4194
+      },
+      "paymentMethod": "cash_on_delivery"
+    }
+  ],
   "clips": [
     {
       "id": "clip-r1",
@@ -1661,7 +1786,7 @@
       "author": {
         "kind": "customer",
         "orderId": "order-seed-1",
-        "displayName": "Maria G."
+        "personId": "maria"
       }
     },
     {
@@ -1677,7 +1802,7 @@
       "author": {
         "kind": "customer",
         "orderId": "order-seed-2",
-        "displayName": "James T."
+        "personId": "james"
       }
     },
     {
@@ -1693,7 +1818,7 @@
       "author": {
         "kind": "customer",
         "orderId": "order-seed-3",
-        "displayName": "Aiko N."
+        "personId": "aiko"
       }
     },
     {
@@ -1709,8 +1834,69 @@
       "author": {
         "kind": "customer",
         "orderId": "order-seed-4",
-        "displayName": "Derek P."
+        "personId": "derek"
       }
+    }
+  ],
+  "people": [
+    {
+      "id": "aisha",
+      "displayName": "Aisha K.",
+      "entitlements": []
+    },
+    {
+      "id": "marco",
+      "displayName": "Marco R.",
+      "entitlements": [
+        {
+          "restaurantId": "rest-1",
+          "capabilities": ["serve", "deliver"]
+        }
+      ]
+    },
+    {
+      "id": "sofia",
+      "displayName": "Sofia B.",
+      "entitlements": [
+        {
+          "restaurantId": "rest-2",
+          "capabilities": ["serve"]
+        }
+      ]
+    },
+    {
+      "id": "tomas",
+      "displayName": "Tomás L.",
+      "entitlements": [
+        {
+          "restaurantId": "rest-1",
+          "capabilities": ["serve"]
+        },
+        {
+          "restaurantId": "rest-3",
+          "capabilities": ["serve"]
+        }
+      ]
+    },
+    {
+      "id": "maria",
+      "displayName": "Maria G.",
+      "entitlements": []
+    },
+    {
+      "id": "james",
+      "displayName": "James T.",
+      "entitlements": []
+    },
+    {
+      "id": "aiko",
+      "displayName": "Aiko N.",
+      "entitlements": []
+    },
+    {
+      "id": "derek",
+      "displayName": "Derek P.",
+      "entitlements": []
     }
   ]
 }

@@ -6,6 +6,11 @@
  *
  *   MOCK_FAIL_RATE=0.3 pnpm api     # ~30% of reads fail with a 503
  *   curl -H 'x-mock-fail: 500' ...  # force one response to a given status
+ *
+ * Sessions are theatre with one honest property: the server, not the client,
+ * decides who the requester is. The token is a name badge — nothing hashes,
+ * signs, expires or revokes it — but every scoped read resolves through it,
+ * so swapping in real auth replaces this file and the picker, nothing else.
  */
 
 const FAIL_RATE = Number.parseFloat(process.env.MOCK_FAIL_RATE ?? '0') || 0;
@@ -61,10 +66,34 @@ function progressed(order) {
   return reached ? { ...order, status: reached.status } : order;
 }
 
+/** `Bearer person:<id>` — deliberately readable, so nobody mistakes it for a credential. */
+const TOKEN_PREFIX = 'person:';
+
+function personIdFrom(req) {
+  const header = req.get('authorization') ?? '';
+  const raw = header.startsWith('Bearer ') ? header.slice(7) : '';
+  return raw.startsWith(TOKEN_PREFIX) ? raw.slice(TOKEN_PREFIX.length) : null;
+}
+
+const findPerson = (req, id) =>
+  (req.app.db.get('people').value() ?? []).find((person) => person.id === id) ?? null;
+
 const isOrdersRead = (req) => req.method === 'GET' && req.path.startsWith('/orders');
+const isOrderItem = (req) => /^\/orders\/[^/]+$/.test(req.path);
 const isOrderCreate = (req) => req.method === 'POST' && req.path.startsWith('/orders');
 
 module.exports = function mockApi(req, res, next) {
+  // A session is issued, never verified — but it is issued by the server.
+  if (req.method === 'POST' && req.path === '/sessions') {
+    const person = findPerson(req, req.body?.personId);
+    if (!person) {
+      respondLater(res, 404, errorBody(404));
+      return;
+    }
+    respondLater(res, 201, { token: TOKEN_PREFIX + person.id, person });
+    return;
+  }
+
   const forced = Number.parseInt(req.get('x-mock-fail') ?? '', 10);
   if (Number.isInteger(forced) && forced >= 400 && forced <= 599) {
     respondLater(res, forced, errorBody(forced));
@@ -77,15 +106,37 @@ module.exports = function mockApi(req, res, next) {
     return;
   }
 
-  // The server owns status and placedAt; clients submit neither.
-  if (isOrderCreate(req) && req.body && typeof req.body === 'object') {
-    req.body.status = 'placed';
-    req.body.placedAt = new Date().toISOString();
+  if (isOrdersRead(req)) {
+    const personId = personIdFrom(req);
+    if (!personId) {
+      respondLater(res, 401, errorBody(401));
+      return;
+    }
+
+    // Scope the collection before the router, so X-Total-Count stays honest.
+    if (!isOrderItem(req)) req.query.customerId = personId;
+
+    const send = res.jsonp.bind(res);
+    res.jsonp = (body) => {
+      // Someone else's order is a 404, not an empty 200 the client must interpret.
+      if (isOrderItem(req) && body && body.customerId && body.customerId !== personId) {
+        res.status(404);
+        return send(errorBody(404));
+      }
+      return send(Array.isArray(body) ? body.map(progressed) : progressed(body));
+    };
   }
 
-  if (isOrdersRead(req)) {
-    const send = res.jsonp.bind(res);
-    res.jsonp = (body) => send(Array.isArray(body) ? body.map(progressed) : progressed(body));
+  // The server owns status, placedAt and whose order it is.
+  if (isOrderCreate(req) && req.body && typeof req.body === 'object') {
+    const personId = personIdFrom(req);
+    if (!personId) {
+      respondLater(res, 401, errorBody(401));
+      return;
+    }
+    req.body.customerId = personId;
+    req.body.status = 'placed';
+    req.body.placedAt = new Date().toISOString();
   }
 
   next();

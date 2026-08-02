@@ -177,5 +177,15 @@
     "clips": "Clips",
     "cart": "Cart",
     "orders": "Orders"
+  },
+  "identity": {
+    "signIn": "Sign in",
+    "signOut": "Sign out",
+    "pickerHint": "Choose who to be. This is a development affordance — nothing is verified.",
+    "customerOnly": "Customer",
+    "signedInAs": "Signed in as",
+    "ordering": "Ordering",
+    "serving": "serving",
+    "delivering": "delivering"
   }
 }

@@ -17,6 +17,10 @@ export const queryKeys = {
     all: ['menuItems'] as const,
     detail: (menuItemId: string) => [...queryKeys.menuItems.all, 'detail', menuItemId] as const,
   },
+  people: {
+    all: ['people'] as const,
+    list: () => [...queryKeys.people.all, 'list'] as const,
+  },
   orders: {
     all: ['orders'] as const,
     list: () => [...queryKeys.orders.all, 'list'] as const,
