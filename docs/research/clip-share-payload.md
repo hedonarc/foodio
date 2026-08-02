@@ -4,14 +4,16 @@ Research for [#33](https://github.com/hedonarc/foodio/issues/33) (parent: [#25](
 
 Every claim below is labelled:
 
-| Label           | Meaning                                                                                                                                                                                 |
-| --------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **[DOC]**       | Stated in the SDK 57 versioned docs. Cited with anchor.                                                                                                                                 |
-| **[SRC]**       | Proven by source: `expo/expo` on the `sdk-57` branch, or `react-native@0.86.2` as installed in this repo. Cited with file path. Also used for direct measurements of the actual assets. |
-| **[COMMUNITY]** | Issue tracker, vendor docs or third-party practice. Not a guarantee.                                                                                                                    |
-| **[INFERENCE]** | Our reasoning from the above. Not documented. Treat as a hypothesis to verify on a device.                                                                                              |
+| Label           | Meaning                                                                                                                                                                                               |
+| --------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **[DOC]**       | Stated in the SDK 57 versioned docs. Cited with anchor.                                                                                                                                               |
+| **[SRC]**       | Proven by source: `expo/expo` on the `sdk-57` branch, or `react-native` at tag `v0.86.2`. Cited with file path. Also used for direct measurements of the actual assets and for npm registry metadata. |
+| **[COMMUNITY]** | Issue tracker, vendor docs or third-party practice. Not a guarantee.                                                                                                                                  |
+| **[INFERENCE]** | Our reasoning from the above. Not documented. Treat as a hypothesis to verify on a device.                                                                                                            |
 
-Primary sources: <https://docs.expo.dev/versions/v57.0.0/sdk/sharing/>, <https://docs.expo.dev/versions/v57.0.0/sdk/filesystem/>, `github.com/expo/expo` at branch `sdk-57`, and `node_modules/react-native@0.86.2` in this repo.
+Primary sources: <https://docs.expo.dev/versions/v57.0.0/sdk/sharing/>, <https://docs.expo.dev/versions/v57.0.0/sdk/filesystem/>, `github.com/expo/expo` at branch `sdk-57`, and `facebook/react-native` at tag `v0.86.2` (the version pinned in this repo's `package.json`).
+
+**Verification pass.** Every `[SRC]` and `[DOC]` claim below was re-checked against those sources on a second pass, independently of the pass that wrote it. All source-level claims — the `SharingOptions` shape, both native `ACTION_SEND` builders, RN's Android `url` drop, the iOS two-item `activityItems`, the manifests, the download JSDoc — verified **verbatim**. One claim did not survive and has been corrected: an earlier draft asserted `expo-gl` was absent from SDK 57. **It is present** (GLView, `~57.0.2`); see [§7](#7-watermarking-still-no-and-now-for-a-documented-reason), where the conclusion is unchanged but the reason is now the right one.
 
 ---
 
@@ -30,15 +32,17 @@ This half is settled at the source level, not inferred. See [§2](#2-android-the
 
 **Layer 2 — do the target apps _render_ both?** **[COMMUNITY] Reportedly not, and this is where iOS's "yes" stops being a yes.** Delivering two `activityItems` guarantees the activity receives both; it guarantees nothing about what the activity does with them, and the reports for our three target apps say one item is silently dropped:
 
-| Receiving app | iOS, given `[text, video file]`                                                                              | Source                                                                                                                                                                                                                                                                            |
-| ------------- | ------------------------------------------------------------------------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Messages**  | **Video wins, text is dropped.** (Image + text: both survive — video specifically is the broken case.)       | [Apple forum 727907](https://developer.apple.com/forums/thread/727907), Apr 2023, **0 replies, never answered**                                                                                                                                                                   |
-| **WhatsApp**  | **Text wins, video is dropped.**                                                                             | [plus_plugins#261](https://github.com/fluttercommunity/plus_plugins/issues/261) (2021, files); [react-native-share#1487](https://github.com/react-native-share/react-native-share/issues/1487) (2023-11-23, **`video/mp4` specifically**) — closed by a stale bot, never answered |
-| **Instagram** | **Caption discarded by design since 2015.** Meta's docs contain no caption field for feed or stories at all. | [InstagramPlugin#44](https://github.com/vstirbu/InstagramPlugin/issues/44) (2015); absence across <https://developers.facebook.com/docs/instagram-platform/sharing-to-feed>                                                                                                       |
+| Receiving app | iOS, given `[text, video file]`                                                                              | Source                                                                                                                                                                                                                                                                                    |
+| ------------- | ------------------------------------------------------------------------------------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Messages**  | **Video wins, text is dropped.** (Image + text: both survive — video specifically is the broken case.)       | [Apple forum 727907](https://developer.apple.com/forums/thread/727907), Apr 2023, **0 replies, never answered**                                                                                                                                                                           |
+| **WhatsApp**  | **Text wins, video is dropped.** But see the caveat below — this is the weakest row in the table.            | [plus_plugins#261](https://github.com/fluttercommunity/plus_plugins/issues/261) (2021, **image** + text, 13 comments); [react-native-share#1487](https://github.com/react-native-share/react-native-share/issues/1487) (2023-11-23, **`video/mp4` specifically**) — closed by a stale bot |
+| **Instagram** | **Caption discarded by design since 2015.** Meta's docs contain no caption field for feed or stories at all. | [InstagramPlugin#44](https://github.com/vstirbu/InstagramPlugin/issues/44) (2015); absence across <https://developers.facebook.com/docs/instagram-platform/sharing-to-feed>                                                                                                               |
 
 **So the honest headline: a playable video and its caption cannot be relied on to arrive together in any of the three target apps, on either platform.** Android cannot even send both. iOS can send both, and then WhatsApp drops the video while Messages drops the text — note that these two fail in _opposite directions_, so there is not even a single "safe" item to prefer.
 
-**[INFERENCE]** The Layer-2 evidence is **[COMMUNITY]**, not documentation, and the strongest reports are 2021–2023. It is the best evidence that exists — no vendor documents this — but it is exactly the kind of claim that must be re-tested on a device before anything is built on it. That test is item 1 in [§12](#12-what-could-not-be-settled-by-reading).
+**[COMMUNITY] The WhatsApp row has a caveat that has to be stated, because it cuts against the row itself.** `react-native-share#1487` has exactly one substantive reply, and it reports the problem **solved**: the commenter downloaded the video to a custom path with an explicit `.mp4` extension and said it then worked "on both OS". **[INFERENCE]** If that is right, WhatsApp's behaviour may turn on the **form of the file URI and its extension** rather than on WhatsApp categorically discarding videos — which is a bug in the caller, not a policy in the receiver, and would be fixable on our side. That single unverified comment is not enough to overturn the row, but it is enough that "WhatsApp drops the video" must not be treated as settled. It also lines up with [§9](#9-inline-rendering-and-what-the-clips-themselves-look-like)'s finding that a missing `.mp4` extension silently degrades the Android intent to `*/*`.
+
+**[INFERENCE] How much weight this table can carry.** The evidence is **[COMMUNITY]**, not documentation; the reports are 2021–2023; the Messages thread has **0 replies** and the Instagram one is from **2015**. None of it was reproduced here. It is the best evidence that exists — no vendor documents any of this — but three second-hand reports about apps that ship every fortnight is a hypothesis, not a finding. **Layer 1 is proven and Layer 2 is not**, and the two should not be quoted with equal confidence. The device test is item 1 in [§12](#12-what-could-not-be-settled-by-reading).
 
 **What it means for [#25](https://github.com/hedonarc/foodio/issues/25):** the decision was "the payload is the video itself, with attribution in the accompanying text." Android cannot express that payload with first-party packages at all. iOS can express it, and the receiving apps then appear to discard half of it. Since attribution-in-text was the corrected fallback _after_ watermarking was ruled out, and watermarking remains impossible in SDK 57 ([§7](#7-watermarking-still-no-and-now-for-a-documented-reason)), **a shared clip may well carry no attribution anywhere, on either platform**. That is not a complication of the decision — it removes its second half. Details in [§8](#8-what-this-does-to-25).
 
@@ -324,7 +328,7 @@ A non-exported `FileProvider` and a `<queries>` element for package-visibility (
 <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"  android:maxSdkVersion="32" />
 ```
 
-**[SRC] In this app that is a no-op.** The manifest `npx expo prebuild` currently generates at `android/app/src/main/AndroidManifest.xml` — before either package is installed — already declares all three:
+**[SRC] In this app that is a no-op.** This repo is a CNG project — there is no `android/` directory checked in, so the manifest to compare against is the one `npx expo prebuild` generates. Its source is `templates/expo-template-bare-minimum/android/app/src/main/AndroidManifest.xml` on the `sdk-57` branch, which — before either package is installed — already declares all three:
 
 ```xml
 <uses-permission android:name="android.permission.INTERNET"/>
@@ -346,11 +350,18 @@ A non-exported `FileProvider` and a `<queries>` element for package-visibility (
 
 #25 already corrected the "watermarked" label. This confirms it against SDK 57 rather than from memory.
 
-**[DOC]** The SDK 57 API index lists no video editing, transcoding, compositing or frame-writing library. The media-adjacent packages are `expo-video`, `expo-video-thumbnails`, `expo-camera`, `expo-image-manipulator`, `expo-media-library`, `expo-file-system`, `expo-sharing`. **[DOC — absence]** `expo-gl` and `expo-av` are not in the SDK 57 index at all, which removes the two routes people usually reach for (GL surface capture, and `expo-av`'s recording path).
+**[DOC — absence]** The SDK 57 API index lists **no video editing, transcoding, compositing or frame-writing library**. The media-adjacent entries in the index are `expo-audio`, `expo-asset`, `expo-blob`, `expo-camera`, `expo-document-picker`, `expo-file-system`, `expo-gl` (as **GLView**), `expo-image`, `expo-image-manipulator`, `expo-image-picker`, `expo-live-photo`, `expo-media-library`, `expo-mesh-gradient`, `expo-print`, `expo-screen-capture`, `expo-sharing`, `expo-speech`, `expo-video`, `expo-video-thumbnails`. Not one of them encodes a video.
 
-- **[DOC]** `expo-image-manipulator` operates on images. It cannot open or write a video.
-- **[DOC]** `expo-video-thumbnails` `getThumbnailAsync(sourceFilename, options)` returns `{ uri, width, height }` — **one still image**. It is also deprecated in SDK 57 in favour of `generateThumbnailsAsync` from `expo-video`. Either way the output is a frame, and there is no API anywhere in the SDK to write frames back into a container.
-- **[COMMUNITY]** `ffmpeg-kit-react-native` is `6.0.2` and **marked deprecated on npm**: _"Package no longer supported."_ This is npm registry metadata, not a rumour.
+**[DOC]** `expo-av` is genuinely gone — `https://docs.expo.dev/versions/v57.0.0/sdk/av/` is a 404 and `packages/expo-av` does not exist on the `sdk-57` branch — which removes the `expo-av` recording route.
+
+Taking the plausible routes one at a time:
+
+- **[DOC]** `expo-gl` **is** in SDK 57 (GLView, recommended `~57.0.2`, Android/iOS/Web, in Expo Go). Its output ceiling is the thing that matters: `takeSnapshotAsync` resolves to a `GLSnapshot` — **one still image**, JPEG/PNG/WebP. There is no frame-sequence sink, no encoder, no muxer. You can render a watermarked frame; you cannot write frames into a container.
+- **[DOC]** `expo-image-manipulator` is "image manipulation on the local file system" — `crop`/`flip`/`rotate`/`resize`/`extent`, saved as JPEG/PNG/WEBP. It cannot open or write a video.
+- **[DOC]** `expo-video-thumbnails` `getThumbnailAsync(sourceFilename, options)` returns `{ uri, width, height }` — **one still image**. It is deprecated in SDK 57 in favour of `generateThumbnailsAsync` from `expo-video`. **[DOC]** Note the replacement is not a drop-in: `generateThumbnailsAsync(times, options)` is a **`VideoPlayer` instance method** returning `VideoThumbnail[]` (native image refs for `expo-image`, with `width`/`height`/`requestedTime`/`actualTime` and **no `uri`**). **[SRC]** The deprecation banner also says the package "will be removed in SDK 56", which is stale — the page is live under v57.0.0 at `~57.0.1` and `CHANGELOG.md` has real `57.0.0` and `57.0.1` entries. Either way the output is a frame.
+- **[COMMUNITY]** `ffmpeg-kit-react-native` is `6.0.2` and **marked deprecated on npm**. Exact registry metadata: _"Package no longer supported. Contact Support at https://www.npmjs.com/support for more info."_ Not a rumour.
+
+**[INFERENCE]** The pattern across all of them is the same and it is the actual finding: SDK 57 can **read** frames out of a video and can **produce** still images, but has nothing anywhere that writes frames back into a container. Watermarking is blocked by a missing encoder, not by a missing library.
 
 **[INFERENCE]** So burning attribution into the pixels requires writing a native module around `AVMutableVideoComposition` (iOS) and MediaCodec/`Transformer` (Android) — two platform implementations, a real transcode of every shared clip, and a large native dependency. Ruled out, and it is now a documented ruling rather than an assumed one.
 
@@ -379,7 +390,7 @@ A non-exported `FileProvider` and a `<queries>` element for package-visibility (
      this.getIntent().putExtra(Intent.EXTRA_TEXT, message);
    }
    ```
-   **This is the important structural correction to the whole framing: Android the platform is not the blocker.** `ACTION_SEND` accepts `EXTRA_STREAM` and `EXTRA_TEXT` together; RN and `expo-sharing` simply decline to set both. The gap is in our libraries, not in Android. The cost is a third-party native dependency on the acquisition path — see [§9](#9-inline-rendering-and-what-the-clips-themselves-look-like) for whether receiving apps then honour `EXTRA_TEXT`, which is the part reading cannot settle.
+   **This is the important structural correction to the whole framing: Android the platform is not the blocker.** `ACTION_SEND` accepts `EXTRA_STREAM` and `EXTRA_TEXT` together; RN and `expo-sharing` simply decline to set both. The gap is in our libraries, not in Android. **[SRC]** `12.3.1` is still `latest` on npm. The cost is a third-party native dependency on the acquisition path — and note that this option only buys a caption if the receiving app honours `EXTRA_TEXT` alongside a video `EXTRA_STREAM`, which Layer 2 says is exactly the thing in doubt. **Adopting `react-native-share` before running device test (1) risks paying for a native dependency that buys nothing.**
 3. **Put the attribution where the file name is.** **[INFERENCE]** The one attribution channel that survives on both platforms is the **filename**, since `shareAsync` shares whatever file you hand it. `Foodio-Nandos-peri-peri-wings.mp4` is not a caption, but it is not nothing, and it costs one line in the download destination. Weak, free, and worth doing regardless of which option above is chosen.
 
 ---
@@ -410,13 +421,17 @@ Three things follow.
 
 ### What the receiving apps do with it
 
-_Pending — see [§12](#12-what-could-not-be-settled-by-reading)._
+**[COMMUNITY]** This is Layer 2, and the evidence is tabulated in [the headline section](#the-answer-first) rather than repeated here: Messages reportedly keeps the video and drops the text, WhatsApp reportedly does the opposite, and Instagram has discarded programmatic captions since 2015. Read that table together with its two caveats — the reports are 2021–2023, none was reproduced here, and the WhatsApp row may describe a caller-side file-URI bug rather than a receiver policy.
+
+**[INFERENCE]** What this section adds is the half that _is_ measurable, and it is worth separating: the **files themselves are not the problem**. Faststart H.264 in an `mp42` container at 1.5–3.3 MB is the most inline-renderable shape a consumer messenger can be handed. If a target app renders a shared clip as a grey file card rather than a player, the cause is that app's handling of a third-party `ACTION_SEND` / `UIActivityViewController` payload — not the bytes, not the container, and not something a different encode would fix. That narrows the device test in [§12](#12-what-could-not-be-settled-by-reading) usefully: there is no point re-encoding the clips in response to a bad result.
 
 ---
 
 ## 10. Recommended shape, if #25 stands
 
 **[INFERENCE]** Everything in this section is our reasoning, not documentation.
+
+**Read this section as conditional on Layer 2.** It describes the best shape available _for sending_ both halves. Whether the caption survives at the other end is unresolved, so **run device tests (1) and (2) from [§12](#12-what-could-not-be-settled-by-reading) before building any of it** — a negative result there changes what should be built, not merely how.
 
 - **Install `expo-file-system` unconditionally.** The download is required on both platforms and there is no alternative. Zero new permissions in this app ([§6](#6-what-each-package-adds-to-the-manifest)).
 - **Branch the share call by platform.** These are genuinely different APIs, not one API with a flag:
@@ -431,28 +446,32 @@ _Pending — see [§12](#12-what-could-not-be-settled-by-reading)._
 
 ## 11. Summary of claims by label
 
-| #   | Claim                                                                   | Label                   |
-| --- | ----------------------------------------------------------------------- | ----------------------- |
-| 1   | `SharingOptions` has no message/text field                              | [DOC] + [SRC]           |
-| 2   | expo-sharing Android sets `EXTRA_STREAM` only, never `EXTRA_TEXT`       | [SRC]                   |
-| 3   | expo-sharing iOS builds `activityItems: [url]` — one item               | [SRC]                   |
-| 4   | expo-sharing rejects non-`file://` schemes                              | [SRC]                   |
-| 5   | RN `Share` drops `content.url` on Android in JS, before native          | [SRC]                   |
-| 6   | RN Android `ShareModule` hardcodes `text/plain`, no `EXTRA_STREAM`      | [SRC]                   |
-| 7   | RN iOS builds `activityItems: [message, URL]` — two items               | [SRC]                   |
-| 8   | Therefore: iOS yes, Android no                                          | [INFERENCE] from 1–7    |
-| 9   | `expo-intent-launcher` cannot set a `Parcelable` `Uri` extra            | [SRC]                   |
-| 10  | `react-native-share@12.3.1` sets both extras on one intent              | [SRC]                   |
-| 11  | Android the platform is not the blocker; our libraries are              | [INFERENCE] from 10     |
-| 12  | `File.downloadFileAsync` is the SDK 57 download API                     | [DOC] + [SRC]           |
-| 13  | Android can leave a partial file on failure; iOS cannot                 | [DOC]                   |
-| 14  | `Paths.cache` is covered by expo-sharing's FileProvider paths           | [SRC]                   |
-| 15  | expo-sharing adds no Android permissions                                | [SRC]                   |
-| 16  | expo-file-system's three permissions are already in this app's manifest | [SRC]                   |
-| 17  | No video compositing/transcoding library exists in SDK 57               | [DOC — absence]         |
-| 18  | `ffmpeg-kit-react-native` is deprecated on npm                          | [COMMUNITY]             |
-| 19  | Android therefore has no attribution channel at all                     | [INFERENCE] from 8 + 17 |
-| 20  | The Pexels clips are faststart H.264 `mp42`, 1.5–3.3 MB, no audio       | [SRC — measured]        |
+| #   | Claim                                                                                                    | Label                                                                         |
+| --- | -------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------- |
+| 1   | `SharingOptions` has no message/text field                                                               | [DOC] + [SRC]                                                                 |
+| 2   | expo-sharing Android sets `EXTRA_STREAM` only, never `EXTRA_TEXT`                                        | [SRC]                                                                         |
+| 3   | expo-sharing iOS builds `activityItems: [url]` — one item                                                | [SRC]                                                                         |
+| 4   | expo-sharing rejects non-`file://` schemes                                                               | [SRC]                                                                         |
+| 5   | RN `Share` drops `content.url` on Android in JS, before native                                           | [SRC]                                                                         |
+| 6   | RN Android `ShareModule` hardcodes `text/plain`, no `EXTRA_STREAM`                                       | [SRC]                                                                         |
+| 7   | RN iOS builds `activityItems: [message, URL]` — two items                                                | [SRC]                                                                         |
+| 8   | Therefore, **Layer 1**: iOS can send both, Android cannot                                                | [INFERENCE] from 1–7                                                          |
+| 9   | `expo-intent-launcher` cannot set a `Parcelable` `Uri` extra                                             | [SRC]                                                                         |
+| 10  | `react-native-share@12.3.1` sets both extras on one intent                                               | [SRC]                                                                         |
+| 11  | Android the platform is not the blocker; our libraries are                                               | [INFERENCE] from 10                                                           |
+| 12  | `File.downloadFileAsync` is the SDK 57 download API                                                      | [DOC] + [SRC]                                                                 |
+| 13  | Android can leave a partial file on failure; iOS cannot                                                  | [DOC]                                                                         |
+| 14  | `Paths.cache` is covered by expo-sharing's FileProvider paths                                            | [SRC]                                                                         |
+| 15  | expo-sharing adds no Android permissions                                                                 | [SRC]                                                                         |
+| 16  | expo-file-system's three permissions are already in this app's manifest                                  | [SRC]                                                                         |
+| 17  | No video encoder/muxer anywhere in SDK 57; `expo-av` is gone, `expo-gl` is present but only emits stills | [DOC — absence]                                                               |
+| 18  | `ffmpeg-kit-react-native` is deprecated on npm                                                           | [COMMUNITY]                                                                   |
+| 19  | Android therefore has no attribution channel at all                                                      | [INFERENCE] from 8 + 17                                                       |
+| 20  | The Pexels clips are faststart H.264 `mp42`, 1.5–3.3 MB, no audio                                        | [SRC — measured]                                                              |
+| 21  | **Layer 2**: Messages reportedly keeps the video, drops the text                                         | [COMMUNITY] — 1 thread, 0 replies, 2023                                       |
+| 22  | **Layer 2**: WhatsApp reportedly keeps the text, drops the video                                         | [COMMUNITY] — 2 issues, 2021 + 2023, **contested by a reply reporting a fix** |
+| 23  | **Layer 2**: Instagram discards programmatic captions                                                    | [COMMUNITY] 2015 + [DOC — absence]                                            |
+| 24  | Therefore video + caption cannot be _relied_ on to arrive together                                       | [INFERENCE] from 21–23, **unverified**                                        |
 
 ---
 
@@ -460,8 +479,10 @@ _Pending — see [§12](#12-what-could-not-be-settled-by-reading)._
 
 These need a device — a real one, not a simulator, since none of the target apps run in a simulator.
 
-1. **Whether WhatsApp on Android renders `EXTRA_TEXT` as a caption when `EXTRA_STREAM` is a video.** This decides whether option 2 in [§8](#8-what-this-does-to-25) buys anything, or whether a third-party native dependency buys a caption WhatsApp discards. **Test before adopting `react-native-share`, not after.**
-2. **What WhatsApp / Messages / Instagram do with iOS's two-item `activityItems`.** Both items _delivered_ is guaranteed by the API; both _displayed_ is not. Specifically: does the caption land in WhatsApp's caption box, or get dropped in favour of the file?
+These are no longer blank questions — Layer 2 supplies a **specific hypothesis for each**, and the job is to falsify it. That is a cheaper test than open-ended exploration, and the results should be written back into the Layer-2 table.
+
+1. **Falsify or confirm the two iOS reports, on a real device, with current app versions.** Hypotheses: Messages keeps the video and drops the text; WhatsApp keeps the text and drops the video. Both come from 2023 reports and neither was reproduced here. **Vary one thing deliberately**: the file URI form and its extension — `react-native-share#1487`'s only substantive reply claims a `.mp4`-suffixed custom path made WhatsApp work, which would make this a caller-side bug rather than a receiver policy. Test `Paths.cache` with an explicit `${clip.id}.mp4` name against a name without the extension.
+2. **Whether WhatsApp on Android renders `EXTRA_TEXT` as a caption when `EXTRA_STREAM` is a video.** This decides whether option 2 in [§8](#8-what-this-does-to-25) buys anything, or whether a third-party native dependency buys a caption WhatsApp discards. **Test before adopting `react-native-share`, not after** — and note the test does not need the dependency: a throwaway native intent or any existing app that sets both extras will answer it.
 3. **Whether the video renders inline or as a file card**, per app, per platform. [§9](#9-inline-rendering-and-what-the-clips-themselves-look-like) shows the files are in the right shape; it cannot show what each app does with them.
 4. **Whether Instagram appears in the share sheet at all** for a `video/mp4` from a third-party app, and whether anything reaches Feed or Stories without the Instagram SDK and a registered app ID.
 5. **Perceived latency of the download** on a mid-range Android device on a poor connection — the gap between tapping Share and the sheet appearing. Measure before deciding a progress indicator is over-engineering.
