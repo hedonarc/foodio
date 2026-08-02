@@ -28,8 +28,7 @@
     "searchLabel": "Search restaurants",
     "clearSearch": "Clear search",
     "searchResults": "Results for “{{query}}”",
-    "noResults": "Nothing matched “{{query}}”.",
-    "clips": "Fresh from the kitchen"
+    "noResults": "Nothing matched “{{query}}”."
   },
   "restaurant": {
     "detailsTitle": "Restaurant Details",
@@ -43,7 +42,9 @@
     "hours": "Hours",
     "recentReviews": "Recent Reviews",
     "ratingOutOfFive": "Rated {{rating}} out of 5",
-    "closedAllDay": "Closed"
+    "closedAllDay": "Closed",
+    "clipsFromRestaurant": "From {{name}}",
+    "clipsFromCustomers": "From customers"
   },
   "menu": {
     "title": "Menu",
@@ -156,7 +157,8 @@
     "receiptBadge": "Ordered and delivered",
     "marketingBadge": "From the restaurant",
     "customerClipLabel": "Customer clip backed by a delivered order, from {{restaurant}}. {{caption}}",
-    "restaurantClipLabel": "{{restaurant}}'s own clip. {{caption}}"
+    "restaurantClipLabel": "{{restaurant}}'s own clip. {{caption}}",
+    "notFound": "This clip is gone."
   },
   "tabs": {
     "home": "Home",

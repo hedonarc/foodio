@@ -69,6 +69,8 @@ function RootNavigator() {
         {/* No root insets: the tab bar owns the bottom edge and each tab its top. */}
         <Stack.Screen name="(tabs)" options={{ contentStyle: { backgroundColor: colors.white } }} />
         <Stack.Screen name="restaurant/[id]" />
+        {/* Full-bleed video: black, no insets — the screen places its own controls. */}
+        <Stack.Screen name="clip/[id]" options={{ contentStyle: { backgroundColor: 'black' } }} />
         <Stack.Screen name="checkout" />
         <Stack.Screen name="address" />
         <Stack.Screen name="order/[id]" />
