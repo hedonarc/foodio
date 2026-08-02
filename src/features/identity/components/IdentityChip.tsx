@@ -83,7 +83,7 @@ function IdentityMenu({ visible, onClose }: { visible: boolean; onClose: () => v
   const setRole = useSessionStore((state) => state.setRole);
   const signOut = useSessionStore((state) => state.signOut);
 
-  // Names, not ids: "Taco Fiesta · serving" is a place, "rest-1" is a slug.
+  // Names, not ids: "Taco Fiesta · Kitchen" is a place, "rest-1" is a slug.
   const { data: restaurants } = useRestaurants();
   const nameOf = (id: string) =>
     restaurants?.find((restaurant) => restaurant.id === id)?.name ?? id;
@@ -115,8 +115,8 @@ function IdentityMenu({ visible, onClose }: { visible: boolean; onClose: () => v
           const isCurrent = sameRole(option.role, role);
           const label =
             option.role.kind === 'customer'
-              ? t('identity.ordering')
-              : `${nameOf(option.restaurantId ?? '')} · ${t(`identity.${option.role.kind === 'serve' ? 'serving' : 'delivering'}`)}`;
+              ? t('identity.customer')
+              : `${nameOf(option.restaurantId ?? '')} · ${t(`identity.${option.role.kind}`)}`;
 
           return (
             <Pressable
@@ -166,8 +166,8 @@ function IdentityMenu({ visible, onClose }: { visible: boolean; onClose: () => v
 }
 
 const iconFor = (role: ActiveRole) =>
-  role.kind === 'serve'
+  role.kind === 'kitchen'
     ? 'restaurant-outline'
-    : role.kind === 'deliver'
+    : role.kind === 'delivery'
       ? 'bicycle-outline'
       : 'bag-handle-outline';

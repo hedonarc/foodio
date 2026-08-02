@@ -5,9 +5,14 @@ Every extra field would be unverified data dressed as real. Zero entitlements
 means customer: the baseline, not a row.
 
 **An entitlement** is one relationship per Restaurant carrying capabilities —
-`(person, restaurantId, [serve, deliver])`. Delivering is a capability _inside_
+`(person, restaurantId, [kitchen, delivery])`. Delivery is a capability _inside_
 a Restaurant, never a peer role, per [ADR 0003](../adr/0003-restaurant-owned-delivery.md).
 Seeded in `db.json`; nobody grants themselves anything.
+
+**The three roles are nouns**: Customer, Kitchen, Delivery. A capability names
+somewhere you work, so the switcher can read "Taco Fiesta · Kitchen" — a place —
+rather than joining a place to an activity. A fourth capability slots in without
+rewording the other three.
 
 **Signing in** is an identity picker. It pretends nothing — a password field
 would promise verification the server cannot do. It POSTs `/sessions` and
@@ -42,10 +47,10 @@ Decided in [#54](https://github.com/hedonarc/foodio/issues/54)–[#61](https://g
 
 ## Roles change the navigator
 
-`Stack.Protected` on the active role selects between `(tabs)`, `(serving)` and
-`(delivering)` — the idiom the layout already used for onboarding, applied to a
-second axis. Conditional children inside one `Tabs` was rejected: serving has
-no Cart and delivering has no Menu, so a bar that swaps every tab is two bars
+`Stack.Protected` on the active role selects between `(tabs)`, `(kitchen)` and
+`(delivery)` — the idiom the layout already used for onboarding, applied to a
+second axis. Conditional children inside one `Tabs` was rejected: the kitchen
+has no Cart and delivery has no Menu, so a bar that swaps every tab is two bars
 pretending to be one.
 
 Switching resets to the role's home in both directions, because the screen you
@@ -54,8 +59,10 @@ memory-only anyway, and **sign-out**, not switching, is what clears a person's
 state.
 
 The active role persists in Secure Store and is re-resolved against current
-entitlements on launch, so a revoked role falls back to ordering silently
-rather than showing a dead surface.
+entitlements on launch, so a revoked role falls back to Customer silently
+rather than showing a dead surface. The stored value is the role's own name, so
+a device holding a pre-rename `serve:rest-1` fails to decode and lands on
+Customer — the same place any unrecognised role belongs.
 
 **Staff read a Restaurant's orders, not their own.** `?forRestaurantId=` says
 _which_ of your restaurants; the middleware checks the token's entitlements and
@@ -64,3 +71,8 @@ answers **403** if you do not work there. The client never asserts the right.
 **Advancing an Order is not built.** Accept, reject and mark-ready are a real
 workflow with decisions behind them and no charted spec, so the queue is
 read-only rather than invented.
+
+Named in [#67](https://github.com/hedonarc/foodio/pull/67)'s follow-up: the
+roles were Ordering / Serving / Delivering, gerunds that described activities
+and clashed with [#58](https://github.com/hedonarc/foodio/issues/58)'s own rule
+that menu entries name places.

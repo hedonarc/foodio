@@ -1850,7 +1850,7 @@
       "entitlements": [
         {
           "restaurantId": "rest-1",
-          "capabilities": ["serve", "deliver"]
+          "capabilities": ["kitchen", "delivery"]
         }
       ]
     },
@@ -1860,7 +1860,7 @@
       "entitlements": [
         {
           "restaurantId": "rest-2",
-          "capabilities": ["serve"]
+          "capabilities": ["kitchen"]
         }
       ]
     },
@@ -1870,11 +1870,11 @@
       "entitlements": [
         {
           "restaurantId": "rest-1",
-          "capabilities": ["serve"]
+          "capabilities": ["kitchen"]
         },
         {
           "restaurantId": "rest-3",
-          "capabilities": ["serve"]
+          "capabilities": ["kitchen"]
         }
       ]
     },
