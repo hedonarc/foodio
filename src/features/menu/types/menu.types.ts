@@ -11,6 +11,8 @@ export const menuItemSchema = z.object({
   image: z.string(),
   rating: z.number().optional(),
   isPopular: z.boolean().optional(),
+  /** Additive: absent means available — only `false` means sold out. */
+  isAvailable: z.boolean().optional(),
 });
 
 export const menuCategorySchema = z.object({
