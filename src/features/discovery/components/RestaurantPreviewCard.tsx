@@ -35,6 +35,8 @@ export function RestaurantPreviewCard({ restaurant, wide = false }: RestaurantPr
           fee: formatMoney(restaurant.deliveryFeeMinor, restaurant.currency, i18n.language),
         });
 
+  const isOutOfRange = restaurant.isDeliverable === false;
+
   return (
     <Pressable
       onPress={handlePress}
@@ -43,6 +45,7 @@ export function RestaurantPreviewCard({ restaurant, wide = false }: RestaurantPr
       className={cn(
         'overflow-hidden rounded-2xl border border-gray-100 bg-white shadow-sm active:opacity-90',
         wide ? 'mb-3 w-full' : 'mr-4 w-56',
+        isOutOfRange ? 'opacity-60' : '',
       )}
     >
       <View className="h-36 w-full bg-gray-200">
@@ -84,6 +87,13 @@ export function RestaurantPreviewCard({ restaurant, wide = false }: RestaurantPr
             {deliveryFee}
           </Text>
         </View>
+        {isOutOfRange ? (
+          <View className="mt-2 self-start rounded-full bg-gray-100 px-2.5 py-1">
+            <Text variant="caption" className="font-semibold text-gray-500">
+              {t('restaurant.outOfRange')}
+            </Text>
+          </View>
+        ) : null}
       </View>
     </Pressable>
   );

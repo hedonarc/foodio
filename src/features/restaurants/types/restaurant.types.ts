@@ -38,6 +38,9 @@ export const restaurantSummarySchema = z.object({
   longitude: z.number(),
   deliveryRadiusMeters: z.number().int(),
   image: z.string(),
+  /** Present only when the request carried `lat`/`lng`. */
+  isDeliverable: z.boolean().optional(),
+  distanceMeters: z.number().optional(),
 });
 
 export const restaurantSchema = restaurantSummarySchema.extend({
