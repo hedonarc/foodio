@@ -6,6 +6,7 @@ import { Stack } from 'expo-router';
 import { SafeAreaProvider, useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { setAuthTokenSource, setUnauthorizedHandler } from '@/api/client';
+import { useNotificationListener, useSyncPushToken } from '@/features/notifications';
 import { QueryProvider } from '@/providers/QueryProvider';
 import { useActiveAddressStore } from '@/stores/activeAddress.store';
 import { OnboardingStep, useOnboardingStore } from '@/stores/onboarding.store';
@@ -69,6 +70,10 @@ function RootNavigator() {
     // active address for the instant before this settles.
     void hydrateActiveAddress();
   }, [activeAddressHydrated, hydrateActiveAddress]);
+
+  // Neither gates the splash screen: a push isn't needed for any screen to render.
+  useSyncPushToken();
+  useNotificationListener();
 
   if (!isHydrated || !sessionHydrated) {
     return (
