@@ -1,5 +1,11 @@
 import type { ActiveRole, Person } from './identity.types';
-import { CUSTOMER_ROLE, resolveRole, roleOptionsFor, sameRole } from './identity.types';
+import {
+  CUSTOMER_ROLE,
+  otpVerifyFormSchema,
+  resolveRole,
+  roleOptionsFor,
+  sameRole,
+} from './identity.types';
 
 const person = (entitlements: Person['entitlements']): Person => ({
   id: 'marco',
@@ -75,5 +81,37 @@ describe('resolveRole', () => {
 
   it('falls back when signed out', () => {
     expect(resolveRole(null, { kind: 'kitchen', restaurantId: 'rest-1' })).toEqual(CUSTOMER_ROLE);
+  });
+});
+
+describe('otpVerifyFormSchema', () => {
+  const base = { phone: '+923001234567', code: '123456' };
+
+  // Regression: a blank TextField reports '', not undefined. `.optional()`
+  // alone only skips validation on undefined, so this used to fail `.min(1)`
+  // and silently block every returning user — nobody types a name on a
+  // second sign-in, since the field is labelled "first time only".
+  it('accepts a blank name, the case every returning user hits', () => {
+    expect(otpVerifyFormSchema.safeParse({ ...base, displayName: '' }).success).toBe(true);
+  });
+
+  it('accepts a whitespace-only name the same way', () => {
+    expect(otpVerifyFormSchema.safeParse({ ...base, displayName: '   ' }).success).toBe(true);
+  });
+
+  it('accepts no displayName field at all', () => {
+    expect(otpVerifyFormSchema.safeParse(base).success).toBe(true);
+  });
+
+  it('still trims and keeps a real name', () => {
+    const result = otpVerifyFormSchema.safeParse({ ...base, displayName: '  Sara Ahmed  ' });
+    expect(result.success).toBe(true);
+    if (result.success) expect(result.data.displayName).toBe('Sara Ahmed');
+  });
+
+  it('still rejects a name over 60 characters', () => {
+    expect(otpVerifyFormSchema.safeParse({ ...base, displayName: 'a'.repeat(61) }).success).toBe(
+      false,
+    );
   });
 });

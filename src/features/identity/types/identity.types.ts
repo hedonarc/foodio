@@ -42,8 +42,16 @@ export const otpRequestFormSchema = z.object({
 export const otpVerifyFormSchema = z.object({
   phone: phoneSchema,
   code: otpCodeSchema,
-  /** Only asked for, and only sent, on a phone's first sign-in. */
-  displayName: z.string().trim().min(1).max(60).optional(),
+  /**
+   * Only asked for, and only sent, on a phone's first sign-in — every
+   * returning user leaves this blank. No `.min(1)`: a blank TextField reports
+   * its value as `''`, not `undefined`, and `.min(1)` rejected that outright —
+   * silently blocking the whole form from submitting, since nothing surfaced
+   * the error for a field with no visible error text. The call site already
+   * turns a falsy `displayName` into `undefined` before it reaches the
+   * network, so an empty string reaching here is harmless.
+   */
+  displayName: z.string().trim().max(60).optional(),
 });
 
 export type OtpRequestFormValues = z.infer<typeof otpRequestFormSchema>;
