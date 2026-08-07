@@ -1,35 +1,38 @@
-import { FlatList, View } from 'react-native';
-
-import { Ionicons } from '@expo/vector-icons';
+import { useState } from 'react';
+import { Linking, SectionList, View } from 'react-native';
 
 import { useTranslation } from 'react-i18next';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
+import { toApiError } from '@/api/errors';
 import { EmptyState, ErrorState, LoadingState } from '@/components/shared';
 import { Text } from '@/components/ui';
-import type { Order, OrderStatus } from '@/features/checkout/types/order.types';
+import type { OrderStatus } from '@/features/checkout/types/order.types';
 import { IdentityChip } from '@/features/identity/components/IdentityChip';
 import { useRestaurants } from '@/features/restaurants/hooks/useRestaurants';
 import { useSessionStore } from '@/stores/session.store';
-import { colors } from '@/theme';
-import { formatMoney } from '@/utils/currency';
-import { formatDate } from '@/utils/date';
 
+import { OrderCard } from '../components/OrderCard';
+import { QueueToast } from '../components/QueueToast';
+import { TransitionSheet } from '../components/TransitionSheet';
+import { useNow } from '../hooks/useNow';
+import { useOrderTransition } from '../hooks/useOrderTransition';
 import { useRestaurantOrders } from '../hooks/useRestaurantOrders';
+import { useTransientMessage } from '../hooks/useTransientMessage';
+import { FAILURE_REASONS, groupQueue, REJECT_REASONS } from '../lib/workQueue';
 
-/** Delivery staff care about the tail of the order's life, not the kitchen's. */
-const DELIVERY_STATUSES: OrderStatus[] = ['ready', 'out_for_delivery', 'delivered'];
+/** Minute badges only need to move about once a minute. */
+const CLOCK_TICK_MS = 30_000;
 
-/**
- * Read-only for now. Advancing an Order through its statuses is a real
- * workflow with real decisions behind it, and it has not been charted —
- * showing the queue honestly beats inventing one.
- */
+type SheetState = { kind: 'reject' | 'deliver' | 'fail'; orderId: string } | null;
+
 export function WorkOrdersScreen() {
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
   const role = useSessionStore((state) => state.role);
 
+  const workRole = role.kind === 'customer' ? null : role.kind;
   const restaurantId = role.kind === 'customer' ? undefined : role.restaurantId;
+
   const {
     data: orders,
     isPending,
@@ -40,14 +43,29 @@ export function WorkOrdersScreen() {
     isFetchingNextPage,
   } = useRestaurantOrders(restaurantId);
   const { data: restaurants } = useRestaurants();
+  const transition = useOrderTransition(restaurantId ?? '');
+  const now = useNow(CLOCK_TICK_MS);
+  const { message: toast, show: showToast } = useTransientMessage();
+
+  const [expandedId, setExpandedId] = useState<string | null>(null);
+  const [sheet, setSheet] = useState<SheetState>(null);
 
   const restaurantName =
     restaurants?.find((restaurant) => restaurant.id === restaurantId)?.name ?? '';
 
-  const visible =
-    role.kind === 'delivery'
-      ? (orders ?? []).filter((order) => DELIVERY_STATUSES.includes(order.status))
-      : (orders ?? []);
+  const sections = workRole ? groupQueue(workRole, orders ?? []) : [];
+
+  const advance = (orderId: string, to: OrderStatus, note?: string) => {
+    transition.mutate(
+      { orderId, to, ...(note === undefined ? {} : { note }) },
+      // The mutation hook already refetches; the toast says why the card moved.
+      { onError: (cause) => showToast(toApiError(cause).message) },
+    );
+  };
+
+  const openPhone = (phone: string) => {
+    Linking.openURL(`tel:${phone}`).catch(() => showToast(t('work.callFailed')));
+  };
 
   return (
     <SafeAreaView edges={['top']} className="flex-1 bg-white">
@@ -71,63 +89,95 @@ export function WorkOrdersScreen() {
           className="flex-1 items-center justify-center px-8"
         />
       ) : null}
-      {!isPending && !error && visible.length === 0 ? (
+      {!isPending && !error && sections.length === 0 ? (
         <EmptyState
           message={t('work.noOrders')}
           className="flex-1 items-center justify-center px-8"
         />
       ) : null}
 
-      {visible.length > 0 ? (
-        <FlatList
-          data={visible}
+      {workRole && sections.length > 0 ? (
+        <SectionList
+          sections={sections}
           keyExtractor={(order) => order.id}
+          stickySectionHeadersEnabled={false}
           contentContainerClassName="px-4 pb-8"
           onEndReached={() => {
             if (hasNextPage) void fetchNextPage();
           }}
           onEndReachedThreshold={0.5}
           ListFooterComponent={isFetchingNextPage ? <LoadingState /> : null}
-          renderItem={({ item: order }) => <OrderRow order={order} language={i18n.language} />}
+          renderSectionHeader={({ section }) => (
+            <View className="flex-row items-center pb-2 pt-4">
+              <Text variant="label" className="text-gray-500">
+                {t(`work.groups.${section.key}`)}
+              </Text>
+              <Text variant="label" className="ml-2 text-gray-400">
+                {section.data.length}
+              </Text>
+            </View>
+          )}
+          renderItem={({ item: order }) => (
+            <OrderCard
+              order={order}
+              role={workRole}
+              now={now}
+              expanded={expandedId === order.id}
+              isPending={transition.isPending && transition.variables?.orderId === order.id}
+              onToggle={() => setExpandedId((current) => (current === order.id ? null : order.id))}
+              onAdvance={(to) =>
+                to === 'delivered'
+                  ? setSheet({ kind: 'deliver', orderId: order.id })
+                  : advance(order.id, to)
+              }
+              onReject={() => setSheet({ kind: 'reject', orderId: order.id })}
+              onDeliver={() => setSheet({ kind: 'deliver', orderId: order.id })}
+              onFailDelivery={() => setSheet({ kind: 'fail', orderId: order.id })}
+              onCall={openPhone}
+            />
+          )}
         />
       ) : null}
+
+      <TransitionSheet
+        visible={sheet?.kind === 'reject'}
+        title={t('work.reject.title')}
+        reasons={REJECT_REASONS}
+        labelForReason={(reason) => t(`work.reject.reasons.${reason}`)}
+        confirmLabel={t('work.actions.reject')}
+        onConfirm={(note) => {
+          if (sheet) advance(sheet.orderId, 'rejected', note);
+          setSheet(null);
+        }}
+        onCancel={() => setSheet(null)}
+      />
+
+      <TransitionSheet
+        visible={sheet?.kind === 'deliver'}
+        title={t('work.deliver.title')}
+        message={t('work.deliver.message')}
+        confirmLabel={t('work.actions.delivered')}
+        onConfirm={() => {
+          if (sheet) advance(sheet.orderId, 'delivered');
+          setSheet(null);
+        }}
+        onCancel={() => setSheet(null)}
+      />
+
+      <TransitionSheet
+        visible={sheet?.kind === 'fail'}
+        title={t('work.fail.title')}
+        reasons={FAILURE_REASONS}
+        labelForReason={(reason) => t(`work.fail.reasons.${reason}`)}
+        confirmLabel={t('work.actions.couldNotDeliver')}
+        onConfirm={(note) => {
+          if (sheet) advance(sheet.orderId, 'delivery_failed', note);
+          setSheet(null);
+        }}
+        onCancel={() => setSheet(null)}
+      />
+
+      <QueueToast message={toast} />
     </SafeAreaView>
-  );
-}
-
-function OrderRow({ order, language }: { order: Order; language: string }) {
-  const { t } = useTranslation();
-
-  return (
-    <View className="mb-3 rounded-2xl border border-gray-100 p-4">
-      <View className="flex-row items-center">
-        <Text variant="bodyMedium" className="flex-1 text-gray-900">
-          {t(`order.status.${order.status}`)}
-        </Text>
-        <Text variant="bodyMedium" className="text-gray-900">
-          {formatMoney(order.totalMinor, order.currency, language)}
-        </Text>
-      </View>
-
-      {order.lines.map((line, index) => (
-        <View key={`${line.menuItemId}-${index}`} className="mt-2">
-          <Text variant="caption" className="text-gray-600">
-            {line.quantity} × {line.name}
-          </Text>
-          {line.instruction ? (
-            <Text variant="caption" className="text-gray-400">
-              {line.instruction}
-            </Text>
-          ) : null}
-        </View>
-      ))}
-
-      <View className="mt-3 flex-row items-center">
-        <Ionicons name="time-outline" size={13} color={colors.gray[400]} />
-        <Text variant="caption" className="ml-1.5 text-gray-400">
-          {formatDate(order.placedAt, language)}
-        </Text>
-      </View>
-    </View>
   );
 }

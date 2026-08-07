@@ -49,6 +49,8 @@ export const orderSchema = z.object({
   totalMinor: z.number().int(),
   address: deliveryAddressSchema,
   paymentMethod: z.literal('cash_on_delivery'),
+  /** Only on staff-scoped reads, so a rider can call about a wrong gate number. */
+  customerPhone: z.string().optional(),
 });
 
 export const orderListSchema = z.array(orderSchema);
