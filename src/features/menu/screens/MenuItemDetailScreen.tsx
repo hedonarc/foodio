@@ -69,6 +69,8 @@ function Loaded({ item, currency, restaurant }: LoadedProps) {
   const [quantity, setQuantity] = useState(1);
   const [instruction, setInstruction] = useState('');
 
+  const soldOut = item.isAvailable === false;
+
   const addItem = useCartStore((state) => state.addItem);
   const heldByOtherRestaurant = useCartStore(selectIsFromOtherRestaurant(restaurant.id));
   const currentRestaurantName = useCartStore((state) => state.restaurant?.name);
@@ -86,6 +88,8 @@ function Loaded({ item, currency, restaurant }: LoadedProps) {
   };
 
   const handleAdd = () => {
+    if (soldOut) return;
+
     if (!heldByOtherRestaurant) {
       commit();
       return;
@@ -163,11 +167,13 @@ function Loaded({ item, currency, restaurant }: LoadedProps) {
       </ScrollView>
 
       <View className="border-t border-gray-100 px-4 pb-5 pt-3">
-        <Button onPress={handleAdd}>
-          {t('menu.addWithTotal', {
-            count: quantity,
-            total: formatMoney(item.priceMinor * quantity, currency, i18n.language),
-          })}
+        <Button onPress={handleAdd} disabled={soldOut}>
+          {soldOut
+            ? t('menu.soldOut')
+            : t('menu.addWithTotal', {
+                count: quantity,
+                total: formatMoney(item.priceMinor * quantity, currency, i18n.language),
+              })}
         </Button>
       </View>
     </Shell>
