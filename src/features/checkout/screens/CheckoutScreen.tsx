@@ -11,13 +11,13 @@ import { Button, Text } from '@/components/ui';
 import { useRestaurantMenu } from '@/features/menu';
 import { useRestaurant } from '@/features/restaurants';
 import { useNavigationGuard } from '@/hooks/useNavigationGuard';
-import { useAddressStore } from '@/stores/address.store';
 import { useCartStore } from '@/stores/cart.store';
 import { colors } from '@/theme';
 import { formatMoney } from '@/utils/currency';
 import { generateIdempotencyKey } from '@/utils/idempotencyKey';
 
 import { CheckoutBlockers } from '../components/CheckoutBlockers';
+import { useActiveAddress } from '../hooks/useActiveAddress';
 import { usePlaceOrder } from '../hooks/useOrders';
 import { reviewCheckout } from '../lib/reviewCheckout';
 import type { NewOrder } from '../types/order.types';
@@ -30,7 +30,7 @@ export function CheckoutScreen() {
   const cartRestaurant = useCartStore((state) => state.restaurant);
   const lines = useCartStore((state) => state.lines);
   const clearCart = useCartStore((state) => state.clear);
-  const address = useAddressStore((state) => state.address);
+  const { address } = useActiveAddress();
 
   const { data: restaurant } = useRestaurant(cartRestaurant?.id);
   const { data: categories } = useRestaurantMenu(cartRestaurant?.id);

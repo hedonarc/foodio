@@ -86,6 +86,8 @@
   "address": {
     "title": "Delivery address",
     "save": "Save address",
+    "saving": "Saving…",
+    "addNew": "Add new address",
     "useMyLocation": "Use my current location",
     "locating": "Finding you…",
     "locationTitle": "Location",
@@ -94,6 +96,17 @@
     "locationDenied": "Location permission was denied. Enable it in Settings to continue.",
     "locationFailed": "We could not determine your location. Please try again.",
     "needsLocation": "Set your location to save this address.",
+    "list": {
+      "empty": "You have no saved addresses yet.",
+      "select": "Use {{label}} for delivery",
+      "edit": "Edit {{label}}",
+      "delete": "Delete {{label}}"
+    },
+    "deleteConfirm": {
+      "title": "Delete this address?",
+      "message": "\"{{label}}\" will be permanently removed.",
+      "confirm": "Delete"
+    },
     "fields": {
       "label": "Label",
       "line1": "Address",

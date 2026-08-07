@@ -20,3 +20,15 @@ export const addressFormSchema = deliveryAddressSchema.omit({
 });
 
 export type AddressFormValues = z.infer<typeof addressFormSchema>;
+
+/**
+ * An address as the backend returns it — the contract's shape plus the
+ * server-assigned id needed to select, edit or delete it. `NewOrder.address`
+ * keeps sending the plain `DeliveryAddress`; a `SavedAddress` is one
+ * structurally, so that stays a call-site concern, not a schema one.
+ */
+export const savedAddressSchema = deliveryAddressSchema.extend({ id: z.string() });
+
+export type SavedAddress = z.infer<typeof savedAddressSchema>;
+
+export const savedAddressListSchema = z.array(savedAddressSchema);
