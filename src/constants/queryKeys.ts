@@ -28,4 +28,8 @@ export const queryKeys = {
     forRestaurant: (restaurantId: string) =>
       [...queryKeys.orders.all, 'restaurant', restaurantId] as const,
   },
+  addresses: {
+    all: ['addresses'] as const,
+    list: () => [...queryKeys.addresses.all, 'list'] as const,
+  },
 } as const;

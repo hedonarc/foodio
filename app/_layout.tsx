@@ -7,6 +7,7 @@ import { SafeAreaProvider, useSafeAreaInsets } from 'react-native-safe-area-cont
 
 import { setAuthTokenSource, setUnauthorizedHandler } from '@/api/client';
 import { QueryProvider } from '@/providers/QueryProvider';
+import { useActiveAddressStore } from '@/stores/activeAddress.store';
 import { OnboardingStep, useOnboardingStore } from '@/stores/onboarding.store';
 import { useSessionStore } from '@/stores/session.store';
 import { colors } from '@/theme';
@@ -56,6 +57,18 @@ function RootNavigator() {
     // server, and its own 401 handling recovers a merely-expired access token.
     void hydrateSession();
   }, [sessionHydrated, hydrateSession]);
+
+  const activeAddressHydrated = useActiveAddressStore((state) => state.isHydrated);
+  const hydrateActiveAddress = useActiveAddressStore((state) => state.hydrate);
+
+  useEffect(() => {
+    if (activeAddressHydrated) return;
+
+    // Not part of the splash gate below: nothing about which navigator shows
+    // depends on it, unlike onboarding/session — Checkout just resolves to no
+    // active address for the instant before this settles.
+    void hydrateActiveAddress();
+  }, [activeAddressHydrated, hydrateActiveAddress]);
 
   if (!isHydrated || !sessionHydrated) {
     return (
