@@ -142,10 +142,12 @@
       "ready": "Ready for delivery",
       "out_for_delivery": "Out for delivery",
       "delivered": "Delivered",
+      "delivery_failed": "Delivery unsuccessful",
       "rejected": "Rejected",
       "cancelled": "Cancelled"
     },
     "ended": {
+      "delivery_failed": "Nobody answered the door. Contact the restaurant about redelivery.",
       "rejected": "The restaurant could not take this order.",
       "cancelled": "You cancelled this order."
     }
@@ -181,13 +183,29 @@
   "identity": {
     "signIn": "Sign in",
     "signOut": "Sign out",
-    "pickerHint": "Choose who to be. This is a development affordance — nothing is verified.",
-    "customerOnly": "Customer",
     "signedInAs": "Signed in as",
     "customer": "Customer",
     "kitchen": "Kitchen",
     "delivery": "Delivery",
-    "chipHint": "Opens your account and role menu"
+    "chipHint": "Opens your account and role menu",
+    "phoneHint": "Enter your phone number and we will text you a code.",
+    "phoneLabel": "Phone number",
+    "phonePlaceholder": "+92 300 1234567",
+    "sendCode": "Send code",
+    "sendingCode": "Sending…",
+    "codeHint": "Enter the 6-digit code sent to {{phone}}.",
+    "codeLabel": "Code",
+    "codePlaceholder": "123456",
+    "nameLabel": "Your name (first time only)",
+    "namePlaceholder": "Full name",
+    "verify": "Verify and sign in",
+    "verifying": "Verifying…",
+    "changeNumber": "Use a different number",
+    "resendCode": "Resend code",
+    "errors": {
+      "phone": "Enter a phone number including its country code, e.g. +92 300 1234567.",
+      "code": "Enter the 6-digit code."
+    }
   },
   "work": {
     "kitchenSubtitle": "Incoming orders",

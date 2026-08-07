@@ -26,7 +26,7 @@ type OrderStatusTimelineProps = {
 export function OrderStatusTimeline({ status }: OrderStatusTimelineProps) {
   const { t } = useTranslation();
 
-  if (status === 'rejected' || status === 'cancelled') {
+  if (status === 'rejected' || status === 'cancelled' || status === 'delivery_failed') {
     return (
       <View className="mt-6 flex-row items-center rounded-2xl bg-gray-50 p-4">
         <Ionicons name="close-circle-outline" size={18} color={colors.error[500]} />

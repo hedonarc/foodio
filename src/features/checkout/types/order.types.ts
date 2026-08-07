@@ -5,6 +5,9 @@ import { deliveryAddressSchema } from './address.types';
 /**
  * No "finding a courier" stage — the restaurant delivers its own orders, so
  * there is nobody to search for. See docs/adr/0003.
+ *
+ * `delivery_failed` is the cash-on-delivery failure mode a card market never
+ * has — nobody answered the door — see the backend's ADR-0009.
  */
 export const ORDER_STATUSES = [
   'placed',
@@ -13,6 +16,7 @@ export const ORDER_STATUSES = [
   'ready',
   'out_for_delivery',
   'delivered',
+  'delivery_failed',
   'rejected',
   'cancelled',
 ] as const;
@@ -55,7 +59,7 @@ export type Order = z.infer<typeof orderSchema>;
 /** An order as it is submitted — the server owns id, status and placedAt. */
 export type NewOrder = Omit<Order, 'id' | 'status' | 'placedAt'>;
 
-const TERMINAL: readonly OrderStatus[] = ['delivered', 'rejected', 'cancelled'];
+const TERMINAL: readonly OrderStatus[] = ['delivered', 'delivery_failed', 'rejected', 'cancelled'];
 
 export const isTerminal = (status: OrderStatus): boolean => TERMINAL.includes(status);
 

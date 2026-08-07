@@ -21,11 +21,38 @@ export const personSchema = z.object({
   entitlements: z.array(entitlementSchema),
 });
 
-export const personListSchema = z.array(personSchema);
+/**
+ * E.164. Phone is the identity in this market — see backend ADR-0007. Stored
+ * and compared in this exact form, so the client normalises before sending.
+ */
+export const phoneSchema = z
+  .string()
+  .trim()
+  .regex(/^\+[1-9]\d{7,14}$/);
 
+export const otpCodeSchema = z
+  .string()
+  .trim()
+  .regex(/^\d{6}$/);
+
+export const otpRequestFormSchema = z.object({
+  phone: phoneSchema,
+});
+
+export const otpVerifyFormSchema = z.object({
+  phone: phoneSchema,
+  code: otpCodeSchema,
+  /** Only asked for, and only sent, on a phone's first sign-in. */
+  displayName: z.string().trim().min(1).max(60).optional(),
+});
+
+export type OtpRequestFormValues = z.infer<typeof otpRequestFormSchema>;
+export type OtpVerifyFormValues = z.infer<typeof otpVerifyFormSchema>;
+
+/** Replaces the mock's `{ token, person }` — see backend ADR-0007. */
 export const sessionSchema = z.object({
-  /** A name badge, not a credential: nothing signs or verifies it. */
-  token: z.string(),
+  accessToken: z.string(),
+  refreshToken: z.string(),
   person: personSchema,
 });
 

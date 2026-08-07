@@ -2,7 +2,8 @@ import * as SecureStore from 'expo-secure-store';
 
 import { logError } from '@/lib/logger';
 
-const TOKEN_KEY = 'foodio_session_token';
+const ACCESS_TOKEN_KEY = 'foodio_access_token';
+const REFRESH_TOKEN_KEY = 'foodio_refresh_token';
 const ROLE_KEY = 'foodio_active_role';
 
 /**
@@ -10,38 +11,31 @@ const ROLE_KEY = 'foodio_active_role';
  * therefore a requirement rather than a convenience, and "uninstall to reset"
  * is wrong on one platform. See issue #55.
  */
-export async function getSessionToken(): Promise<string | null> {
+async function getItem(key: string): Promise<string | null> {
   try {
-    return await SecureStore.getItemAsync(TOKEN_KEY);
+    return await SecureStore.getItemAsync(key);
   } catch (error) {
-    logError('session.storage.getToken', error);
+    logError('session.storage.getItem', error);
     return null;
   }
 }
 
-export async function setSessionToken(token: string | null): Promise<void> {
+async function setItem(key: string, value: string | null): Promise<void> {
   try {
-    if (token === null) await SecureStore.deleteItemAsync(TOKEN_KEY);
-    else await SecureStore.setItemAsync(TOKEN_KEY, token);
+    if (value === null) await SecureStore.deleteItemAsync(key);
+    else await SecureStore.setItemAsync(key, value);
   } catch (error) {
-    logError('session.storage.setToken', error);
+    logError('session.storage.setItem', error);
   }
 }
 
-export async function getStoredRole(): Promise<string | null> {
-  try {
-    return await SecureStore.getItemAsync(ROLE_KEY);
-  } catch (error) {
-    logError('session.storage.getRole', error);
-    return null;
-  }
-}
+export const getAccessToken = (): Promise<string | null> => getItem(ACCESS_TOKEN_KEY);
+export const setAccessToken = (token: string | null): Promise<void> =>
+  setItem(ACCESS_TOKEN_KEY, token);
 
-export async function setStoredRole(role: string | null): Promise<void> {
-  try {
-    if (role === null) await SecureStore.deleteItemAsync(ROLE_KEY);
-    else await SecureStore.setItemAsync(ROLE_KEY, role);
-  } catch (error) {
-    logError('session.storage.setRole', error);
-  }
-}
+export const getRefreshToken = (): Promise<string | null> => getItem(REFRESH_TOKEN_KEY);
+export const setRefreshToken = (token: string | null): Promise<void> =>
+  setItem(REFRESH_TOKEN_KEY, token);
+
+export const getStoredRole = (): Promise<string | null> => getItem(ROLE_KEY);
+export const setStoredRole = (role: string | null): Promise<void> => setItem(ROLE_KEY, role);

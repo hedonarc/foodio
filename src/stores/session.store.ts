@@ -1,25 +1,35 @@
 import { create } from 'zustand';
 
-import type { ActiveRole, Person } from '@/features/identity/types/identity.types';
+import { fetchMe, refreshSession, signOutSession } from '@/features/identity/api/identity.api';
+import type { ActiveRole, Person, Session } from '@/features/identity/types/identity.types';
 import { CUSTOMER_ROLE, resolveRole } from '@/features/identity/types/identity.types';
 import {
-  getSessionToken,
+  getAccessToken,
+  getRefreshToken,
   getStoredRole,
-  setSessionToken,
+  setAccessToken,
+  setRefreshToken,
   setStoredRole,
 } from '@/services/storage/session.storage';
 
 type SessionState = {
-  token: string | null;
+  accessToken: string | null;
+  refreshToken: string | null;
   person: Person | null;
   role: ActiveRole;
   /** Splash until this is true, so no screen renders against an unknown identity. */
   isHydrated: boolean;
 
-  hydrate: (resolvePerson: (token: string) => Promise<Person | null>) => Promise<void>;
-  signIn: (token: string, person: Person) => Promise<void>;
+  hydrate: () => Promise<void>;
+  signIn: (session: Session) => Promise<void>;
   signOut: () => Promise<void>;
   setRole: (role: ActiveRole) => Promise<void>;
+  /**
+   * Rotates the token pair. Called by the API client's 401 handler — see
+   * `setUnauthorizedHandler` in `@/api/client`. Returns the new access token,
+   * or null after signing out if the refresh token is gone or dead.
+   */
+  refreshTokens: () => Promise<string | null>;
 };
 
 const encodeRole = (role: ActiveRole): string =>
@@ -42,36 +52,62 @@ export function decodeRole(value: string | null): ActiveRole | null {
   return { kind, restaurantId };
 }
 
+const clearStoredSession = () =>
+  Promise.all([setAccessToken(null), setRefreshToken(null), setStoredRole(null)]);
+
 export const useSessionStore = create<SessionState>((set, get) => ({
-  token: null,
+  accessToken: null,
+  refreshToken: null,
   person: null,
   role: CUSTOMER_ROLE,
   isHydrated: false,
 
-  hydrate: async (resolvePerson) => {
-    const token = await getSessionToken();
-    const person = token ? await resolvePerson(token) : null;
+  hydrate: async () => {
+    const [accessToken, refreshToken] = await Promise.all([getAccessToken(), getRefreshToken()]);
 
-    // A token whose person no longer resolves is not a session.
+    if (!accessToken || !refreshToken) {
+      set({ accessToken: null, refreshToken: null, person: null, isHydrated: true });
+      return;
+    }
+
+    // Set before fetching: the API client reads the store for the bearer
+    // token, and an expired one still lets the client's own 401 handler
+    // recover via `refreshTokens` below — this call does not special-case it.
+    set({ accessToken, refreshToken });
+
+    const person = await fetchMe().catch(() => null);
+
     if (!person) {
-      set({ token: null, person: null, role: CUSTOMER_ROLE, isHydrated: true });
+      await clearStoredSession();
+      set({ accessToken: null, refreshToken: null, person: null, isHydrated: true });
       return;
     }
 
     const role = resolveRole(person, decodeRole(await getStoredRole()));
-    set({ token, person, role, isHydrated: true });
+    set({ person, role, isHydrated: true });
   },
 
-  signIn: async (token, person) => {
-    await setSessionToken(token);
-    await setStoredRole(null);
-    set({ token, person, role: CUSTOMER_ROLE });
+  signIn: async (session) => {
+    await Promise.all([
+      setAccessToken(session.accessToken),
+      setRefreshToken(session.refreshToken),
+      setStoredRole(null),
+    ]);
+    set({
+      accessToken: session.accessToken,
+      refreshToken: session.refreshToken,
+      person: session.person,
+      role: CUSTOMER_ROLE,
+    });
   },
 
   signOut: async () => {
-    await setSessionToken(null);
-    await setStoredRole(null);
-    set({ token: null, person: null, role: CUSTOMER_ROLE });
+    const refreshToken = get().refreshToken;
+    // Best-effort: local sign-out must not wait on, or fail because of, the network.
+    if (refreshToken) void signOutSession(refreshToken).catch(() => {});
+
+    await clearStoredSession();
+    set({ accessToken: null, refreshToken: null, person: null, role: CUSTOMER_ROLE });
   },
 
   setRole: async (role) => {
@@ -79,6 +115,29 @@ export const useSessionStore = create<SessionState>((set, get) => ({
     const allowed = resolveRole(get().person, role);
     await setStoredRole(encodeRole(allowed));
     set({ role: allowed });
+  },
+
+  refreshTokens: async () => {
+    const refreshToken = get().refreshToken;
+    if (!refreshToken) return null;
+
+    try {
+      const session = await refreshSession(refreshToken);
+      await Promise.all([
+        setAccessToken(session.accessToken),
+        setRefreshToken(session.refreshToken),
+      ]);
+      set({
+        accessToken: session.accessToken,
+        refreshToken: session.refreshToken,
+        person: session.person,
+      });
+      return session.accessToken;
+    } catch {
+      // A dead or reused refresh token: the session is over, not retryable.
+      await get().signOut();
+      return null;
+    }
   },
 }));
 
