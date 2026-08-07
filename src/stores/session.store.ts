@@ -3,6 +3,11 @@ import { create } from 'zustand';
 import { fetchMe, refreshSession, signOutSession } from '@/features/identity/api/identity.api';
 import type { ActiveRole, Person, Session } from '@/features/identity/types/identity.types';
 import { CUSTOMER_ROLE, resolveRole } from '@/features/identity/types/identity.types';
+import { deregisterPushToken } from '@/features/notifications/api/pushToken.api';
+import {
+  clearCachedPushToken,
+  getCachedPushToken,
+} from '@/features/notifications/lib/pushTokenCache';
 import {
   getAccessToken,
   getRefreshToken,
@@ -105,6 +110,12 @@ export const useSessionStore = create<SessionState>((set, get) => ({
     const refreshToken = get().refreshToken;
     // Best-effort: local sign-out must not wait on, or fail because of, the network.
     if (refreshToken) void signOutSession(refreshToken).catch(() => {});
+
+    // Also fires before state clears below: deregistration needs the still-valid
+    // access token the API client's interceptor reads from this store.
+    const pushToken = getCachedPushToken();
+    if (pushToken) void deregisterPushToken(pushToken).catch(() => {});
+    clearCachedPushToken();
 
     await clearStoredSession();
     set({ accessToken: null, refreshToken: null, person: null, role: CUSTOMER_ROLE });
