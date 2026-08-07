@@ -24,6 +24,7 @@ export function MenuItemCard({ item, restaurant }: MenuItemCardProps) {
   const { t } = useTranslation();
   const router = useRouter();
   const guard = useNavigationGuard();
+  const soldOut = item.isAvailable === false;
 
   return (
     <Pressable
@@ -46,7 +47,13 @@ export function MenuItemCard({ item, restaurant }: MenuItemCardProps) {
           <Text variant="bodyMedium" className="flex-1 text-gray-900" numberOfLines={1}>
             {item.name}
           </Text>
-          {item.isPopular ? (
+          {soldOut ? (
+            <View className="ml-2 rounded-full bg-gray-200 px-2 py-0.5">
+              <Text variant="caption" className="font-semibold text-gray-600">
+                {t('menu.soldOut')}
+              </Text>
+            </View>
+          ) : item.isPopular ? (
             <View className="ml-2 rounded-full bg-warning-100 px-2 py-0.5">
               <Text variant="caption" className="font-semibold text-warning-700">
                 {t('menu.popularBadge')}
@@ -75,6 +82,7 @@ export function MenuItemCard({ item, restaurant }: MenuItemCardProps) {
               image: item.image,
               priceMinor: item.priceMinor,
             }}
+            disabled={soldOut}
           />
         </View>
       </View>

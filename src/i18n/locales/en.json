@@ -51,6 +51,7 @@
     "title": "Menu",
     "empty": "This restaurant has not published a menu yet.",
     "popularBadge": "Popular",
+    "soldOut": "Sold out",
     "dish": "Dish",
     "quantity": "Quantity",
     "instructionLabel": "Special instructions",

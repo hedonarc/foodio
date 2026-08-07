@@ -5,6 +5,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { useTranslation } from 'react-i18next';
 
 import { Text } from '@/components/ui';
+import { cn } from '@/lib/cn';
 import { selectIsFromOtherRestaurant, selectPlainLineOf, useCartStore } from '@/stores/cart.store';
 import { colors } from '@/theme';
 
@@ -13,10 +14,12 @@ import type { AddableMenuItem, CartRestaurant } from '../types/cart.types';
 type AddToCartControlProps = {
   restaurant: CartRestaurant;
   item: AddableMenuItem;
+  /** Sold out: the add button stays visible but explains why it won't respond. */
+  disabled?: boolean;
 };
 
 /** A single add button until the item is in the cart, then a stepper. */
-export function AddToCartControl({ restaurant, item }: AddToCartControlProps) {
+export function AddToCartControl({ restaurant, item, disabled = false }: AddToCartControlProps) {
   const { t } = useTranslation();
 
   // Plain-line-only: a noted line is stepped from the cart, not the menu row.
@@ -52,12 +55,16 @@ export function AddToCartControl({ restaurant, item }: AddToCartControlProps) {
     return (
       <Pressable
         onPress={handleAdd}
+        disabled={disabled}
         accessibilityRole="button"
-        accessibilityLabel={t('cart.add', { name: item.name })}
+        accessibilityLabel={disabled ? t('menu.soldOut') : t('cart.add', { name: item.name })}
         hitSlop={8}
-        className="h-8 w-8 items-center justify-center rounded-full bg-primary-500 active:bg-primary-600"
+        className={cn(
+          'h-8 w-8 items-center justify-center rounded-full',
+          disabled ? 'bg-gray-200' : 'bg-primary-500 active:bg-primary-600',
+        )}
       >
-        <Ionicons name="add" size={18} color={colors.white} />
+        <Ionicons name="add" size={18} color={disabled ? colors.gray[400] : colors.white} />
       </Pressable>
     );
   }
