@@ -1,4 +1,4 @@
-import { Pressable, ScrollView, View } from 'react-native';
+import { FlatList, Pressable, View } from 'react-native';
 
 import { useRouter } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
@@ -21,7 +21,15 @@ export function OrdersScreen() {
   const router = useRouter();
   const guard = useNavigationGuard();
 
-  const { data: orders, isPending, error, refetch } = useOrders();
+  const {
+    data: orders,
+    isPending,
+    error,
+    refetch,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+  } = useOrders();
 
   return (
     <SafeAreaView edges={['top']} className="flex-1 bg-white">
@@ -43,10 +51,17 @@ export function OrdersScreen() {
       ) : null}
 
       {orders && orders.length > 0 ? (
-        <ScrollView contentContainerClassName="px-4 pb-8">
-          {orders.map((order) => (
+        <FlatList
+          data={orders}
+          keyExtractor={(order) => order.id}
+          contentContainerClassName="px-4 pb-8"
+          onEndReached={() => {
+            if (hasNextPage) void fetchNextPage();
+          }}
+          onEndReachedThreshold={0.5}
+          ListFooterComponent={isFetchingNextPage ? <LoadingState /> : null}
+          renderItem={({ item: order }) => (
             <Pressable
-              key={order.id}
               onPress={() => guard(() => router.push(`/order/${order.id}`))}
               accessibilityRole="button"
               className="mb-3 rounded-2xl border border-gray-100 bg-white p-4 active:bg-gray-50"
@@ -82,8 +97,8 @@ export function OrdersScreen() {
                 </Text>
               </View>
             </Pressable>
-          ))}
-        </ScrollView>
+          )}
+        />
       ) : null}
     </SafeAreaView>
   );

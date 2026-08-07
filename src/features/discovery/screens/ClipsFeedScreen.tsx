@@ -18,7 +18,7 @@ const keyOf = (item: FeedItem): string => (item.kind === 'clip' ? item.clip.id :
 export function ClipsFeedScreen() {
   const { t } = useTranslation();
   const reduceMotion = useReduceMotion();
-  const { data: clips, isPending, error, refetch } = useClips();
+  const { data: clips, isPending, error, refetch, fetchNextPage, hasNextPage } = useClips();
 
   const [activeIndex, setActiveIndex] = useState(0);
   const [pageHeight, setPageHeight] = useState(0);
@@ -66,9 +66,10 @@ export function ClipsFeedScreen() {
     );
   }
 
+  // The end card means the true end of the feed, not just this page's tail.
   const items: FeedItem[] = [
     ...clips.map((clip) => ({ kind: 'clip', clip }) as FeedItem),
-    { kind: 'end' },
+    ...(hasNextPage === false ? [{ kind: 'end' } as FeedItem] : []),
   ];
 
   return (
@@ -86,6 +87,10 @@ export function ClipsFeedScreen() {
           removeClippedSubviews
           viewabilityConfig={viewabilityConfig}
           onViewableItemsChanged={onViewableItemsChanged}
+          onEndReached={() => {
+            if (hasNextPage) void fetchNextPage();
+          }}
+          onEndReachedThreshold={0.5}
           getItemLayout={(_, index) => ({
             length: pageHeight,
             offset: pageHeight * index,

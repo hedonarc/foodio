@@ -1,8 +1,14 @@
-import { skipToken, useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import {
+  skipToken,
+  useInfiniteQuery,
+  useMutation,
+  useQuery,
+  useQueryClient,
+} from '@tanstack/react-query';
 
 import { queryKeys } from '@/constants/queryKeys';
 
-import { cancelOrder, fetchOrder, fetchOrders, placeOrder } from '../api/order.api';
+import { cancelOrder, fetchOrder, fetchOrdersPage, placeOrder } from '../api/order.api';
 import type { NewOrder } from '../types/order.types';
 import { isTerminal } from '../types/order.types';
 
@@ -21,10 +27,14 @@ export function useOrder(orderId: string | undefined) {
 }
 
 export function useOrders() {
-  return useQuery({
+  const query = useInfiniteQuery({
     queryKey: queryKeys.orders.list(),
-    queryFn: fetchOrders,
+    queryFn: ({ pageParam }) => fetchOrdersPage(pageParam),
+    initialPageParam: undefined as string | undefined,
+    getNextPageParam: (lastPage) => lastPage.nextCursor ?? undefined,
   });
+
+  return { ...query, data: query.data?.pages.flatMap((page) => page.items) };
 }
 
 export function usePlaceOrder() {
