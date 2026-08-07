@@ -1,4 +1,6 @@
 import { apiClient } from '@/api/client';
+import type { Page } from '@/api/page';
+import { parsePage } from '@/api/page';
 import { parseResponse } from '@/api/parse';
 
 import type { NewOrder, Order } from '../types/order.types';
@@ -22,9 +24,12 @@ export async function fetchOrder(orderId: string): Promise<Order> {
   return parseResponse(orderSchema, data, `GET ${endpoint}`);
 }
 
-export async function fetchOrders(): Promise<Order[]> {
-  const { data } = await apiClient.get<unknown>('/orders?_sort=placedAt&_order=desc');
-  return parseResponse(orderListSchema, data, 'GET /orders');
+export async function fetchOrdersPage(cursor?: string): Promise<Page<Order>> {
+  const cursorParam = cursor ? `&cursor=${encodeURIComponent(cursor)}` : '';
+  const { data, headers } = await apiClient.get<unknown>(
+    `/orders?_sort=placedAt&_order=desc${cursorParam}`,
+  );
+  return parsePage(orderListSchema, data, headers['x-next-cursor'], 'GET /orders');
 }
 
 export async function cancelOrder(orderId: string): Promise<Order> {
