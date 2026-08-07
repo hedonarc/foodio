@@ -33,6 +33,7 @@ const MESSAGES = {
   401: 'Not authenticated.',
   403: 'You do not work here.',
   404: 'Not found.',
+  409: 'This order has moved on. Pull to refresh.',
   500: 'Something went wrong on our end.',
   503: 'The kitchen is temporarily unreachable.',
 };
@@ -60,6 +61,8 @@ const SETTLED = new Set(['delivered', 'rejected', 'cancelled']);
 function progressed(order) {
   if (!order || typeof order !== 'object' || !order.placedAt) return order;
   if (SETTLED.has(order.status)) return order;
+  // Once staff have driven this order, the invisible kitchen lets go of it.
+  if (order.statusLocked) return order;
 
   const elapsedSeconds = (Date.now() - Date.parse(order.placedAt)) / 1000;
   const reached = TIMELINE.filter((step) => elapsedSeconds >= step.after).pop();
@@ -82,6 +85,20 @@ const findPerson = (req, id) =>
 const isOrdersRead = (req) => req.method === 'GET' && req.path.startsWith('/orders');
 const isOrderItem = (req) => /^\/orders\/[^/]+$/.test(req.path);
 const isOrderCreate = (req) => req.method === 'POST' && req.path.startsWith('/orders');
+const isOrderPatch = (req) => req.method === 'PATCH' && isOrderItem(req);
+
+/** Mirror of the backend's `order-status.ts` TRANSITIONS. */
+const TRANSITIONS = {
+  placed: ['accepted', 'rejected', 'cancelled'],
+  accepted: ['preparing', 'cancelled'],
+  preparing: ['ready'],
+  ready: ['out_for_delivery'],
+  out_for_delivery: ['delivered', 'delivery_failed'],
+  delivered: [],
+  delivery_failed: [],
+  rejected: [],
+  cancelled: [],
+};
 
 module.exports = function mockApi(req, res, next) {
   // A session is issued, never verified — but it is issued by the server.
@@ -132,6 +149,16 @@ module.exports = function mockApi(req, res, next) {
       else req.query.customerId = personId;
     }
 
+    // Staff see the customer's phone, so a rider can call about a wrong gate
+    // number. Customers reading their own orders never get this field.
+    const phoneOf = (order) =>
+      entitled ? (findPerson(req, order.customerId)?.phone ?? undefined) : undefined;
+    const serve = (order) => {
+      const shaped = progressed(order);
+      const phone = shaped && phoneOf(shaped);
+      return phone ? { ...shaped, customerPhone: phone } : shaped;
+    };
+
     const send = res.jsonp.bind(res);
     res.jsonp = (body) => {
       // Someone else's order is a 404, not an empty 200 the client must interpret.
@@ -139,8 +166,25 @@ module.exports = function mockApi(req, res, next) {
         res.status(404);
         return send(errorBody(404));
       }
-      return send(Array.isArray(body) ? body.map(progressed) : progressed(body));
+      return send(Array.isArray(body) ? body.map(serve) : serve(body));
     };
+  }
+
+  // Legality lives server-side, exactly like the real backend: an illegal
+  // transition is a 409, and a staff-driven order stops auto-progressing.
+  if (isOrderPatch(req) && req.body && typeof req.body === 'object' && req.body.status) {
+    const orderId = req.path.split('/')[2];
+    const stored = req.app.db.get('orders').find({ id: orderId }).value();
+
+    if (stored) {
+      const current = progressed(stored).status;
+      const to = req.body.status;
+      if (current !== to && !(TRANSITIONS[current] ?? []).includes(to)) {
+        respondLater(res, 409, errorBody(409));
+        return;
+      }
+      req.body.statusLocked = true;
+    }
   }
 
   // The server owns status, placedAt and whose order it is.
