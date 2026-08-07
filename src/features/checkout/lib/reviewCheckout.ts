@@ -81,14 +81,8 @@ export function reviewCheckout(input: CheckoutInput): CheckoutReview {
   if (!address) {
     blockers.push({ kind: 'no-address' });
   } else if (restaurant) {
-    const distanceMeters = Math.round(distanceBetween(address, restaurantCoordinates(restaurant)));
-    if (distanceMeters > restaurant.deliveryRadiusMeters) {
-      blockers.push({
-        kind: 'out-of-range',
-        distanceMeters,
-        radiusMeters: restaurant.deliveryRadiusMeters,
-      });
-    }
+    const outOfRange = deliverabilityBlocker(address, restaurant);
+    if (outOfRange) blockers.push(outOfRange);
   }
 
   const reprices = repricedLines(lines, currentPrices);
@@ -107,3 +101,27 @@ const restaurantCoordinates = (restaurant: Restaurant): Coordinates => ({
   latitude: restaurant.latitude,
   longitude: restaurant.longitude,
 });
+
+/**
+ * Prefers the server's answer (`isDeliverable`/`distanceMeters`, sent when the
+ * list request carried coordinates) over the client's own Haversine estimate.
+ * Falls back to the client computation only when the server did not weigh in.
+ */
+function deliverabilityBlocker(
+  address: DeliveryAddress,
+  restaurant: Restaurant,
+): CheckoutBlocker | null {
+  if (restaurant.isDeliverable !== undefined) {
+    if (restaurant.isDeliverable) return null;
+
+    // distanceMeters travels alongside isDeliverable in practice; this
+    // fallback only guards against a server sending one without the other.
+    const distanceMeters = Math.round(restaurant.distanceMeters ?? restaurant.deliveryRadiusMeters);
+    return { kind: 'out-of-range', distanceMeters, radiusMeters: restaurant.deliveryRadiusMeters };
+  }
+
+  const distanceMeters = Math.round(distanceBetween(address, restaurantCoordinates(restaurant)));
+  if (distanceMeters <= restaurant.deliveryRadiusMeters) return null;
+
+  return { kind: 'out-of-range', distanceMeters, radiusMeters: restaurant.deliveryRadiusMeters };
+}

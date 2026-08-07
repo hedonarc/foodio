@@ -1,7 +1,16 @@
+import type { Coordinates } from '@/utils/distance';
+
 export const queryKeys = {
   restaurants: {
     all: ['restaurants'] as const,
-    list: (query?: string) => [...queryKeys.restaurants.all, 'list', query ?? ''] as const,
+    list: (query?: string, coordinates?: Coordinates) =>
+      [
+        ...queryKeys.restaurants.all,
+        'list',
+        query ?? '',
+        coordinates?.latitude ?? null,
+        coordinates?.longitude ?? null,
+      ] as const,
     detail: (restaurantId: string) =>
       [...queryKeys.restaurants.all, 'detail', restaurantId] as const,
     menu: (restaurantId: string) => [...queryKeys.restaurants.all, 'menu', restaurantId] as const,

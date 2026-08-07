@@ -141,6 +141,30 @@ describe('delivery range', () => {
     const blockers = kinds(review({ restaurant: undefined }).blockers);
     expect(blockers).not.toContain('out-of-range');
   });
+
+  it('blocks on the server distances when the server says undeliverable', () => {
+    const result = review({
+      restaurant: restaurant({ isDeliverable: false, distanceMeters: 9000 }),
+    });
+
+    const blocker = result.blockers.find((b) => b.kind === 'out-of-range');
+    expect(blocker).toBeDefined();
+    if (blocker?.kind !== 'out-of-range') throw new Error('expected out-of-range');
+
+    expect(blocker.distanceMeters).toBe(9000);
+    expect(blocker.radiusMeters).toBe(4000);
+  });
+
+  it('trusts the server over its own math when the server says deliverable', () => {
+    // Berkeley — outside the 4km radius by the client's own Haversine math,
+    // so this only passes if the server's isDeliverable wins the disagreement.
+    const result = review({
+      address: { ...nearbyAddress, latitude: 37.8715, longitude: -122.273 },
+      restaurant: restaurant({ isDeliverable: true }),
+    });
+
+    expect(kinds(result.blockers)).not.toContain('out-of-range');
+  });
 });
 
 describe('price changes', () => {

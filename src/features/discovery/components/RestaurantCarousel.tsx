@@ -3,6 +3,7 @@ import { FlatList, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 
 import { EmptyState, ErrorState, LoadingState } from '@/components/shared';
+import { useActiveAddress } from '@/features/checkout/hooks/useActiveAddress';
 import { useRestaurants } from '@/features/restaurants';
 
 import { RestaurantPreviewCard } from './RestaurantPreviewCard';
@@ -15,7 +16,11 @@ type RestaurantCarouselProps = {
 /** Owns its query so a failure here does not blank the whole screen. */
 export function RestaurantCarousel({ query }: RestaurantCarouselProps) {
   const { t } = useTranslation();
-  const { data: restaurants, isPending, error, refetch } = useRestaurants(query);
+  const { address } = useActiveAddress();
+  const coordinates = address
+    ? { latitude: address.latitude, longitude: address.longitude }
+    : undefined;
+  const { data: restaurants, isPending, error, refetch } = useRestaurants(query, coordinates);
 
   const isSearching = Boolean(query);
   const isEmpty = !isPending && !error && restaurants?.length === 0;

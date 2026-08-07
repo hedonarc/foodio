@@ -37,6 +37,7 @@
     "notFound": "We could not find that restaurant.",
     "open": "Open now",
     "closed": "Closed",
+    "outOfRange": "Out of delivery range",
     "freeDelivery": "Free delivery",
     "deliveryFee": "{{fee}} delivery",
     "deliveryEstimate": "{{min}}–{{max}} min",
