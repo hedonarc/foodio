@@ -1,5 +1,15 @@
 # Changelog
 
+## [1.2.0](https://github.com/hedonarc/foodio/compare/v1.1.0...v1.2.0) (2026-08-07)
+
+
+### Features
+
+* **notifications:** push token registration, foreground delivery, and deep-link on tap ([f03d8b9](https://github.com/hedonarc/foodio/commit/f03d8b936b72a0774f6e73b73e87995336df09ea))
+* **notifications:** register the push token the app never sent ([8f0c563](https://github.com/hedonarc/foodio/commit/8f0c5630dc75e5c6f13f5f80dee426a1690f87ae))
+* **orders,clips:** cursor-paginate past the 100/50-row cap ([268ab0c](https://github.com/hedonarc/foodio/commit/268ab0c2d4ce9d5748655868f6cfa06104a39643))
+* **pagination:** cursor-paginate orders and clips instead of a hard page cap ([bc3afdd](https://github.com/hedonarc/foodio/commit/bc3afddd47fdb64707ee6ecb86124938c9031649))
+
 ## [1.1.0](https://github.com/hedonarc/foodio/compare/v1.0.0...v1.1.0) (2026-08-07)
 
 
