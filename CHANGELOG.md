@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.3.0](https://github.com/hedonarc/foodio/compare/v1.2.0...v1.3.0) (2026-08-07)
+
+
+### Features
+
+* **restaurants:** the Deliverable Query — mark restaurants that can't reach you ([0ca1414](https://github.com/hedonarc/foodio/commit/0ca1414a4866319c1ac5b500239541fc203eace7))
+* **restaurants:** the Deliverable Query — server-driven delivery range ([23614a9](https://github.com/hedonarc/foodio/commit/23614a9715d18358eef7653efaa0f58c19ef8af6))
+
 ## [1.2.0](https://github.com/hedonarc/foodio/compare/v1.1.0...v1.2.0) (2026-08-07)
 
 
