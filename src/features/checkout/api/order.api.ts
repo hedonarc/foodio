@@ -24,11 +24,6 @@ export async function fetchOrder(orderId: string): Promise<Order> {
   return parseResponse(orderSchema, data, `GET ${endpoint}`);
 }
 
-export async function fetchOrders(): Promise<Order[]> {
-  const { data } = await apiClient.get<unknown>('/orders?_sort=placedAt&_order=desc');
-  return parseResponse(orderListSchema, data, 'GET /orders');
-}
-
 export async function fetchOrdersPage(cursor?: string): Promise<Page<Order>> {
   const cursorParam = cursor ? `&cursor=${encodeURIComponent(cursor)}` : '';
   const { data, headers } = await apiClient.get<unknown>(
