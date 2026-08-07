@@ -1,4 +1,4 @@
-import { ScrollView, View } from 'react-native';
+import { FlatList, View } from 'react-native';
 
 import { Ionicons } from '@expo/vector-icons';
 
@@ -30,7 +30,15 @@ export function WorkOrdersScreen() {
   const role = useSessionStore((state) => state.role);
 
   const restaurantId = role.kind === 'customer' ? undefined : role.restaurantId;
-  const { data: orders, isPending, error, refetch } = useRestaurantOrders(restaurantId);
+  const {
+    data: orders,
+    isPending,
+    error,
+    refetch,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+  } = useRestaurantOrders(restaurantId);
   const { data: restaurants } = useRestaurants();
 
   const restaurantName =
@@ -71,11 +79,17 @@ export function WorkOrdersScreen() {
       ) : null}
 
       {visible.length > 0 ? (
-        <ScrollView contentContainerClassName="px-4 pb-8">
-          {visible.map((order) => (
-            <OrderRow key={order.id} order={order} language={i18n.language} />
-          ))}
-        </ScrollView>
+        <FlatList
+          data={visible}
+          keyExtractor={(order) => order.id}
+          contentContainerClassName="px-4 pb-8"
+          onEndReached={() => {
+            if (hasNextPage) void fetchNextPage();
+          }}
+          onEndReachedThreshold={0.5}
+          ListFooterComponent={isFetchingNextPage ? <LoadingState /> : null}
+          renderItem={({ item: order }) => <OrderRow order={order} language={i18n.language} />}
+        />
       ) : null}
     </SafeAreaView>
   );

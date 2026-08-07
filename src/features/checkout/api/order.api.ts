@@ -32,6 +32,17 @@ export async function fetchOrdersPage(cursor?: string): Promise<Page<Order>> {
   return parsePage(orderListSchema, data, headers['x-next-cursor'], 'GET /orders');
 }
 
+export async function fetchRestaurantOrdersPage(
+  restaurantId: string,
+  cursor?: string,
+): Promise<Page<Order>> {
+  const cursorParam = cursor ? `&cursor=${encodeURIComponent(cursor)}` : '';
+  const { data, headers } = await apiClient.get<unknown>(
+    `/orders?forRestaurantId=${encodeURIComponent(restaurantId)}&_sort=placedAt&_order=desc${cursorParam}`,
+  );
+  return parsePage(orderListSchema, data, headers['x-next-cursor'], 'GET /orders?forRestaurantId');
+}
+
 export async function cancelOrder(orderId: string): Promise<Order> {
   const endpoint = `/orders/${orderId}`;
   const { data } = await apiClient.patch<unknown>(endpoint, { status: 'cancelled' });

@@ -1,23 +1,22 @@
-import { skipToken, useQuery } from '@tanstack/react-query';
+import { skipToken, useInfiniteQuery } from '@tanstack/react-query';
 
-import { apiClient } from '@/api/client';
-import { parseResponse } from '@/api/parse';
 import { queryKeys } from '@/constants/queryKeys';
-import { orderListSchema } from '@/features/checkout/types/order.types';
+import { fetchRestaurantOrdersPage } from '@/features/checkout/api/order.api';
 
 /**
  * The restaurant's orders, not the signed-in person's. Entitlement is checked
  * server-side from the token — this param only says which of your restaurants.
  */
-async function fetchRestaurantOrders(restaurantId: string) {
-  const endpoint = `/orders?forRestaurantId=${encodeURIComponent(restaurantId)}&_sort=placedAt&_order=desc`;
-  const { data } = await apiClient.get<unknown>(endpoint);
-  return parseResponse(orderListSchema, data, 'GET /orders?forRestaurantId');
-}
-
 export function useRestaurantOrders(restaurantId: string | undefined) {
-  return useQuery({
+  const query = useInfiniteQuery({
     queryKey: queryKeys.orders.forRestaurant(restaurantId ?? ''),
-    queryFn: restaurantId ? () => fetchRestaurantOrders(restaurantId) : skipToken,
+    queryFn: restaurantId
+      ? ({ pageParam }: { pageParam: string | undefined }) =>
+          fetchRestaurantOrdersPage(restaurantId, pageParam)
+      : skipToken,
+    initialPageParam: undefined as string | undefined,
+    getNextPageParam: (lastPage) => lastPage.nextCursor ?? undefined,
   });
+
+  return { ...query, data: query.data?.pages.flatMap((page) => page.items) };
 }
