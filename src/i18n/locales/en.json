@@ -225,6 +225,51 @@
   "work": {
     "kitchenSubtitle": "Incoming orders",
     "deliverySubtitle": "Ready for delivery",
-    "noOrders": "No orders right now."
+    "noOrders": "No orders right now.",
+    "minutes": "{{count}} min",
+    "itemCount_one": "{{count}} item",
+    "itemCount_other": "{{count}} items",
+    "callCustomer": "Call customer",
+    "callFailed": "Could not open the phone app.",
+    "noteLabel": "Note for the customer (optional)",
+    "notePlaceholder": "Anything they should know",
+    "groups": {
+      "new": "New",
+      "inKitchen": "In the kitchen",
+      "readyToLeave": "Ready",
+      "toPickUp": "To pick up",
+      "outWithYou": "Out with you"
+    },
+    "actions": {
+      "accept": "Accept",
+      "startPreparing": "Start preparing",
+      "markReady": "Ready",
+      "reject": "Reject order",
+      "pickedUp": "Picked up",
+      "delivered": "Delivered",
+      "couldNotDeliver": "Couldn't deliver"
+    },
+    "reject": {
+      "title": "Reject this order?",
+      "reasons": {
+        "out_of_stock": "Out of stock",
+        "closing": "Closing soon",
+        "too_busy": "Too busy",
+        "other": "Something else"
+      }
+    },
+    "deliver": {
+      "title": "Order delivered?",
+      "message": "Handed over and cash collected."
+    },
+    "fail": {
+      "title": "Couldn't deliver?",
+      "reasons": {
+        "no_answer": "No answer at the door",
+        "wrong_address": "Wrong address",
+        "refused": "Order refused",
+        "other": "Something else"
+      }
+    }
   }
 }

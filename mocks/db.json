@@ -1842,6 +1842,7 @@
     {
       "id": "aisha",
       "displayName": "Aisha K.",
+      "phone": "+923001230001",
       "entitlements": []
     },
     {
@@ -1881,21 +1882,25 @@
     {
       "id": "maria",
       "displayName": "Maria G.",
+      "phone": "+923001230002",
       "entitlements": []
     },
     {
       "id": "james",
       "displayName": "James T.",
+      "phone": "+923001230003",
       "entitlements": []
     },
     {
       "id": "aiko",
       "displayName": "Aiko N.",
+      "phone": "+923001230004",
       "entitlements": []
     },
     {
       "id": "derek",
       "displayName": "Derek P.",
+      "phone": "+923001230005",
       "entitlements": []
     }
   ]
