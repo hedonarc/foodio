@@ -1,5 +1,19 @@
 # Changelog
 
+## [1.1.0](https://github.com/hedonarc/foodio/compare/v1.0.0...v1.1.0) (2026-08-07)
+
+
+### Features
+
+* **checkout:** real, account-backed delivery addresses ([#73](https://github.com/hedonarc/foodio/issues/73)) ([20eb998](https://github.com/hedonarc/foodio/commit/20eb9987395b64952e9e4be9e0ea1fb145e4aedb))
+* **identity:** real phone+OTP auth, and idempotent order placement ([#70](https://github.com/hedonarc/foodio/issues/70)) ([36c2bf8](https://github.com/hedonarc/foodio/commit/36c2bf8f58e5b0cc94f7007c3b689bcf1e5d4c74))
+* **menu:** sold-out items are visible and cannot be ordered ([#74](https://github.com/hedonarc/foodio/issues/74)) ([2e13539](https://github.com/hedonarc/foodio/commit/2e13539c9edb8b77719d9ab9976956234a8e487e))
+
+
+### Bug Fixes
+
+* **identity:** a blank name silently blocked every returning sign-in ([#75](https://github.com/hedonarc/foodio/issues/75)) ([db005a7](https://github.com/hedonarc/foodio/commit/db005a777dd1d027c5cec42384662b43ce335420))
+
 ## 1.0.0 (2026-08-02)
 
 
