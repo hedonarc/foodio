@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { Pressable, ScrollView, View } from 'react-native';
 
 import { useRouter } from 'expo-router';
@@ -14,6 +15,7 @@ import { useAddressStore } from '@/stores/address.store';
 import { useCartStore } from '@/stores/cart.store';
 import { colors } from '@/theme';
 import { formatMoney } from '@/utils/currency';
+import { generateIdempotencyKey } from '@/utils/idempotencyKey';
 
 import { CheckoutBlockers } from '../components/CheckoutBlockers';
 import { usePlaceOrder } from '../hooks/useOrders';
@@ -33,6 +35,11 @@ export function CheckoutScreen() {
   const { data: restaurant } = useRestaurant(cartRestaurant?.id);
   const { data: categories } = useRestaurantMenu(cartRestaurant?.id);
   const placeOrder = usePlaceOrder();
+
+  // One key for the life of this screen: generated at intent, survives every
+  // retry of the same tap, thrown away with the screen once the order lands.
+  // See backend ADR-0011.
+  const [idempotencyKey] = useState(generateIdempotencyKey);
 
   const currency = cartRestaurant?.currency ?? 'USD';
   const money = (minor: number) => formatMoney(minor, currency, i18n.language);
@@ -78,12 +85,15 @@ export function CheckoutScreen() {
       paymentMethod: 'cash_on_delivery',
     };
 
-    placeOrder.mutate(order, {
-      onSuccess: (placed) => {
-        clearCart();
-        router.replace(`/order/${placed.id}`);
+    placeOrder.mutate(
+      { order, idempotencyKey },
+      {
+        onSuccess: (placed) => {
+          clearCart();
+          router.replace(`/order/${placed.id}`);
+        },
       },
-    });
+    );
   };
 
   return (

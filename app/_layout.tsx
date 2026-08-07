@@ -5,8 +5,7 @@ import { Stack } from 'expo-router';
 
 import { SafeAreaProvider, useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import { setAuthTokenSource } from '@/api/client';
-import { fetchPeople } from '@/features/identity';
+import { setAuthTokenSource, setUnauthorizedHandler } from '@/api/client';
 import { QueryProvider } from '@/providers/QueryProvider';
 import { OnboardingStep, useOnboardingStore } from '@/stores/onboarding.store';
 import { useSessionStore } from '@/stores/session.store';
@@ -17,7 +16,9 @@ import '../global.css';
 import '@/i18n';
 
 // One place attaches identity to requests; no call site asserts who is asking.
-setAuthTokenSource(() => useSessionStore.getState().token);
+setAuthTokenSource(() => useSessionStore.getState().accessToken);
+// One place rotates an expired token; every other 401 stays a real error.
+setUnauthorizedHandler(() => useSessionStore.getState().refreshTokens());
 
 export default function RootLayout() {
   return (
@@ -51,11 +52,9 @@ function RootNavigator() {
   useEffect(() => {
     if (sessionHydrated) return;
 
-    // Resolve the token through the server: a stored token is a claim, not proof.
-    void hydrateSession(async (token) => {
-      const people = await fetchPeople().catch(() => []);
-      return people.find((person) => `person:${person.id}` === token) ?? null;
-    });
+    // A stored token is a claim, not proof — hydrate resolves it through the
+    // server, and its own 401 handling recovers a merely-expired access token.
+    void hydrateSession();
   }, [sessionHydrated, hydrateSession]);
 
   if (!isHydrated || !sessionHydrated) {

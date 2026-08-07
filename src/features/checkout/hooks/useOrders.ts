@@ -3,6 +3,7 @@ import { skipToken, useMutation, useQuery, useQueryClient } from '@tanstack/reac
 import { queryKeys } from '@/constants/queryKeys';
 
 import { cancelOrder, fetchOrder, fetchOrders, placeOrder } from '../api/order.api';
+import type { NewOrder } from '../types/order.types';
 import { isTerminal } from '../types/order.types';
 
 /** Polls while the order is live — status advances without the app asking. */
@@ -30,7 +31,8 @@ export function usePlaceOrder() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: placeOrder,
+    mutationFn: ({ order, idempotencyKey }: { order: NewOrder; idempotencyKey: string }) =>
+      placeOrder(order, idempotencyKey),
     onSuccess: (order) => {
       queryClient.setQueryData(queryKeys.orders.detail(order.id), order);
       void queryClient.invalidateQueries({ queryKey: queryKeys.orders.all });
