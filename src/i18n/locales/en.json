@@ -250,6 +250,10 @@
       "orders": "Orders",
       "menu": "Menu"
     },
+    "queueTabs": {
+      "active": "Active",
+      "done": "Done"
+    },
     "menu": {
       "subtitle": "Flip a dish off when it runs out",
       "availabilityFor": "Availability for {{name}}"
@@ -269,7 +273,8 @@
       "inKitchen": "In the kitchen",
       "readyToLeave": "Ready",
       "toPickUp": "To pick up",
-      "outWithYou": "Out with you"
+      "outWithYou": "Out with you",
+      "done": "Done"
     },
     "actions": {
       "accept": "Accept",
@@ -301,6 +306,7 @@
         "refused": "Order refused",
         "other": "Something else"
       }
-    }
+    },
+    "noneDone": "Nothing finished yet."
   }
 }
