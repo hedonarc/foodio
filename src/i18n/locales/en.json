@@ -228,7 +228,7 @@
     "chipHint": "Opens your account and role menu",
     "phoneHint": "Enter your phone number and we will text you a code.",
     "phoneLabel": "Phone number",
-    "phonePlaceholder": "+92 300 1234567",
+    "phonePlaceholder": "300 1234567",
     "sendCode": "Send code",
     "sendingCode": "Sending…",
     "codeHint": "Enter the 6-digit code sent to {{phone}}.",
@@ -243,6 +243,12 @@
     "errors": {
       "phone": "Enter a phone number including its country code, e.g. +92 300 1234567.",
       "code": "Enter the 6-digit code."
+    },
+    "country": {
+      "title": "Select country",
+      "search": "Search country or code",
+      "noMatch": "No country matches that.",
+      "change": "Change country"
     }
   },
   "work": {
