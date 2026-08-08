@@ -82,6 +82,8 @@ function personIdFrom(req) {
 const findPerson = (req, id) =>
   (req.app.db.get('people').value() ?? []).find((person) => person.id === id) ?? null;
 
+const AVAILABILITY_PATH = /^\/restaurants\/([^/]+)\/menu-items\/([^/]+)\/availability$/;
+
 const isOrdersRead = (req) => req.method === 'GET' && req.path.startsWith('/orders');
 const isOrderItem = (req) => /^\/orders\/[^/]+$/.test(req.path);
 const isOrderCreate = (req) => req.method === 'POST' && req.path.startsWith('/orders');
@@ -121,6 +123,43 @@ module.exports = function mockApi(req, res, next) {
   // Only reads are sampled. Randomly losing a write would corrupt db.json.
   if (FAIL_RATE > 0 && req.method === 'GET' && Math.random() < FAIL_RATE) {
     respondLater(res, 503, errorBody(503));
+    return;
+  }
+
+  // "Sold out", said in one request. Mirrors the backend's tenant scope
+  // exactly: authenticated + entitled at this restaurant, no capability
+  // narrowing — `setAvailability` calls `narrowToRestaurant`, nothing more.
+  const availability = req.method === 'PATCH' ? AVAILABILITY_PATH.exec(req.path) : null;
+  if (availability) {
+    const [, restaurantId, itemId] = availability;
+
+    const personId = personIdFrom(req);
+    if (!personId) {
+      respondLater(res, 401, errorBody(401));
+      return;
+    }
+
+    const person = findPerson(req, personId);
+    const entitled = (person?.entitlements ?? []).some((e) => e.restaurantId === restaurantId);
+    if (!entitled) {
+      respondLater(res, 403, errorBody(403));
+      return;
+    }
+
+    if (typeof req.body?.isAvailable !== 'boolean') {
+      respondLater(res, 400, errorBody(400));
+      return;
+    }
+
+    const items = req.app.db.get('menuItems');
+    if (!items.find({ id: itemId, restaurantId }).value()) {
+      respondLater(res, 404, errorBody(404));
+      return;
+    }
+
+    // `.write()` resolves async; the in-memory value is already updated.
+    void items.find({ id: itemId }).assign({ isAvailable: req.body.isAvailable }).write();
+    respondLater(res, 200, items.find({ id: itemId }).value());
     return;
   }
 

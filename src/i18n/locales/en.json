@@ -223,6 +223,14 @@
     }
   },
   "work": {
+    "tabs": {
+      "orders": "Orders",
+      "menu": "Menu"
+    },
+    "menu": {
+      "subtitle": "Flip a dish off when it runs out",
+      "availabilityFor": "Availability for {{name}}"
+    },
     "kitchenSubtitle": "Incoming orders",
     "deliverySubtitle": "Ready for delivery",
     "noOrders": "No orders right now.",
