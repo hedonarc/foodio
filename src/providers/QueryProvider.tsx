@@ -4,6 +4,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import type { PropsWithChildren } from 'react';
 
 import { ApiError } from '@/api/errors';
+import { setQueryClient } from '@/api/queryCache';
 
 const MAX_RETRIES = 2;
 
@@ -27,6 +28,7 @@ function createQueryClient(): QueryClient {
 export function QueryProvider({ children }: PropsWithChildren) {
   // In state so Fast Refresh cannot swap the cache mid-session.
   const [queryClient] = useState(createQueryClient);
+  setQueryClient(queryClient);
 
   return <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>;
 }
