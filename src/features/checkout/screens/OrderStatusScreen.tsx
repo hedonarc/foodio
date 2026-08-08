@@ -11,6 +11,7 @@ import { colors } from '@/theme';
 import { formatMoney } from '@/utils/currency';
 
 import { OrderStatusTimeline } from '../components/OrderStatusTimeline';
+import { RateOrderAffordance } from '../components/RateOrderAffordance';
 import { useCancelOrder, useOrder } from '../hooks/useOrders';
 import { isCancellable } from '../types/order.types';
 
@@ -114,6 +115,14 @@ export function OrderStatusScreen() {
             </Text>
           </View>
         </View>
+
+        {order.status === 'delivered' ? (
+          <RateOrderAffordance
+            orderId={order.id}
+            restaurantName={order.restaurantName}
+            variant="button"
+          />
+        ) : null}
 
         {isCancellable(order.status) ? (
           <Button

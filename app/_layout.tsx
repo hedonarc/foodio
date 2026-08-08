@@ -120,7 +120,8 @@ function RootNavigator() {
       <Stack.Protected guard={hasOnboarded && role.kind === 'customer'}>
         {/* No root insets: the tab bar owns the bottom edge and each tab its top. */}
         <Stack.Screen name="(tabs)" options={{ contentStyle: { backgroundColor: colors.white } }} />
-        <Stack.Screen name="restaurant/[id]" />
+        <Stack.Screen name="restaurant/[id]/index" />
+        <Stack.Screen name="restaurant/[id]/reviews" />
         <Stack.Screen name="menu-item/[id]" />
         <Stack.Screen name="sign-in" options={{ presentation: 'modal' }} />
         {/* Full-bleed video: black, no insets — the screen places its own controls. */}

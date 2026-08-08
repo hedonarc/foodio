@@ -13,6 +13,7 @@ import { colors } from '@/theme';
 import { formatMoney } from '@/utils/currency';
 import { formatDate } from '@/utils/date';
 
+import { RateOrderAffordance } from '../components/RateOrderAffordance';
 import { useOrders } from '../hooks/useOrders';
 import { isTerminal } from '../types/order.types';
 
@@ -96,6 +97,14 @@ export function OrdersScreen() {
                   {formatDate(order.placedAt, i18n.language)}
                 </Text>
               </View>
+
+              {order.status === 'delivered' ? (
+                <RateOrderAffordance
+                  orderId={order.id}
+                  restaurantName={order.restaurantName}
+                  variant="row"
+                />
+              ) : null}
             </Pressable>
           )}
         />

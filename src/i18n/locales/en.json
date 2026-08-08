@@ -46,7 +46,10 @@
     "ratingOutOfFive": "Rated {{rating}} out of 5",
     "closedAllDay": "Closed",
     "clipsFromRestaurant": "From {{name}}",
-    "clipsFromCustomers": "From customers"
+    "clipsFromCustomers": "From customers",
+    "seeAllReviews": "See all",
+    "reviewsTitle": "Reviews",
+    "noReviews": "No reviews yet."
   },
   "menu": {
     "title": "Menu",
@@ -170,6 +173,20 @@
   "orders": {
     "title": "Your orders",
     "empty": "You have not ordered anything yet."
+  },
+  "review": {
+    "rateOrder": "Rate your order",
+    "rated": "Rated",
+    "sheetTitle": "How was your order?",
+    "commentLabel": "Comment (optional)",
+    "commentPlaceholder": "What should other people know?",
+    "submit": "Submit review",
+    "starLabel_one": "{{count}} star",
+    "starLabel_other": "{{count}} stars",
+    "errors": {
+      "rating": "Tap a star to rate.",
+      "comment": "That is too long."
+    }
   },
   "clips": {
     "title": "Clips",

@@ -38,8 +38,8 @@ const MESSAGES = {
   503: 'The kitchen is temporarily unreachable.',
 };
 
-function errorBody(status) {
-  return { error: { status, message: MESSAGES[status] ?? 'Request failed.' } };
+function errorBody(status, message) {
+  return { error: { status, message: message ?? MESSAGES[status] ?? 'Request failed.' } };
 }
 
 /**
@@ -83,6 +83,18 @@ const findPerson = (req, id) =>
   (req.app.db.get('people').value() ?? []).find((person) => person.id === id) ?? null;
 
 const AVAILABILITY_PATH = /^\/restaurants\/([^/]+)\/menu-items\/([^/]+)\/availability$/;
+const ORDER_REVIEW_PATH = /^\/orders\/([^/]+)\/review$/;
+const RESTAURANT_REVIEWS_PATH = /^\/restaurants\/([^/]+)\/reviews$/;
+const RESTAURANT_ITEM_PATH = /^\/restaurants\/[^/]+$/;
+
+/** Newest first — the sort the backend's reviews list and embed both use. */
+const reviewsFor = (req, restaurantId) =>
+  (req.app.db.get('reviews').value() ?? [])
+    .filter((review) => review.restaurantId === restaurantId)
+    .sort((a, b) => Date.parse(b.postedAt) - Date.parse(a.postedAt));
+
+const REVIEWS_PAGE_SIZE = 5;
+const EMBEDDED_REVIEWS = 5;
 
 const isOrdersRead = (req) => req.method === 'GET' && req.path.startsWith('/orders');
 const isOrderItem = (req) => /^\/orders\/[^/]+$/.test(req.path);
@@ -160,6 +172,107 @@ module.exports = function mockApi(req, res, next) {
     // `.write()` resolves async; the in-memory value is already updated.
     void items.find({ id: itemId }).assign({ isAvailable: req.body.isAvailable }).write();
     respondLater(res, 200, items.find({ id: itemId }).value());
+    return;
+  }
+
+  // Every review the restaurant has, a page at a time. The cursor is the id
+  // of the last row served — opaque to the client, carried forward verbatim.
+  const reviewsRead = req.method === 'GET' ? RESTAURANT_REVIEWS_PATH.exec(req.path) : null;
+  if (reviewsRead) {
+    const all = reviewsFor(req, reviewsRead[1]);
+    const cursor = typeof req.query.cursor === 'string' ? req.query.cursor : '';
+    const after = cursor ? all.findIndex((review) => review.id === cursor) : -1;
+    const start = after >= 0 ? after + 1 : 0;
+    const page = all.slice(start, start + REVIEWS_PAGE_SIZE);
+    const last = page[page.length - 1];
+
+    if (last && start + page.length < all.length) {
+      res.set('Access-Control-Expose-Headers', 'X-Next-Cursor');
+      res.set('X-Next-Cursor', last.id);
+    }
+    respondLater(res, 200, page);
+    return;
+  }
+
+  // The detail's embedded reviews[] are the newest few real ones — served from
+  // the reviews collection, exactly as the backend serves them from its table.
+  if (req.method === 'GET' && RESTAURANT_ITEM_PATH.test(req.path)) {
+    const send = res.jsonp.bind(res);
+    res.jsonp = (body) =>
+      send(
+        body && body.id
+          ? { ...body, reviews: reviewsFor(req, body.id).slice(0, EMBEDDED_REVIEWS) }
+          : body,
+      );
+  }
+
+  // A delivered order earns the right to speak — once. Mirrors the backend:
+  // 403 on someone else's order, 409 undelivered, 409 already reviewed, and
+  // the rating aggregate moves in the same write.
+  const reviewCreate = req.method === 'POST' ? ORDER_REVIEW_PATH.exec(req.path) : null;
+  if (reviewCreate) {
+    const personId = personIdFrom(req);
+    if (!personId) {
+      respondLater(res, 401, errorBody(401));
+      return;
+    }
+
+    const orderId = reviewCreate[1];
+    const order = req.app.db.get('orders').find({ id: orderId }).value();
+    if (!order) {
+      respondLater(res, 404, errorBody(404));
+      return;
+    }
+    if (order.customerId !== personId) {
+      respondLater(res, 403, errorBody(403, 'That is not your order.'));
+      return;
+    }
+    if (progressed(order).status !== 'delivered') {
+      respondLater(res, 409, errorBody(409, 'Only a delivered order can be reviewed.'));
+      return;
+    }
+
+    const reviews = req.app.db.get('reviews');
+    if (reviews.find({ orderId }).value()) {
+      respondLater(res, 409, errorBody(409, 'You have already reviewed this order.'));
+      return;
+    }
+
+    const rating = req.body?.rating;
+    const comment = req.body?.comment ?? '';
+    const validRating = Number.isInteger(rating) && rating >= 1 && rating <= 5;
+    if (!validRating || typeof comment !== 'string' || comment.length > 1000) {
+      respondLater(res, 400, errorBody(400));
+      return;
+    }
+
+    const person = findPerson(req, personId);
+    const review = {
+      id: `rev-${orderId}`,
+      author: person?.displayName ?? 'Customer',
+      avatar: '',
+      rating,
+      comment,
+      postedAt: new Date().toISOString(),
+      restaurantId: order.restaurantId,
+      orderId,
+    };
+    void reviews.push(review).write();
+
+    // The aggregate moves with the row — the discovery list never recomputes it.
+    const restaurants = req.app.db.get('restaurants');
+    const restaurant = restaurants.find({ id: order.restaurantId }).value();
+    if (restaurant) {
+      const reviewCount = restaurant.reviewCount + 1;
+      const nextRating =
+        Math.round(((restaurant.rating * restaurant.reviewCount + rating) / reviewCount) * 10) / 10;
+      void restaurants
+        .find({ id: order.restaurantId })
+        .assign({ rating: nextRating, reviewCount })
+        .write();
+    }
+
+    respondLater(res, 201, review);
     return;
   }
 

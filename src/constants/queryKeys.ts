@@ -41,4 +41,9 @@ export const queryKeys = {
     all: ['addresses'] as const,
     list: () => [...queryKeys.addresses.all, 'list'] as const,
   },
+  reviews: {
+    all: ['reviews'] as const,
+    byRestaurant: (restaurantId: string) =>
+      [...queryKeys.reviews.all, 'restaurant', restaurantId] as const,
+  },
 } as const;
