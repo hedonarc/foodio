@@ -1,4 +1,4 @@
-import { FlatList, Pressable, View } from 'react-native';
+import { FlatList, Pressable, RefreshControl, View } from 'react-native';
 
 import { useRouter } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
@@ -30,6 +30,7 @@ export function OrdersScreen() {
     fetchNextPage,
     hasNextPage,
     isFetchingNextPage,
+    isRefetching,
   } = useOrders();
 
   return (
@@ -56,6 +57,12 @@ export function OrdersScreen() {
           data={orders}
           keyExtractor={(order) => order.id}
           contentContainerClassName="px-4 pb-8"
+          refreshControl={
+            <RefreshControl
+              refreshing={isRefetching && !isFetchingNextPage}
+              onRefresh={() => void refetch()}
+            />
+          }
           onEndReached={() => {
             if (hasNextPage) void fetchNextPage();
           }}

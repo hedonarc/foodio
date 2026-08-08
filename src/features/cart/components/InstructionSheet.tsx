@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { KeyboardAvoidingView, Modal, Platform, Pressable, View } from 'react-native';
 
 import { useTranslation } from 'react-i18next';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { Button, Text, TextField } from '@/components/ui';
 
@@ -24,6 +25,7 @@ export function InstructionSheet({
   onSave,
 }: InstructionSheetProps) {
   const { t } = useTranslation();
+  const insets = useSafeAreaInsets();
   const [draft, setDraft] = useState(initial);
 
   // Reopening on a line whose note changed elsewhere must not show the old one.
@@ -35,7 +37,11 @@ export function InstructionSheet({
     <Modal visible={visible} transparent animationType="slide" onRequestClose={onCancel}>
       <Pressable className="flex-1 bg-black/40" onPress={onCancel} accessibilityRole="button" />
       <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
-        <View className="rounded-t-3xl bg-white px-4 pb-8 pt-5">
+        {/* A Modal is its own native window: root-level safe area never reaches it. */}
+        <View
+          className="rounded-t-3xl bg-white px-4 pt-5"
+          style={{ paddingBottom: Math.max(insets.bottom, 32) }}
+        >
           <Text variant="subheading" className="text-gray-900">
             {name}
           </Text>
