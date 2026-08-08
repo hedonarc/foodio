@@ -41,7 +41,11 @@ One Person's relationship to one Restaurant, carrying the Capabilities they hold
 _Avoid_: Permission, grant, membership
 
 **Capability**:
-Where inside a Restaurant a Person may work: **Kitchen** or **Delivery**. A Capability names a place, not an activity, so a fourth one can be added without rewording the rest.
+Where inside a Restaurant a Person may work: **Kitchen** or **Delivery**. A Capability names a place, not an activity, so a fourth one can be added without rewording the rest. Kitchen also carries administration — the menu, the opening hours, the profile and the staff roster — because in a single-branch restaurant the people in that place are the people who run it.
+
+**Owner**:
+The one Person a Restaurant belongs to. Not a Capability and not a rank inside the kitchen: it is a fact about the Restaurant, which is why an Entitlement never carries it. An Owner always holds Kitchen, cannot have it revoked by anyone else, and may hand ownership to someone who already works there — but never drop it, so a Restaurant is never ownerless.
+_Avoid_: Admin, manager, account holder, proprietor
 
 **Role**:
 Which of a Person's surfaces the app is currently showing — **Customer**, **Kitchen**, or **Delivery**. Customer is the baseline everyone has; the other two come from Entitlements and are always qualified by the Restaurant they belong to ("Taco Fiesta · Kitchen"). Switching Role replaces the whole navigator.
