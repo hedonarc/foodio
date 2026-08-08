@@ -1,3 +1,2 @@
-export type { PermissionScreenProps } from './components/PermissionScreen';
-export { PermissionScreen } from './components/PermissionScreen';
+export { PermissionRow } from './components/PermissionRow';
 export { OnboardingStep } from './types/onboarding.types';

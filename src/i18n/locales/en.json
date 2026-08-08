@@ -6,12 +6,17 @@
     "retry": "Try again",
     "cancel": "Cancel",
     "back": "Go back",
-    "save": "Save"
+    "save": "Save",
+    "continue": "Continue"
   },
   "errors": {
     "unknown": "Something went wrong. Please try again."
   },
   "onboarding": {
+    "checklist": {
+      "title": "A couple of permissions",
+      "description": "Both are optional — you can change them later in Settings."
+    },
     "location": {
       "title": "Enable Location",
       "description": "Find restaurants and deals near you"
@@ -19,7 +24,8 @@
     "notifications": {
       "title": "Stay Updated",
       "description": "Get notified about orders and deals"
-    }
+    },
+    "notNow": "Not now"
   },
   "home": {
     "title": "Foodio",

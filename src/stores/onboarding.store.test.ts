@@ -13,39 +13,31 @@ const mockedSet = jest.mocked(setOnboardingStatus);
 const state = () => useOnboardingStore.getState();
 
 beforeEach(() => {
-  useOnboardingStore.setState({ step: OnboardingStep.Location, isHydrated: false });
+  useOnboardingStore.setState({ step: OnboardingStep.Permissions, isHydrated: false });
   mockedGet.mockReset();
   mockedSet.mockReset().mockResolvedValue();
 });
 
 describe('step transitions', () => {
-  it('starts at the location step', () => {
-    expect(state().step).toBe(OnboardingStep.Location);
+  it('starts at the permission checklist', () => {
+    expect(state().step).toBe(OnboardingStep.Permissions);
   });
 
-  it('moves from location to notifications', async () => {
-    await state().completeLocationStep();
-    expect(state().step).toBe(OnboardingStep.Notifications);
-  });
-
-  it('moves from notifications to complete', async () => {
-    await state().completeNotificationStep();
+  it('moves from the checklist straight to complete', async () => {
+    await state().completePermissions();
     expect(state().step).toBe(OnboardingStep.Complete);
   });
 
-  it('persists each step so onboarding is not repeated on the next launch', async () => {
-    await state().completeLocationStep();
-    expect(mockedSet).toHaveBeenCalledWith(OnboardingStep.Notifications);
-
-    await state().completeNotificationStep();
+  it('persists the step so onboarding is not repeated on the next launch', async () => {
+    await state().completePermissions();
     expect(mockedSet).toHaveBeenCalledWith(OnboardingStep.Complete);
   });
 
   it('advances in memory even when persistence rejects', async () => {
-    // A storage failure must not strand the user on a permission screen.
+    // A storage failure must not strand the user on the permission screen.
     mockedSet.mockRejectedValue(new Error('keychain unavailable'));
 
-    await expect(state().completeNotificationStep()).rejects.toThrow();
+    await expect(state().completePermissions()).rejects.toThrow();
     expect(state().step).toBe(OnboardingStep.Complete);
   });
 });
@@ -60,12 +52,12 @@ describe('hydrate', () => {
     expect(state().isHydrated).toBe(true);
   });
 
-  it('leaves a first-time user at the location step', async () => {
+  it('leaves a first-time user at the permission checklist', async () => {
     mockedGet.mockResolvedValue(null);
 
     await state().hydrate();
 
-    expect(state().step).toBe(OnboardingStep.Location);
+    expect(state().step).toBe(OnboardingStep.Permissions);
     expect(state().isHydrated).toBe(true);
   });
 
