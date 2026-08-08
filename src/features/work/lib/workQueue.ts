@@ -1,4 +1,5 @@
 import type { Order, OrderStatus } from '@/features/checkout/types/order.types';
+import { isTerminal } from '@/features/checkout/types/order.types';
 
 export type WorkRole = 'kitchen' | 'delivery';
 
@@ -37,7 +38,8 @@ export const canReject = (role: WorkRole, from: OrderStatus): boolean =>
 export const canFailDelivery = (role: WorkRole, from: OrderStatus): boolean =>
   legalTransitions(role, from).includes('delivery_failed');
 
-export type QueueGroupKey = 'new' | 'inKitchen' | 'readyToLeave' | 'toPickUp' | 'outWithYou';
+export type QueueGroupKey =
+  'new' | 'inKitchen' | 'readyToLeave' | 'toPickUp' | 'outWithYou' | 'done';
 
 const GROUPS: Readonly<
   Record<WorkRole, readonly { key: QueueGroupKey; statuses: readonly OrderStatus[] }[]>
@@ -68,6 +70,18 @@ export function groupQueue(role: WorkRole, orders: readonly Order[]): QueueSecti
         .sort((a, b) => Date.parse(a.placedAt) - Date.parse(b.placedAt)),
     }))
     .filter((section) => section.data.length > 0);
+}
+
+export type QueueTab = 'active' | 'done';
+
+/**
+ * Newest first, unlike the live queue: a settled list is history, read from
+ * the top, and nothing in it is waiting on anyone.
+ */
+export function doneQueue(orders: readonly Order[]): Order[] {
+  return orders
+    .filter((order) => isTerminal(order.status))
+    .sort((a, b) => Date.parse(b.placedAt) - Date.parse(a.placedAt));
 }
 
 export const minutesSincePlaced = (placedAt: string, now: number): number =>

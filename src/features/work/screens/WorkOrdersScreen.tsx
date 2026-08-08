@@ -13,13 +13,15 @@ import { useRestaurants } from '@/features/restaurants/hooks/useRestaurants';
 import { useSessionStore } from '@/stores/session.store';
 
 import { OrderCard } from '../components/OrderCard';
+import { QueueTabs } from '../components/QueueTabs';
 import { QueueToast } from '../components/QueueToast';
 import { TransitionSheet } from '../components/TransitionSheet';
 import { useNow } from '../hooks/useNow';
 import { useOrderTransition } from '../hooks/useOrderTransition';
 import { useRestaurantOrders } from '../hooks/useRestaurantOrders';
 import { useTransientMessage } from '../hooks/useTransientMessage';
-import { FAILURE_REASONS, groupQueue, REJECT_REASONS } from '../lib/workQueue';
+import type { QueueTab } from '../lib/workQueue';
+import { doneQueue, FAILURE_REASONS, groupQueue, REJECT_REASONS } from '../lib/workQueue';
 
 /** Minute badges only need to move about once a minute. */
 const CLOCK_TICK_MS = 30_000;
@@ -50,11 +52,20 @@ export function WorkOrdersScreen() {
 
   const [expandedId, setExpandedId] = useState<string | null>(null);
   const [sheet, setSheet] = useState<SheetState>(null);
+  const [tab, setTab] = useState<QueueTab>('active');
 
   const restaurantName =
     restaurants?.find((restaurant) => restaurant.id === restaurantId)?.name ?? '';
 
-  const sections = workRole ? groupQueue(workRole, orders ?? []) : [];
+  const done = doneQueue(orders ?? []);
+  const sections =
+    tab === 'done'
+      ? done.length > 0
+        ? [{ key: 'done' as const, data: done }]
+        : []
+      : workRole
+        ? groupQueue(workRole, orders ?? [])
+        : [];
 
   const advance = (orderId: string, to: OrderStatus, note?: string) => {
     transition.mutate(
@@ -82,9 +93,19 @@ export function WorkOrdersScreen() {
         <IdentityChip />
       </View>
 
-      {isPending ? <LoadingState className="flex-1 items-center justify-center" /> : null}
+      <QueueTabs value={tab} onChange={setTab} />
+
+      {/* Keyed siblings: these four share one slot, and swapping tabs swaps
+          which occupies it. Without stable keys NativeWind tries to upgrade
+          one component into another and serialises the props to warn — which
+          walks React Navigation's throwing context getters and surfaces as a
+          bogus "couldn't find a navigation context" render error. */}
+      {isPending ? (
+        <LoadingState key="loading" className="flex-1 items-center justify-center" />
+      ) : null}
       {error ? (
         <ErrorState
+          key="error"
           error={error}
           onRetry={refetch}
           className="flex-1 items-center justify-center px-8"
@@ -92,13 +113,15 @@ export function WorkOrdersScreen() {
       ) : null}
       {!isPending && !error && sections.length === 0 ? (
         <EmptyState
-          message={t('work.noOrders')}
+          key="empty"
+          message={tab === 'done' ? t('work.noneDone') : t('work.noOrders')}
           className="flex-1 items-center justify-center px-8"
         />
       ) : null}
 
       {workRole && sections.length > 0 ? (
         <SectionList
+          key="queue"
           sections={sections}
           keyExtractor={(order) => order.id}
           stickySectionHeadersEnabled={false}

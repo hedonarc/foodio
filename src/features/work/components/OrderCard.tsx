@@ -10,6 +10,7 @@ import { isTerminal } from '@/features/checkout/types/order.types';
 import { cn } from '@/lib/cn';
 import { colors } from '@/theme';
 import { formatMoney } from '@/utils/currency';
+import { formatDate } from '@/utils/date';
 
 import type { AgingLevel, WorkRole } from '../lib/workQueue';
 import {
@@ -77,6 +78,9 @@ export function OrderCard({
   const aging = agingLevel(order.status, minutes);
   const primary = primaryTransition(role, order.status);
   const itemCount = order.lines.reduce((sum, line) => sum + line.quantity, 0);
+  // A settled order stops being urgent: minutes since placed would only grow
+  // into nonsense ("4320 min"), so history reads as a date instead.
+  const settled = isTerminal(order.status);
 
   return (
     <Pressable
@@ -88,7 +92,9 @@ export function OrderCard({
       <View className="flex-row items-center">
         <View className={cn('rounded-full px-2.5 py-1', BADGE_STYLES[aging])}>
           <Text variant="label" className={BADGE_TEXT_STYLES[aging]}>
-            {t('work.minutes', { count: minutes })}
+            {settled
+              ? formatDate(order.placedAt, i18n.language)
+              : t('work.minutes', { count: minutes })}
           </Text>
         </View>
         <Text variant="bodyMedium" className="ml-3 flex-1 text-gray-900" numberOfLines={1}>
