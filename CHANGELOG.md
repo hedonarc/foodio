@@ -1,5 +1,36 @@
 # Changelog
 
+## [1.4.0](https://github.com/hedonarc/foodio/compare/v1.3.0...v1.4.0) (2026-08-08)
+
+
+### Features
+
+* **identity:** pick the country code instead of typing it ([b033f4a](https://github.com/hedonarc/foodio/commit/b033f4afa514cc9ff9cc125db33afd86e62f4175))
+* **identity:** pick the country code instead of typing it ([889cb4f](https://github.com/hedonarc/foodio/commit/889cb4fb885120f7f73f0d64dab93e4deed673bf))
+* **reviews:** rate a delivered order, read them all ([fc8a7bf](https://github.com/hedonarc/foodio/commit/fc8a7bfaa33ee791c9c77980f95e534326e959be))
+* **reviews:** rate a delivered order, read them all ([26fcb34](https://github.com/hedonarc/foodio/commit/26fcb34fa45bc06a6ccdf297abca9bd321d53958)), closes [#99](https://github.com/hedonarc/foodio/issues/99)
+* **ui:** pull to refresh on home, orders, and the staff queues ([cc0c26f](https://github.com/hedonarc/foodio/commit/cc0c26f57edc05d306f4afe331bf2b09b13c456d))
+* **work:** a Done tab for settled orders in both staff queues ([514cf26](https://github.com/hedonarc/foodio/commit/514cf26a0cd21005e6e2fa5c7a6ac9b6d36780dd))
+* **work:** a Done tab for settled orders in both staff queues ([926eef4](https://github.com/hedonarc/foodio/commit/926eef45377b6e6ba99e7bbdd06d1c459bf8445b))
+* **work:** kitchen and delivery act on orders ([bb2f7f0](https://github.com/hedonarc/foodio/commit/bb2f7f01b3270eefb01a10f573d4b9f9cb0e87fd))
+* **work:** kitchen and delivery act on orders ([f3bd7f4](https://github.com/hedonarc/foodio/commit/f3bd7f464d64ff8525b19fd006961994a6a51518)), closes [#95](https://github.com/hedonarc/foodio/issues/95)
+* **work:** the kitchen marks dishes sold out ([ab2dc9d](https://github.com/hedonarc/foodio/commit/ab2dc9db4b88c13f8852f767f9557ca4367ee09f))
+* **work:** the kitchen marks dishes sold out ([e52caf9](https://github.com/hedonarc/foodio/commit/e52caf901db6f5f7d6fe77d439f3f2aaf7cb6bd0)), closes [#97](https://github.com/hedonarc/foodio/issues/97)
+
+
+### Bug Fixes
+
+* **session:** clear the query cache on sign-in and sign-out ([8a8a2f0](https://github.com/hedonarc/foodio/commit/8a8a2f06c20be901450caca166a5b91459e431e6))
+* **session:** clear the query cache on sign-in and sign-out ([4564f69](https://github.com/hedonarc/foodio/commit/4564f69d8c6e293a0f123bf667e880c329299ee5))
+* sheet safe-area insets, and pull to refresh ([66dc34f](https://github.com/hedonarc/foodio/commit/66dc34f300894b649d7d9e756c93f553efed0965))
+* **ui:** bottom sheets respect the home-indicator inset ([960b853](https://github.com/hedonarc/foodio/commit/960b85303532fb4a63f1397788295c83fe64ec5a))
+* **ui:** bound the Android tab bar ripple to a full circle ([f2f3623](https://github.com/hedonarc/foodio/commit/f2f3623ea635ff1376f8379f1534acda7d1af53b))
+* **ui:** bound the Android tab bar ripple to a full circle ([d375ae8](https://github.com/hedonarc/foodio/commit/d375ae8625c481206c7e6ba604ed39aa36623cd7))
+* **ui:** correct inset measurement and keyboard padding in sheets ([8be91c2](https://github.com/hedonarc/foodio/commit/8be91c2b523911ffb90eabf25757abe5209920e2))
+* **ui:** give the resting sheet visible clearance from the nav bar ([e4aa116](https://github.com/hedonarc/foodio/commit/e4aa1164f8edf87118984c1a2344d605f5cb58b3))
+* **ui:** keyboard avoidance for bottom sheets on Android ([70801ce](https://github.com/hedonarc/foodio/commit/70801ce35df430301462364d57ce5a1c7a7dc3bc))
+* **work:** cursor-paginate the staff order queue ([8aca8d1](https://github.com/hedonarc/foodio/commit/8aca8d18b232803759c19fd3b6618fbbf1603e90))
+
 ## [1.3.0](https://github.com/hedonarc/foodio/compare/v1.2.0...v1.3.0) (2026-08-07)
 
 
