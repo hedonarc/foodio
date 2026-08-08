@@ -1,5 +1,6 @@
 import { create } from 'zustand';
 
+import { clearQueryCache } from '@/api/queryCache';
 import { fetchMe, refreshSession, signOutSession } from '@/features/identity/api/identity.api';
 import type { ActiveRole, Person, Session } from '@/features/identity/types/identity.types';
 import { CUSTOMER_ROLE, resolveRole } from '@/features/identity/types/identity.types';
@@ -93,6 +94,12 @@ export const useSessionStore = create<SessionState>((set, get) => ({
   },
 
   signIn: async (session) => {
+    // Every cached response is keyed by content, not by who asked — without
+    // this, a second person on the same device inherits whatever the first
+    // person's queries had already cached (see issue: empty Orders tab after
+    // switching accounts).
+    clearQueryCache();
+
     await Promise.all([
       setAccessToken(session.accessToken),
       setRefreshToken(session.refreshToken),
@@ -118,6 +125,7 @@ export const useSessionStore = create<SessionState>((set, get) => ({
     clearCachedPushToken();
 
     await clearStoredSession();
+    clearQueryCache();
     set({ accessToken: null, refreshToken: null, person: null, role: CUSTOMER_ROLE });
   },
 
