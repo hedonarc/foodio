@@ -13,6 +13,7 @@ import { Button, Text, TextField } from '@/components/ui';
 import { useSessionStore } from '@/stores/session.store';
 
 import { requestOtp, verifyOtp } from '../api/identity.api';
+import { PhoneField } from '../components/PhoneField';
 import type { OtpRequestFormValues, OtpVerifyFormValues } from '../types/identity.types';
 import { otpRequestFormSchema, otpVerifyFormSchema } from '../types/identity.types';
 
@@ -69,14 +70,10 @@ export function IdentityPickerScreen() {
             control={phoneForm.control}
             name="phone"
             render={({ field, fieldState }) => (
-              <TextField
-                label={t('identity.phoneLabel')}
-                placeholder={t('identity.phonePlaceholder')}
+              <PhoneField
                 value={field.value}
-                onChangeText={field.onChange}
+                onChange={field.onChange}
                 onBlur={field.onBlur}
-                keyboardType="phone-pad"
-                autoComplete="tel"
                 error={fieldState.error ? t('identity.errors.phone') : undefined}
               />
             )}
@@ -116,6 +113,10 @@ export function IdentityPickerScreen() {
               onBlur={field.onBlur}
               keyboardType="number-pad"
               maxLength={6}
+              // Offers the code straight from the keyboard on iOS — the cheap
+              // half of OTP autofill, with no native module.
+              textContentType="oneTimeCode"
+              autoComplete="sms-otp"
               error={fieldState.error ? t('identity.errors.code') : undefined}
             />
           )}
