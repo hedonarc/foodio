@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Linking, SectionList, View } from 'react-native';
+import { Linking, RefreshControl, SectionList, View } from 'react-native';
 
 import { useTranslation } from 'react-i18next';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -38,6 +38,7 @@ export function WorkOrdersScreen() {
     isPending,
     error,
     refetch,
+    isRefetching,
     fetchNextPage,
     hasNextPage,
     isFetchingNextPage,
@@ -102,6 +103,12 @@ export function WorkOrdersScreen() {
           keyExtractor={(order) => order.id}
           stickySectionHeadersEnabled={false}
           contentContainerClassName="px-4 pb-8"
+          refreshControl={
+            <RefreshControl
+              refreshing={isRefetching && !isFetchingNextPage}
+              onRefresh={() => void refetch()}
+            />
+          }
           onEndReached={() => {
             if (hasNextPage) void fetchNextPage();
           }}
