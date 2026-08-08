@@ -8,22 +8,15 @@ export { OnboardingStep };
 type OnboardingState = {
   step: OnboardingStep;
   isHydrated: boolean;
-  completeLocationStep: () => Promise<void>;
-  completeNotificationStep: () => Promise<void>;
+  completePermissions: () => Promise<void>;
   hydrate: () => Promise<void>;
 };
 
 export const useOnboardingStore = create<OnboardingState>((set) => ({
-  step: OnboardingStep.Location,
+  step: OnboardingStep.Permissions,
   isHydrated: false,
 
-  completeLocationStep: async () => {
-    const nextStep = OnboardingStep.Notifications;
-    set({ step: nextStep });
-    await setOnboardingStatus(nextStep);
-  },
-
-  completeNotificationStep: async () => {
+  completePermissions: async () => {
     const nextStep = OnboardingStep.Complete;
     set({ step: nextStep });
     await setOnboardingStatus(nextStep);
