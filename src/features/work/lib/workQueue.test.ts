@@ -5,6 +5,7 @@ import {
   canFailDelivery,
   canReject,
   composeNote,
+  doneQueue,
   groupQueue,
   legalTransitions,
   minutesSincePlaced,
@@ -144,6 +145,20 @@ describe('groupQueue', () => {
   it('drops empty groups instead of rendering hollow headers', () => {
     const sections = groupQueue('kitchen', [orderWith('a', 'ready', '2026-08-08T10:00:00Z')]);
     expect(sections.map((section) => section.key)).toEqual(['readyToLeave']);
+  });
+
+  it('sends every settled order to the done tab, newest first', () => {
+    // Exactly the orders groupQueue drops, so nothing falls between the tabs.
+    expect(doneQueue(orders).map((order) => order.id)).toEqual(['h', 'f']);
+  });
+
+  it('keeps an unhappy ending rather than hiding it', () => {
+    const settled = [
+      orderWith('rejected', 'rejected', '2026-08-08T10:00:00Z'),
+      orderWith('failed', 'delivery_failed', '2026-08-08T10:01:00Z'),
+    ];
+
+    expect(doneQueue(settled).map((order) => order.id)).toEqual(['failed', 'rejected']);
   });
 });
 
