@@ -60,24 +60,7 @@
           "closesAt": "23:30"
         }
       ],
-      "reviews": [
-        {
-          "id": "rev-1",
-          "author": "Maria G.",
-          "avatar": "https://i.pravatar.cc/150?img=47",
-          "rating": 5,
-          "comment": "Best birria tacos I have had outside Mexico! The consomé is absolutely divine.",
-          "postedAt": "2026-07-18"
-        },
-        {
-          "id": "rev-2",
-          "author": "James T.",
-          "avatar": "https://i.pravatar.cc/150?img=12",
-          "rating": 4,
-          "comment": "Really good food, quick delivery. Will definitely order again.",
-          "postedAt": "2026-07-10"
-        }
-      ]
+      "reviews": []
     },
     {
       "id": "rest-2",
@@ -129,24 +112,7 @@
           "closesAt": "23:00"
         }
       ],
-      "reviews": [
-        {
-          "id": "rev-3",
-          "author": "Sophie R.",
-          "avatar": "https://i.pravatar.cc/150?img=5",
-          "rating": 5,
-          "comment": "Incredible fresh pasta! The truffle tagliatelle is a must-try.",
-          "postedAt": "2026-07-20"
-        },
-        {
-          "id": "rev-4",
-          "author": "Luca M.",
-          "avatar": "https://i.pravatar.cc/150?img=33",
-          "rating": 5,
-          "comment": "Reminds me of home in Naples. Perfection every time.",
-          "postedAt": "2026-07-15"
-        }
-      ]
+      "reviews": []
     },
     {
       "id": "rest-3",
@@ -208,16 +174,7 @@
           "closesAt": "22:00"
         }
       ],
-      "reviews": [
-        {
-          "id": "rev-5",
-          "author": "Aiko N.",
-          "avatar": "https://i.pravatar.cc/150?img=9",
-          "rating": 5,
-          "comment": "The freshest sushi in the city. Dragon rolls are spectacular.",
-          "postedAt": "2026-07-19"
-        }
-      ]
+      "reviews": []
     },
     {
       "id": "rest-4",
@@ -279,16 +236,7 @@
           "closesAt": "23:00"
         }
       ],
-      "reviews": [
-        {
-          "id": "rev-6",
-          "author": "Derek P.",
-          "avatar": "https://i.pravatar.cc/150?img=17",
-          "rating": 5,
-          "comment": "This is the best smash burger I have ever tasted. The sauce is elite.",
-          "postedAt": "2026-07-21"
-        }
-      ]
+      "reviews": []
     },
     {
       "id": "rest-5",
@@ -350,16 +298,7 @@
           "closesAt": "18:00"
         }
       ],
-      "reviews": [
-        {
-          "id": "rev-7",
-          "author": "Priya K.",
-          "avatar": "https://i.pravatar.cc/150?img=29",
-          "rating": 5,
-          "comment": "My go-to healthy spot. The acai bowl is incredible and delivery is always fast.",
-          "postedAt": "2026-07-22"
-        }
-      ]
+      "reviews": []
     },
     {
       "id": "rest-6",
@@ -421,16 +360,7 @@
           "closesAt": "22:30"
         }
       ],
-      "reviews": [
-        {
-          "id": "rev-8",
-          "author": "Arjun S.",
-          "avatar": "https://i.pravatar.cc/150?img=53",
-          "rating": 5,
-          "comment": "The butter chicken is as good as my mum makes it. High praise indeed.",
-          "postedAt": "2026-07-17"
-        }
-      ]
+      "reviews": []
     },
     {
       "id": "rest-7",
@@ -492,16 +422,7 @@
           "closesAt": "22:00"
         }
       ],
-      "reviews": [
-        {
-          "id": "rev-9",
-          "author": "Wei L.",
-          "avatar": "https://i.pravatar.cc/150?img=60",
-          "rating": 4,
-          "comment": "Solid dim sum. The har gow is delicate and perfectly steamed.",
-          "postedAt": "2026-07-14"
-        }
-      ]
+      "reviews": []
     },
     {
       "id": "rest-8",
@@ -563,16 +484,7 @@
           "closesAt": "21:00"
         }
       ],
-      "reviews": [
-        {
-          "id": "rev-10",
-          "author": "Linh T.",
-          "avatar": "https://i.pravatar.cc/150?img=44",
-          "rating": 5,
-          "comment": "The broth is so rich and complex. This is the real deal.",
-          "postedAt": "2026-07-13"
-        }
-      ]
+      "reviews": []
     },
     {
       "id": "rest-9",
@@ -629,16 +541,7 @@
           "closesAt": "17:00"
         }
       ],
-      "reviews": [
-        {
-          "id": "rev-11",
-          "author": "Claire D.",
-          "avatar": "https://i.pravatar.cc/150?img=23",
-          "rating": 5,
-          "comment": "The croissants are incredible. Perfectly laminated, buttery, and flaky.",
-          "postedAt": "2026-07-20"
-        }
-      ]
+      "reviews": []
     },
     {
       "id": "rest-10",
@@ -700,16 +603,7 @@
           "closesAt": "22:00"
         }
       ],
-      "reviews": [
-        {
-          "id": "rev-12",
-          "author": "Tom H.",
-          "avatar": "https://i.pravatar.cc/150?img=68",
-          "rating": 5,
-          "comment": "Ordered the green curry and pad see ew. Both were absolutely amazing.",
-          "postedAt": "2026-07-16"
-        }
-      ]
+      "reviews": []
     }
   ],
   "menuCategories": [
@@ -1902,6 +1796,178 @@
       "displayName": "Derek P.",
       "phone": "+923001230005",
       "entitlements": []
+    }
+  ],
+  "reviews": [
+    {
+      "id": "rev-1",
+      "author": "Maria G.",
+      "avatar": "https://i.pravatar.cc/150?img=47",
+      "rating": 5,
+      "comment": "Best birria tacos I have had outside Mexico! The consomé is absolutely divine.",
+      "postedAt": "2026-07-18",
+      "restaurantId": "rest-1",
+      "orderId": "order-seed-1"
+    },
+    {
+      "id": "rev-2",
+      "author": "James T.",
+      "avatar": "https://i.pravatar.cc/150?img=12",
+      "rating": 4,
+      "comment": "Really good food, quick delivery. Will definitely order again.",
+      "postedAt": "2026-07-10",
+      "restaurantId": "rest-1",
+      "orderId": "order-hist-2"
+    },
+    {
+      "id": "rev-3",
+      "author": "Sophie R.",
+      "avatar": "https://i.pravatar.cc/150?img=5",
+      "rating": 5,
+      "comment": "Incredible fresh pasta! The truffle tagliatelle is a must-try.",
+      "postedAt": "2026-07-20",
+      "restaurantId": "rest-2",
+      "orderId": "order-hist-3"
+    },
+    {
+      "id": "rev-4",
+      "author": "Luca M.",
+      "avatar": "https://i.pravatar.cc/150?img=33",
+      "rating": 5,
+      "comment": "Reminds me of home in Naples. Perfection every time.",
+      "postedAt": "2026-07-15",
+      "restaurantId": "rest-2",
+      "orderId": "order-hist-4"
+    },
+    {
+      "id": "rev-5",
+      "author": "Aiko N.",
+      "avatar": "https://i.pravatar.cc/150?img=9",
+      "rating": 5,
+      "comment": "The freshest sushi in the city. Dragon rolls are spectacular.",
+      "postedAt": "2026-07-19",
+      "restaurantId": "rest-3",
+      "orderId": "order-hist-5"
+    },
+    {
+      "id": "rev-6",
+      "author": "Derek P.",
+      "avatar": "https://i.pravatar.cc/150?img=17",
+      "rating": 5,
+      "comment": "This is the best smash burger I have ever tasted. The sauce is elite.",
+      "postedAt": "2026-07-21",
+      "restaurantId": "rest-4",
+      "orderId": "order-hist-6"
+    },
+    {
+      "id": "rev-7",
+      "author": "Priya K.",
+      "avatar": "https://i.pravatar.cc/150?img=29",
+      "rating": 5,
+      "comment": "My go-to healthy spot. The acai bowl is incredible and delivery is always fast.",
+      "postedAt": "2026-07-22",
+      "restaurantId": "rest-5",
+      "orderId": "order-hist-7"
+    },
+    {
+      "id": "rev-8",
+      "author": "Arjun S.",
+      "avatar": "https://i.pravatar.cc/150?img=53",
+      "rating": 5,
+      "comment": "The butter chicken is as good as my mum makes it. High praise indeed.",
+      "postedAt": "2026-07-17",
+      "restaurantId": "rest-6",
+      "orderId": "order-hist-8"
+    },
+    {
+      "id": "rev-9",
+      "author": "Wei L.",
+      "avatar": "https://i.pravatar.cc/150?img=60",
+      "rating": 4,
+      "comment": "Solid dim sum. The har gow is delicate and perfectly steamed.",
+      "postedAt": "2026-07-14",
+      "restaurantId": "rest-7",
+      "orderId": "order-hist-9"
+    },
+    {
+      "id": "rev-10",
+      "author": "Linh T.",
+      "avatar": "https://i.pravatar.cc/150?img=44",
+      "rating": 5,
+      "comment": "The broth is so rich and complex. This is the real deal.",
+      "postedAt": "2026-07-13",
+      "restaurantId": "rest-8",
+      "orderId": "order-hist-10"
+    },
+    {
+      "id": "rev-11",
+      "author": "Claire D.",
+      "avatar": "https://i.pravatar.cc/150?img=23",
+      "rating": 5,
+      "comment": "The croissants are incredible. Perfectly laminated, buttery, and flaky.",
+      "postedAt": "2026-07-20",
+      "restaurantId": "rest-9",
+      "orderId": "order-hist-11"
+    },
+    {
+      "id": "rev-12",
+      "author": "Tom H.",
+      "avatar": "https://i.pravatar.cc/150?img=68",
+      "rating": 5,
+      "comment": "Ordered the green curry and pad see ew. Both were absolutely amazing.",
+      "postedAt": "2026-07-16",
+      "restaurantId": "rest-10",
+      "orderId": "order-hist-12"
+    },
+    {
+      "id": "rev-101",
+      "author": "Aisha K.",
+      "avatar": "",
+      "rating": 5,
+      "comment": "The al pastor is unreal. Delivery was quicker than the estimate.",
+      "postedAt": "2026-07-25",
+      "restaurantId": "rest-1",
+      "orderId": "order-hist-101"
+    },
+    {
+      "id": "rev-102",
+      "author": "Tomas R.",
+      "avatar": "https://i.pravatar.cc/150?img=33",
+      "rating": 4,
+      "comment": "Solid tacos, generous portions. Salsa verde could be spicier.",
+      "postedAt": "2026-07-22",
+      "restaurantId": "rest-1",
+      "orderId": "order-hist-102"
+    },
+    {
+      "id": "rev-103",
+      "author": "Sofia L.",
+      "avatar": "",
+      "rating": 5,
+      "comment": "Ordered for the whole office and everything arrived hot.",
+      "postedAt": "2026-07-05",
+      "restaurantId": "rest-1",
+      "orderId": "order-hist-103"
+    },
+    {
+      "id": "rev-104",
+      "author": "Derek W.",
+      "avatar": "",
+      "rating": 3,
+      "comment": "Good flavour but my order was missing the extra consomé.",
+      "postedAt": "2026-06-28",
+      "restaurantId": "rest-1",
+      "orderId": "order-hist-104"
+    },
+    {
+      "id": "rev-105",
+      "author": "Aiko N.",
+      "avatar": "https://i.pravatar.cc/150?img=5",
+      "rating": 4,
+      "comment": "Great value. The horchata alone is worth it.",
+      "postedAt": "2026-06-15",
+      "restaurantId": "rest-1",
+      "orderId": "order-hist-105"
     }
   ]
 }

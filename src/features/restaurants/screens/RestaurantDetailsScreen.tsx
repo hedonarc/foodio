@@ -81,7 +81,7 @@ export function RestaurantDetailsScreen() {
         <RestaurantClips restaurantId={restaurant.id} restaurantName={restaurant.name} />
         <RestaurantGallery images={restaurant.gallery} />
         <RestaurantHours openingHours={restaurant.openingHours} />
-        <RestaurantReviewPreview reviews={restaurant.reviews} />
+        <RestaurantReviewPreview restaurantId={restaurant.id} reviews={restaurant.reviews} />
       </ScrollView>
       <CartBar />
     </View>
