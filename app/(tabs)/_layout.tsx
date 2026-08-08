@@ -1,3 +1,5 @@
+import { Pressable } from 'react-native';
+
 import { Tabs } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
 
@@ -16,6 +18,16 @@ export default function TabsLayout() {
         headerShown: false,
         tabBarActiveTintColor: colors.primary[500],
         tabBarInactiveTintColor: colors.gray[400],
+        // The library leaves the Android ripple borderless with no radius, so
+        // it's sized from the tab's full width — much wider than the bar is
+        // tall — and bleeds past the top and bottom edges instead of landing
+        // as a full circle.
+        tabBarButton: ({ ref: _ref, ...props }) => (
+          <Pressable
+            {...props}
+            android_ripple={{ color: 'rgba(0, 0, 0, 0.32)', borderless: true, radius: 28 }}
+          />
+        ),
       }}
     >
       <Tabs.Screen
