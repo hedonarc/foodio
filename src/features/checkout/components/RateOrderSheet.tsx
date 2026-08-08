@@ -6,6 +6,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Controller, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { Button, Text, TextField } from '@/components/ui';
 import type { ReviewFormValues } from '@/features/restaurants/types/review.types';
@@ -32,6 +33,7 @@ type RateOrderSheetProps = {
 /** Five stars, an optional comment, one submission. */
 export function RateOrderSheet({ visible, orderId, restaurantName, onClose }: RateOrderSheetProps) {
   const { t } = useTranslation();
+  const insets = useSafeAreaInsets();
   const submitReview = useSubmitReview();
 
   const { control, handleSubmit, reset } = useForm<ReviewFormValues>({
@@ -69,7 +71,11 @@ export function RateOrderSheet({ visible, orderId, restaurantName, onClose }: Ra
     <Modal visible={visible} transparent animationType="slide" onRequestClose={onClose}>
       <Pressable className="flex-1 bg-black/40" onPress={onClose} accessibilityRole="button" />
       <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
-        <View className="rounded-t-3xl bg-white px-4 pb-8 pt-5">
+        {/* A Modal is its own native window: root-level safe area never reaches it. */}
+        <View
+          className="rounded-t-3xl bg-white px-4 pt-5"
+          style={{ paddingBottom: Math.max(insets.bottom, 32) }}
+        >
           <Text variant="subheading" className="text-gray-900">
             {t('review.sheetTitle')}
           </Text>
