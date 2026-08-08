@@ -35,10 +35,11 @@ Install dependencies
 pnpm install
 ```
 
-Start the mock API (in its own terminal — the app needs it)
+Start the API (in its own terminal — the app needs it). Prefer the real
+backend — see [Mock API](#mock-api) below.
 
 ```bash
-pnpm api
+cd ../foodio-backend && pnpm services:up && pnpm db:migrate && pnpm dev
 ```
 
 Start development server
@@ -65,18 +66,23 @@ pnpm ios
 
 ## Mock API
 
-There is no backend. `pnpm api` runs [json-server](https://github.com/typicode/json-server)
-against `mocks/db.json`, with `mocks/routes.json` mapping the URLs the app
-actually wants onto it — the contract is ours, json-server just serves it. See
-[docs/adr/0001](docs/adr/0001-json-server-owns-the-api-contract.md).
+The real backend (`foodio-backend`, a separate repo) is the default target —
+it owns Postgres, implements the full contract, and, by design, listens on
+the same port 3000 as the mock, so only one of the two runs at a time.
+
+`pnpm api` remains as an offline fallback: it runs
+[json-server](https://github.com/typicode/json-server) against `mocks/db.json`,
+with `mocks/routes.json` mapping the URLs the app actually wants onto it. See
+[docs/adr/0001](docs/adr/0001-json-server-owns-the-api-contract.md). Use it
+only when the backend isn't running — do not run both at once.
 
 The app finds the API automatically: with `EXPO_PUBLIC_API_URL` unset it derives
 the dev machine's address from Expo, so an Android emulator or a physical device
 works without editing anything. Copy `.env.example` to `.env` only when you need
 to point at a deployed API.
 
-Responses are delayed 400ms so loading states are real. To exercise failure
-paths:
+The mock's responses are delayed 400ms so loading states are real. To exercise
+failure paths against it:
 
 ```bash
 MOCK_FAIL_RATE=0.3 pnpm api
