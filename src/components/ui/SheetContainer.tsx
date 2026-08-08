@@ -12,10 +12,14 @@ type SheetContainerProps = {
 };
 
 /**
- * Nav-bar clearance while resting; the keyboard's own lift is enough once
- * it's up, so stacking the nav-bar padding on top of it would just leave
- * dead space between the buttons and the keyboard.
+ * Nav-bar clearance while resting, with headroom on top of the inset itself:
+ * `insets.bottom` alone lands the buttons exactly flush against the nav bar,
+ * which reads as touching it even with zero overlap. The keyboard's own lift
+ * is enough once it's up, so stacking the nav-bar padding on top of it would
+ * just leave dead space between the buttons and the keyboard.
  */
+const REST_BOTTOM_GAP = 16;
+
 function SheetSurface({ onClose, children }: Pick<SheetContainerProps, 'onClose' | 'children'>) {
   const insets = useSafeAreaInsets();
   const [keyboardVisible, setKeyboardVisible] = useState(false);
@@ -34,7 +38,9 @@ function SheetSurface({ onClose, children }: Pick<SheetContainerProps, 'onClose'
       <KeyboardAvoidingView behavior="padding">
         <View
           className="rounded-t-3xl bg-white px-4 pt-5"
-          style={{ paddingBottom: keyboardVisible ? 16 : Math.max(insets.bottom, 32) }}
+          style={{
+            paddingBottom: keyboardVisible ? 16 : Math.max(insets.bottom + REST_BOTTOM_GAP, 32),
+          }}
         >
           {children}
         </View>
