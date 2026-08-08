@@ -1,7 +1,8 @@
-import { KeyboardAvoidingView, Modal, Pressable, View } from 'react-native';
+import { useEffect, useState } from 'react';
+import { Keyboard, KeyboardAvoidingView, Modal, Pressable, View } from 'react-native';
 
 import type { ReactNode } from 'react';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { SafeAreaProvider, useSafeAreaInsets } from 'react-native-safe-area-context';
 
 type SheetContainerProps = {
   visible: boolean;
@@ -10,23 +11,48 @@ type SheetContainerProps = {
   children: ReactNode;
 };
 
-/** Bottom sheet chrome: modal, backdrop, keyboard avoidance, inset padding. */
-export function SheetContainer({ visible, onClose, children }: SheetContainerProps) {
+/**
+ * Nav-bar clearance while resting; the keyboard's own lift is enough once
+ * it's up, so stacking the nav-bar padding on top of it would just leave
+ * dead space between the buttons and the keyboard.
+ */
+function SheetSurface({ onClose, children }: Pick<SheetContainerProps, 'onClose' | 'children'>) {
   const insets = useSafeAreaInsets();
+  const [keyboardVisible, setKeyboardVisible] = useState(false);
+
+  useEffect(() => {
+    const subs = [
+      Keyboard.addListener('keyboardDidShow', () => setKeyboardVisible(true)),
+      Keyboard.addListener('keyboardDidHide', () => setKeyboardVisible(false)),
+    ];
+    return () => subs.forEach((sub) => sub.remove());
+  }, []);
 
   return (
-    <Modal visible={visible} transparent animationType="slide" onRequestClose={onClose}>
+    <>
       <Pressable className="flex-1 bg-black/40" onPress={onClose} accessibilityRole="button" />
-      {/* A Modal is its own native window: neither safe area nor Android's
-          adjustResize reaches it, hence the explicit inset padding and behavior. */}
       <KeyboardAvoidingView behavior="padding">
         <View
           className="rounded-t-3xl bg-white px-4 pt-5"
-          style={{ paddingBottom: Math.max(insets.bottom, 32) }}
+          style={{ paddingBottom: keyboardVisible ? 16 : Math.max(insets.bottom, 32) }}
         >
           {children}
         </View>
       </KeyboardAvoidingView>
+    </>
+  );
+}
+
+/** Bottom sheet chrome: modal, backdrop, keyboard avoidance, inset padding. */
+export function SheetContainer({ visible, onClose, children }: SheetContainerProps) {
+  return (
+    <Modal visible={visible} transparent animationType="slide" onRequestClose={onClose}>
+      {/* A Modal is its own native window: the outer SafeAreaProvider's insets
+          were measured for the app window, not this one, so they read wrong
+          in here without a provider of the sheet's own. */}
+      <SafeAreaProvider>
+        <SheetSurface onClose={onClose}>{children}</SheetSurface>
+      </SafeAreaProvider>
     </Modal>
   );
 }
