@@ -81,10 +81,14 @@ export function ClipsFeedScreen() {
           renderItem={renderItem}
           pagingEnabled
           showsVerticalScrollIndicator={false}
-          windowSize={3}
+          // 5, not 3: neighbours stay mounted through a fast fling, so a fresh
+          // cell's black flash cannot outrun the scroll.
+          windowSize={5}
           initialNumToRender={1}
           maxToRenderPerBatch={1}
-          removeClippedSubviews
+          // Explicit: Android defaults this ON, and a clipped cell's video
+          // surface dies under it.
+          removeClippedSubviews={false}
           viewabilityConfig={viewabilityConfig}
           onViewableItemsChanged={onViewableItemsChanged}
           onEndReached={() => {

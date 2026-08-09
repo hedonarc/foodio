@@ -7,7 +7,19 @@ per page, with an end card after the last clip.
 and [#34](https://github.com/hedonarc/foodio/issues/34)): `FlatList` +
 `pagingEnabled` — a deliberate AGENTS.md deviation, because FlashList makes
 `windowSize` a no-op and the pinned live-cell count is the whole game — one
-player per rendered `VideoView`, `windowSize={3}`.
+player per rendered `VideoView`, `windowSize={5}`. Was 3; raised because a
+fast fling outran the mount window and flashed the cell's black background.
+Validated on the A15 (2026-08-09): rapid-fling bursts show no black frames,
+and sustained scrolling stays clean. If a lower-end device ever runs out of
+decoder sessions, lower it before doing anything cleverer.
+
+**Rendering** (black-video fix): `surfaceType="textureView"`, because a
+SurfaceView detached by list virtualization dies and stays black while the
+player plays on — TextureView survives the round trip, at the cost of more
+memory and no HDR/secure output, neither of which food clips need.
+`removeClippedSubviews={false}` is explicit for the same reason: Android's
+default clips. The poster hides only after `onFirstFrameRender` — "playing"
+is ExoPlayer's clock, not its canvas.
 
 **Playback policy** ([#24](https://github.com/hedonarc/foodio/issues/24)):
 autoplay on the settled index; muted by default with unmute as one
