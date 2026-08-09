@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { Pressable, View } from 'react-native';
 
 import { useEvent } from 'expo';
@@ -57,6 +57,15 @@ export function ClipFeedCell({
   });
 
   const { isPlaying } = useEvent(player, 'playingChange', { isPlaying: player.playing });
+  // "Playing" is ExoPlayer's clock, not its canvas — frames can lag it. The
+  // poster must outlive play() until pixels actually hit the surface.
+  const [hasRenderedFrame, setHasRenderedFrame] = useState(false);
+
+  // A new player (mediaUrl change without remount) starts with an empty
+  // canvas; the latch must not outlive the surface it described.
+  useEffect(() => {
+    setHasRenderedFrame(false);
+  }, [player]);
 
   useEffect(() => {
     player.muted = muted;
@@ -86,12 +95,16 @@ export function ClipFeedCell({
         style={{ flex: 1 }}
         contentFit="cover"
         nativeControls={false}
+        // TextureView: a SurfaceView detached by list recycling goes black and
+        // stays black; a TextureView survives the round trip.
+        surfaceType="textureView"
+        onFirstFrameRender={() => setHasRenderedFrame(true)}
         importantForAccessibility="no"
         accessibilityElementsHidden
       />
 
       {/* Poster: covers buffering, scroll-away resets, and reduce-motion. */}
-      {isPlaying ? null : (
+      {isPlaying && hasRenderedFrame ? null : (
         <Image
           source={{ uri: clip.thumbnailUrl }}
           style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0 }}
