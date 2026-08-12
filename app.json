@@ -42,7 +42,8 @@
         }
       ],
       "expo-splash-screen",
-      "expo-video"
+      "expo-video",
+      "expo-maps"
     ]
   }
 }
