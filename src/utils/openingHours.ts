@@ -21,9 +21,37 @@ function toMinutes(time: string): number {
 }
 
 /** A period closing no later than it opens runs past midnight. */
-export function isOpenAt(hours: readonly OpeningHours[], at: Date): boolean {
-  const day = at.getDay();
-  const nowMinutes = at.getHours() * 60 + at.getMinutes();
+/**
+ * What the clock says **at the restaurant**. Reading `at.getDay()` and
+ * `at.getHours()` asks the device instead, which is only right by coincidence
+ * when the customer happens to share the restaurant's timezone.
+ */
+function localTimeAt(at: Date, timeZone: string): { day: number; minutes: number } {
+  const parts = new Intl.DateTimeFormat('en-GB', {
+    timeZone,
+    weekday: 'short',
+    hour: '2-digit',
+    minute: '2-digit',
+    hour12: false,
+  }).formatToParts(at);
+
+  const read = (type: Intl.DateTimeFormatPartTypes): string =>
+    parts.find((part) => part.type === type)?.value ?? '';
+
+  // 0 = Sunday, matching `dayOfWeek` in the contract and `Date#getDay`.
+  const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+
+  // Some ICU builds render midnight as 24 under hour12: false.
+  const hour = Number.parseInt(read('hour'), 10) % 24;
+
+  return {
+    day: days.indexOf(read('weekday')),
+    minutes: hour * 60 + Number.parseInt(read('minute'), 10),
+  };
+}
+
+export function isOpenAt(hours: readonly OpeningHours[], at: Date, timeZone: string): boolean {
+  const { day, minutes: nowMinutes } = localTimeAt(at, timeZone);
 
   return hours.some((period) => {
     const opens = toMinutes(period.opensAt);

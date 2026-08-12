@@ -18,7 +18,7 @@ type RestaurantInfoProps = {
 export function RestaurantInfo({ restaurant }: RestaurantInfoProps) {
   const { t, i18n } = useTranslation();
 
-  const isOpen = isOpenAt(restaurant.openingHours, new Date());
+  const isOpen = isOpenAt(restaurant.openingHours, new Date(), restaurant.timezone);
 
   const deliveryFee =
     restaurant.deliveryFeeMinor === 0

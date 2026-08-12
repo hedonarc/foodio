@@ -74,7 +74,7 @@ export function reviewCheckout(input: CheckoutInput): CheckoutReview {
 
   if (!restaurant) {
     blockers.push({ kind: 'restaurant-unavailable' });
-  } else if (!isOpenAt(restaurant.openingHours, now)) {
+  } else if (!isOpenAt(restaurant.openingHours, now, restaurant.timezone)) {
     blockers.push({ kind: 'restaurant-closed' });
   }
 

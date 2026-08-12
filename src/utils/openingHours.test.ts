@@ -6,33 +6,45 @@ import {
   type OpeningHours,
 } from './openingHours';
 
-/** Local time, so it lines up with what isOpenAt reads off the Date. */
-const at = (isoLocal: string) => new Date(isoLocal);
+/**
+ * Instants in UTC, read against a fixed restaurant zone. Karachi is UTC+5 with
+ * no DST, so each case is written as the Karachi wall-clock time it is about.
+ */
+const at = (isoUtc: string) => new Date(isoUtc);
+const KARACHI = 'Asia/Karachi';
 
 describe('isOpenAt', () => {
   const weekday: OpeningHours[] = [{ dayOfWeek: 1, opensAt: '11:00', closesAt: '22:00' }];
 
   it('is open between opening and closing', () => {
     // 2026-08-03 is a Monday.
-    expect(isOpenAt(weekday, at('2026-08-03T12:00:00'))).toBe(true);
+    expect(isOpenAt(weekday, at('2026-08-03T07:00:00Z'), KARACHI)).toBe(true);
   });
 
   it('is closed before opening', () => {
-    expect(isOpenAt(weekday, at('2026-08-03T10:59:00'))).toBe(false);
+    expect(isOpenAt(weekday, at('2026-08-03T05:59:00Z'), KARACHI)).toBe(false);
   });
 
   it('treats the opening minute as open and the closing minute as closed', () => {
-    expect(isOpenAt(weekday, at('2026-08-03T11:00:00'))).toBe(true);
-    expect(isOpenAt(weekday, at('2026-08-03T22:00:00'))).toBe(false);
+    expect(isOpenAt(weekday, at('2026-08-03T06:00:00Z'), KARACHI)).toBe(true);
+    expect(isOpenAt(weekday, at('2026-08-03T17:00:00Z'), KARACHI)).toBe(false);
   });
 
   it('is closed on a day with no entry', () => {
     // Tuesday.
-    expect(isOpenAt(weekday, at('2026-08-04T12:00:00'))).toBe(false);
+    expect(isOpenAt(weekday, at('2026-08-04T07:00:00Z'), KARACHI)).toBe(false);
   });
 
   it('is closed when there are no opening hours at all', () => {
-    expect(isOpenAt([], at('2026-08-03T12:00:00'))).toBe(false);
+    expect(isOpenAt([], at('2026-08-03T07:00:00Z'), KARACHI)).toBe(false);
+  });
+
+  it('judges by the restaurant clock, not the phone in the hand', () => {
+    const lunchtimeInKarachi = at('2026-08-03T07:00:00Z');
+
+    expect(isOpenAt(weekday, lunchtimeInKarachi, KARACHI)).toBe(true);
+    // Same instant, midnight on Monday in Los Angeles — shut.
+    expect(isOpenAt(weekday, lunchtimeInKarachi, 'America/Los_Angeles')).toBe(false);
   });
 
   describe('periods running past midnight', () => {
@@ -40,17 +52,17 @@ describe('isOpenAt', () => {
 
     it('is open late on its own day', () => {
       // Friday 23:30.
-      expect(isOpenAt(lateNight, at('2026-08-07T23:30:00'))).toBe(true);
+      expect(isOpenAt(lateNight, at('2026-08-07T18:30:00Z'), KARACHI)).toBe(true);
     });
 
     it('is still open in the small hours of the next day', () => {
       // Saturday 01:00 — covered by Friday's period.
-      expect(isOpenAt(lateNight, at('2026-08-08T01:00:00'))).toBe(true);
+      expect(isOpenAt(lateNight, at('2026-08-07T20:00:00Z'), KARACHI)).toBe(true);
     });
 
     it('is closed once the overnight period ends', () => {
       // Saturday 02:00.
-      expect(isOpenAt(lateNight, at('2026-08-08T02:00:00'))).toBe(false);
+      expect(isOpenAt(lateNight, at('2026-08-07T21:00:00Z'), KARACHI)).toBe(false);
     });
   });
 });
