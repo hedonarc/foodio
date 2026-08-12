@@ -7,6 +7,7 @@
       "rating": 4.8,
       "reviewCount": 342,
       "currency": "USD",
+      "timezone": "Asia/Karachi",
       "deliveryFeeMinor": 199,
       "deliveryEstimate": {
         "minMinutes": 20,
@@ -69,6 +70,7 @@
       "rating": 4.9,
       "reviewCount": 521,
       "currency": "USD",
+      "timezone": "Asia/Karachi",
       "deliveryFeeMinor": 0,
       "deliveryEstimate": {
         "minMinutes": 25,
@@ -121,6 +123,7 @@
       "rating": 4.7,
       "reviewCount": 289,
       "currency": "USD",
+      "timezone": "Asia/Karachi",
       "deliveryFeeMinor": 249,
       "deliveryEstimate": {
         "minMinutes": 15,
@@ -183,6 +186,7 @@
       "rating": 4.6,
       "reviewCount": 198,
       "currency": "USD",
+      "timezone": "Asia/Karachi",
       "deliveryFeeMinor": 99,
       "deliveryEstimate": {
         "minMinutes": 20,
@@ -245,6 +249,7 @@
       "rating": 4.9,
       "reviewCount": 411,
       "currency": "USD",
+      "timezone": "Asia/Karachi",
       "deliveryFeeMinor": 0,
       "deliveryEstimate": {
         "minMinutes": 15,
@@ -307,6 +312,7 @@
       "rating": 4.8,
       "reviewCount": 267,
       "currency": "USD",
+      "timezone": "Asia/Karachi",
       "deliveryFeeMinor": 299,
       "deliveryEstimate": {
         "minMinutes": 30,
@@ -369,6 +375,7 @@
       "rating": 4.5,
       "reviewCount": 153,
       "currency": "USD",
+      "timezone": "Asia/Karachi",
       "deliveryFeeMinor": 149,
       "deliveryEstimate": {
         "minMinutes": 25,
@@ -431,6 +438,7 @@
       "rating": 4.7,
       "reviewCount": 234,
       "currency": "USD",
+      "timezone": "Asia/Karachi",
       "deliveryFeeMinor": 199,
       "deliveryEstimate": {
         "minMinutes": 20,
@@ -493,6 +501,7 @@
       "rating": 4.9,
       "reviewCount": 378,
       "currency": "USD",
+      "timezone": "Asia/Karachi",
       "deliveryFeeMinor": 0,
       "deliveryEstimate": {
         "minMinutes": 15,
@@ -550,6 +559,7 @@
       "rating": 4.6,
       "reviewCount": 192,
       "currency": "USD",
+      "timezone": "Asia/Karachi",
       "deliveryFeeMinor": 249,
       "deliveryEstimate": {
         "minMinutes": 25,

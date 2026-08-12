@@ -47,6 +47,13 @@ export const restaurantSchema = restaurantSummarySchema.extend({
   description: z.string(),
   address: z.string(),
   gallery: z.array(z.string()),
+  /**
+   * IANA zone. Opening hours are stated in the restaurant's local time, so
+   * judging Open/Closed on the device clock is wrong for anyone whose phone is
+   * elsewhere. Required, not optional with a fallback: a silent default would
+   * reintroduce the same bug quietly.
+   */
+  timezone: z.string(),
   openingHours: z.array(openingHoursSchema),
   reviews: z.array(restaurantReviewSchema),
 });
