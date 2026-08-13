@@ -109,6 +109,51 @@ describe('groupOpeningHours', () => {
   it('returns nothing when the restaurant never opens', () => {
     expect(groupOpeningHours([])).toEqual([]);
   });
+
+  describe('split shifts', () => {
+    const lunch = (dayOfWeek: number): OpeningHours => ({
+      dayOfWeek,
+      opensAt: '12:00',
+      closesAt: '15:00',
+    });
+    const dinner = (dayOfWeek: number): OpeningHours => ({
+      dayOfWeek,
+      opensAt: '19:00',
+      closesAt: '23:30',
+    });
+
+    it('keeps both windows of a day rather than dropping all but the last', () => {
+      const groups = groupOpeningHours([lunch(1), dinner(1)]);
+
+      expect(groups).toHaveLength(1);
+      expect(groups[0]?.windows).toEqual([
+        { opensAt: '12:00', closesAt: '15:00' },
+        { opensAt: '19:00', closesAt: '23:30' },
+      ]);
+    });
+
+    it('orders a day chronologically however the windows arrive', () => {
+      const groups = groupOpeningHours([dinner(1), lunch(1)]);
+
+      expect(groups[0]?.windows.map((window) => window.opensAt)).toEqual(['12:00', '19:00']);
+    });
+
+    it('collapses days that share an identical set of windows', () => {
+      const groups = groupOpeningHours([1, 2, 3, 4, 5].flatMap((day) => [lunch(day), dinner(day)]));
+
+      expect(groups).toHaveLength(1);
+      expect(groups[0]?.days).toEqual([1, 2, 3, 4, 5]);
+      expect(groups[0]?.windows).toHaveLength(2);
+    });
+
+    it('splits a day that opens for lunch only away from the split-shift block', () => {
+      const groups = groupOpeningHours([lunch(1), dinner(1), lunch(2)]);
+
+      expect(groups.map((group) => group.days)).toEqual([[1], [2]]);
+      expect(groups[0]?.windows).toHaveLength(2);
+      expect(groups[1]?.windows).toHaveLength(1);
+    });
+  });
 });
 
 describe('formatWeekday', () => {

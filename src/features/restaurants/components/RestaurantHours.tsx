@@ -42,10 +42,20 @@ export function RestaurantHours({ openingHours }: RestaurantHoursProps) {
             <Text variant="caption" className="text-gray-600 font-medium">
               {label}
             </Text>
-            <Text variant="caption" className="text-gray-500">
-              {formatTimeOfDay(group.opensAt, i18n.language)} –{' '}
-              {formatTimeOfDay(group.closesAt, i18n.language)}
-            </Text>
+
+            {/* Stacked, not joined: two windows on one line wraps badly on a phone. */}
+            <View className="items-end">
+              {group.windows.map((window) => (
+                <Text
+                  key={`${window.opensAt}-${window.closesAt}`}
+                  variant="caption"
+                  className="text-gray-500"
+                >
+                  {formatTimeOfDay(window.opensAt, i18n.language)} –{' '}
+                  {formatTimeOfDay(window.closesAt, i18n.language)}
+                </Text>
+              ))}
+            </View>
           </View>
         );
       })}

@@ -6,11 +6,14 @@ export type OpeningHours = {
   closesAt: string;
 };
 
+/** One open period, stripped of the day it falls on. */
+export type OpeningWindow = Omit<OpeningHours, 'dayOfWeek'>;
+
 /** Consecutive days sharing the same hours. */
 export type OpeningHoursGroup = {
   days: number[];
-  opensAt: string;
-  closesAt: string;
+  /** Chronological. A day may hold several — lunch, shut, then dinner. */
+  windows: OpeningWindow[];
 };
 
 const MINUTES_PER_DAY = 24 * 60;
@@ -70,22 +73,44 @@ export function isOpenAt(hours: readonly OpeningHours[], at: Date, timeZone: str
   });
 }
 
-/** Monday-first, so a Mon–Fri block stays contiguous rather than splitting. */
+const sameWindows = (a: readonly OpeningWindow[], b: readonly OpeningWindow[]): boolean =>
+  a.length === b.length &&
+  a.every(
+    (window, index) =>
+      window.opensAt === b[index]?.opensAt && window.closesAt === b[index]?.closesAt,
+  );
+
+/**
+ * Monday-first, so a Mon–Fri block stays contiguous rather than splitting.
+ *
+ * A day may hold more than one window — lunch, shut through the afternoon, then
+ * dinner is ordinary in Lahore, and nothing in the schema forbids it. Days are
+ * grouped on their whole set of windows, so a day that drops lunch breaks the
+ * block rather than passing for one that keeps it.
+ */
 export function groupOpeningHours(hours: readonly OpeningHours[]): OpeningHoursGroup[] {
   const weekOrder = [1, 2, 3, 4, 5, 6, 0];
-  const byDay = new Map(hours.map((period) => [period.dayOfWeek, period]));
+
+  const byDay = new Map<number, OpeningWindow[]>();
+  for (const { dayOfWeek, opensAt, closesAt } of hours) {
+    const windows = byDay.get(dayOfWeek) ?? [];
+    windows.push({ opensAt, closesAt });
+    byDay.set(dayOfWeek, windows);
+  }
 
   const groups: OpeningHoursGroup[] = [];
 
   for (const day of weekOrder) {
-    const period = byDay.get(day);
-    if (!period) continue;
+    const windows = byDay.get(day);
+    if (!windows || windows.length === 0) continue;
+
+    // `HH:mm` sorts correctly as text, and an overnight window opens last anyway.
+    windows.sort((a, b) => a.opensAt.localeCompare(b.opensAt));
 
     const previous = groups[groups.length - 1];
     const isContiguous =
       previous !== undefined &&
-      previous.opensAt === period.opensAt &&
-      previous.closesAt === period.closesAt &&
+      sameWindows(previous.windows, windows) &&
       previous.days[previous.days.length - 1] === weekOrder[weekOrder.indexOf(day) - 1];
 
     if (isContiguous) {
@@ -93,7 +118,7 @@ export function groupOpeningHours(hours: readonly OpeningHours[]): OpeningHoursG
       continue;
     }
 
-    groups.push({ days: [day], opensAt: period.opensAt, closesAt: period.closesAt });
+    groups.push({ days: [day], windows });
   }
 
   return groups;
