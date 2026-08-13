@@ -43,15 +43,28 @@ const LUNCH: Window = { opensAt: '12:00', closesAt: '15:00' };
 const DINNER: Window = { opensAt: '19:00', closesAt: '23:30' };
 
 /**
- * A later shift cannot start before the one before it has finished, so it only
- * offers the times after that — the overlap is unrepresentable rather than
- * merely warned about.
+ * Each end of a shift is penned in by its neighbours, so windows cannot be made
+ * to cross at all — the overlap is unrepresentable rather than merely warned
+ * about. A shift with another after it also cannot run past midnight, which is
+ * why only the last one closes unbounded.
+ *
+ * Every bound is derived from a value the current week already satisfies, so
+ * the list always contains at least what the pill is showing: no dead ends, and
+ * no need to move two controls in lockstep.
  */
 function optionsFor(shifts: readonly Window[], index: number, field: 'opensAt' | 'closesAt') {
-  if (field !== 'opensAt' || index === 0) return TIMES;
+  const shift = shifts[index];
+  if (!shift) return TIMES;
+
   const previous = shifts[index - 1];
-  if (!previous || isOvernight(previous)) return TIMES;
-  return TIMES.filter((time) => time > previous.closesAt);
+  const next = shifts[index + 1];
+
+  const after = field === 'opensAt' ? previous?.closesAt : next && shift.opensAt;
+  const before = field === 'opensAt' ? next && shift.closesAt : next?.opensAt;
+
+  return TIMES.filter(
+    (time) => (after === undefined || time > after) && (before === undefined || time < before),
+  );
 }
 
 /**
@@ -308,6 +321,7 @@ export function VariantC() {
                       value={shift.closesAt}
                       onPress={() => cycle(day, index, 'closesAt')}
                       label="Closes"
+                      disabled={optionsFor(shifts, index, 'closesAt').length === 0}
                     />
 
                     {isOvernight(shift) ? (
