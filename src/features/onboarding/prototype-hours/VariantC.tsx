@@ -42,10 +42,17 @@ const ALL_DAY: Window = { opensAt: '11:00', closesAt: '23:00' };
 const LUNCH: Window = { opensAt: '12:00', closesAt: '15:00' };
 const DINNER: Window = { opensAt: '19:00', closesAt: '23:30' };
 
-const nextTime = (current: string): string => {
-  const at = TIMES.indexOf(current);
-  return TIMES[(at + 1) % TIMES.length] ?? '00:00';
-};
+/**
+ * A later shift cannot start before the one before it has finished, so it only
+ * offers the times after that — the overlap is unrepresentable rather than
+ * merely warned about.
+ */
+function optionsFor(shifts: readonly Window[], index: number, field: 'opensAt' | 'closesAt') {
+  if (field !== 'opensAt' || index === 0) return TIMES;
+  const previous = shifts[index - 1];
+  if (!previous || isOvernight(previous)) return TIMES;
+  return TIMES.filter((time) => time > previous.closesAt);
+}
 
 /**
  * "5 of 7 open" makes the owner do the subtraction. Name the exception instead,
@@ -58,6 +65,19 @@ function summarise(open: readonly number[], closed: readonly number[]): string {
     ? `Closed ${closed.map(shortDay).join(', ')}`
     : `Open ${open.map(shortDay).join(', ')}`;
 }
+
+const to12Hour = (hhmm: string): string => {
+  const [hours = '0', minutes = '00'] = hhmm.split(':');
+  const hour = Number(hours);
+  return `${hour % 12 === 0 ? 12 : hour % 12}:${minutes} ${hour < 12 ? 'am' : 'pm'}`;
+};
+
+/**
+ * A bare "next day" leaves the owner working out which day and how late. Name
+ * both — except under "same times every day", where there is no one day to name.
+ */
+const overnightLabel = (day: number, closesAt: string, sameEveryDay: boolean): string =>
+  `${sameEveryDay ? 'next day' : shortDay((day + 1) % 7)}, ${to12Hour(closesAt)}`;
 
 /** One shift, so "Add another shift" is visible rather than capped out on arrival. */
 const seedShifts = (): Window[] => [{ ...ALL_DAY }];
@@ -119,19 +139,29 @@ export function VariantC() {
     const shifts = shiftsFor(day).map((w) => ({ ...w }));
     const shift = shifts[index];
     if (!shift) return;
-    shifts[index] = { ...shift, [field]: nextTime(shift[field]) };
+
+    const options = optionsFor(shifts, index, field);
+    if (options.length === 0) return;
+
+    /** An out-of-range value indexes to -1, so the first step snaps it into range. */
+    const at = options.indexOf(shift[field]);
+    shifts[index] = { ...shift, [field]: options[(at + 1) % options.length] ?? '00:00' };
     writeShifts(day, shifts);
   };
 
   /**
    * A second shift means a break in the middle of the day, so the first one has
    * to give way — appending dinner to an all-day window would only overlap it.
+   * A first shift that already starts in the evening leaves no room to clip, so
+   * the day becomes a plain lunch-and-dinner pair instead.
    */
   const addShift = (day: number) => {
     const shifts = shiftsFor(day);
     if (shifts.length >= MAX_SHIFTS) return;
-    const first = shifts[0] ?? { ...LUNCH };
-    writeShifts(day, [{ ...first, closesAt: LUNCH.closesAt }, { ...DINNER }]);
+
+    const first = shifts[0];
+    const room = first !== undefined && first.opensAt < LUNCH.closesAt;
+    writeShifts(day, [room ? { ...first, closesAt: LUNCH.closesAt } : { ...LUNCH }, { ...DINNER }]);
   };
 
   const removeShift = (day: number, index: number) =>
@@ -269,6 +299,7 @@ export function VariantC() {
                       value={shift.opensAt}
                       onPress={() => cycle(day, index, 'opensAt')}
                       label="Opens"
+                      disabled={optionsFor(shifts, index, 'opensAt').length === 0}
                     />
 
                     <Ionicons name="arrow-forward" size={14} color={colors.gray[300]} />
@@ -281,7 +312,7 @@ export function VariantC() {
 
                     {isOvernight(shift) ? (
                       <Text variant="caption" className="text-warning-700">
-                        next day
+                        {overnightLabel(day, shift.closesAt, sameEveryDay)}
                       </Text>
                     ) : null}
 
@@ -359,20 +390,31 @@ export function VariantC() {
   );
 }
 
-type TimePillProps = { value: string; label: string; onPress: () => void };
+type TimePillProps = {
+  value: string;
+  label: string;
+  onPress: () => void;
+  disabled?: boolean;
+};
 
-function TimePill({ value, label, onPress }: TimePillProps) {
+function TimePill({ value, label, onPress, disabled = false }: TimePillProps) {
   return (
     <Pressable
       onPress={onPress}
+      disabled={disabled}
       accessibilityRole="button"
       accessibilityLabel={`${label} at ${value}`}
-      className="flex-row items-center gap-1.5 rounded-xl border border-gray-200 bg-white px-3 py-2.5"
+      accessibilityState={{ disabled }}
+      className={
+        disabled
+          ? 'flex-row items-center gap-1.5 rounded-xl border border-gray-200 bg-gray-100 px-3 py-2.5'
+          : 'flex-row items-center gap-1.5 rounded-xl border border-gray-200 bg-white px-3 py-2.5'
+      }
     >
-      <Text variant="bodyMedium" className="text-gray-900">
+      <Text variant="bodyMedium" className={disabled ? 'text-gray-400' : 'text-gray-900'}>
         {value}
       </Text>
-      <Ionicons name="chevron-down" size={13} color={colors.gray[400]} />
+      {disabled ? null : <Ionicons name="chevron-down" size={13} color={colors.gray[400]} />}
     </Pressable>
   );
 }
