@@ -23,7 +23,7 @@ import { VariantC } from '@/features/onboarding/prototype-hours/VariantC';
 const VARIANTS = [
   { key: 'A', name: 'Seven rows, edit in place', render: () => <VariantA /> },
   { key: 'B', name: 'Pattern + exceptions', render: () => <VariantB /> },
-  { key: 'C', name: 'One day + customer view', render: () => <VariantC /> },
+  { key: 'C', name: 'Days, then times', render: () => <VariantC /> },
 ] as const;
 
 export default function PrototypeHoursScreen() {
