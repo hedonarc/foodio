@@ -20,6 +20,19 @@ const config = {
           800: '#EF6C00',
           900: '#E65100',
         },
+        /**
+         * Mirrors `src/theme/colors.ts`. Absent until now, so every
+         * `text-error-500` and `border-error-500` in the app resolved to
+         * nothing and validation errors rendered in the default colour.
+         */
+        error: {
+          DEFAULT: '#F44336',
+          500: '#F44336',
+        },
+        success: {
+          DEFAULT: '#4CAF50',
+          500: '#4CAF50',
+        },
         warning: {
           DEFAULT: '#F59E0B',
           100: '#FEF3C7',
