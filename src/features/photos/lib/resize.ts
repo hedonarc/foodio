@@ -1,8 +1,12 @@
 /**
  * Longest edge after shrinking. Comfortably more than a phone screen needs at
- * any size the app shows a photograph, and a normal picture lands well under
- * 500KB at this size — which matters because the connection being spent is the
- * restaurant owner's upload, not the customer's download.
+ * any size the app shows a photograph.
+ *
+ * Measured, not guessed: a detailed 4032x3024 photograph comes out around 1MB
+ * at this edge and 85% quality — inside the 2MB cap with room, but not the
+ * "under 500KB" this comment used to claim. Shrinking still matters, because
+ * the connection being spent is the restaurant owner's upload, not the
+ * customer's download.
  */
 export const MAX_EDGE = 1600;
 
