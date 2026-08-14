@@ -47,14 +47,19 @@ export function RestaurantPreviewCard({ restaurant, wide = false }: RestaurantPr
         isOutOfRange ? 'opacity-60' : '',
         /*
           The carousel is a horizontal row, so every card is stretched to the
-          tallest. Without a photograph that would pin the text to the top of a
-          card two thirds empty; centring it fills the same height on purpose.
-          Centre on the card, never `flex-1` on the content: the content is the
-          card's only child, and a `flex-1` only child collapses an auto-height
-          parent to nothing. In the wide (search) layout there is no stretching,
-          so this does nothing.
+          tallest. Without a photograph the text would sit at the top of a card
+          two thirds empty, and — worse across a row — its name would land at a
+          different height from every neighbour's. Anchoring to the bottom puts
+          the text block exactly where the photographed cards put theirs, since
+          all of them are the same height, so titles and delivery lines align
+          straight across. Centring looks fine on one card and ragged in a row.
+
+          On the card, never `flex-1` on the content: the content is the card's
+          only child, and a `flex-1` only child collapses an auto-height parent
+          to nothing. The wide (search) layout does not stretch, so this is a
+          no-op there.
         */
-        restaurant.image || wide ? '' : 'justify-center',
+        restaurant.image || wide ? '' : 'justify-end',
       )}
     >
       <Photo uri={restaurant.image} className="h-36 w-full" />
