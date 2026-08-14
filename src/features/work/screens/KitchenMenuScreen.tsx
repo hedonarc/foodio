@@ -14,11 +14,14 @@ import { useRestaurants } from '@/features/restaurants/hooks/useRestaurants';
 import { useSessionStore } from '@/stores/session.store';
 
 import { KitchenMenuRow } from '../components/KitchenMenuRow';
+import { PhotoButton } from '../components/PhotoButton';
 import { QueueToast } from '../components/QueueToast';
 import { useMenuAvailability } from '../hooks/useMenuAvailability';
 import { useMenuItemPhoto } from '../hooks/useMenuItemPhoto';
+import { useRestaurantPhoto } from '../hooks/useRestaurantPhoto';
 import { useTransientMessage } from '../hooks/useTransientMessage';
 import { soldOutLast } from '../lib/kitchenMenu';
+import { photoErrorMessage } from '../lib/photoError';
 
 type MenuSection = { key: string; title: string; data: MenuItem[] };
 
@@ -33,6 +36,7 @@ export function KitchenMenuScreen() {
   const availability = useMenuAvailability(restaurantId ?? '');
   const photoUpload = usePhotoUpload();
   const savePhoto = useMenuItemPhoto(restaurantId ?? '');
+  const saveRestaurantPhoto = useRestaurantPhoto();
   const { message: toast, show: showToast } = useTransientMessage();
 
   const restaurant = restaurants?.find((entry) => entry.id === restaurantId);
@@ -49,6 +53,28 @@ export function KitchenMenuScreen() {
    * pointing at bytes that never arrived. Backing out of the picker returns
    * nothing and must stay silent — it is not a failure.
    */
+  /** The restaurant's own photograph, on the same two-step path as a dish's. */
+  const pickRestaurantPhoto = () => {
+    if (!restaurantId) return;
+
+    photoUpload.mutate(
+      { restaurantId },
+      {
+        onSuccess: (image) => {
+          if (image === undefined) return;
+          saveRestaurantPhoto.mutate(
+            { restaurantId, image },
+            {
+              onSuccess: () => showToast(t('work.menu.restaurantPhotoSaved')),
+              onError: () => showToast(t('work.menu.photoFailed')),
+            },
+          );
+        },
+        onError: (cause) => showToast(photoErrorMessage(cause, t)),
+      },
+    );
+  };
+
   const pickPhoto = (itemId: string) => {
     if (!restaurantId) return;
 
@@ -65,12 +91,7 @@ export function KitchenMenuScreen() {
             },
           );
         },
-        onError: (cause) =>
-          showToast(
-            cause instanceof Error && cause.message === 'photo-library-denied'
-              ? t('work.menu.photoDenied')
-              : toApiError(cause).message,
-          ),
+        onError: (cause) => showToast(photoErrorMessage(cause, t)),
       },
     );
   };
@@ -87,6 +108,19 @@ export function KitchenMenuScreen() {
   return (
     <SafeAreaView edges={['top']} className="flex-1 bg-white">
       <View className="flex-row items-center px-4 py-3">
+        <PhotoButton
+          uri={restaurant?.image ?? ''}
+          onPress={pickRestaurantPhoto}
+          isBusy={
+            (photoUpload.isPending && photoUpload.variables?.menuItemId === undefined) ||
+            saveRestaurantPhoto.isPending
+          }
+          accessibilityLabel={t('work.menu.restaurantPhoto', { name: restaurant?.name ?? '' })}
+          accessibilityHint={
+            restaurant?.image ? t('work.menu.changePhoto') : t('work.menu.addPhoto')
+          }
+          className="mr-3 h-11 w-11"
+        />
         <View className="flex-1">
           <Text variant="subheading" className="text-gray-900" numberOfLines={1}>
             {restaurant?.name ?? ''}
