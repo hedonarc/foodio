@@ -13,9 +13,16 @@ async function requestNotification(): Promise<PermissionResult> {
   return { status, type: PermissionType.Notification };
 }
 
+async function requestPhotoLibrary(): Promise<PermissionResult> {
+  const ImagePicker = await import('expo-image-picker');
+  const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+  return { status, type: PermissionType.PhotoLibrary };
+}
+
 const handlers: Record<PermissionType, () => Promise<PermissionResult>> = {
   [PermissionType.Location]: requestLocation,
   [PermissionType.Notification]: requestNotification,
+  [PermissionType.PhotoLibrary]: requestPhotoLibrary,
 };
 
 export const expoPermissionAdapter: PermissionPort = {
