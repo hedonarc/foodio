@@ -1,12 +1,11 @@
 import { useState } from 'react';
 import { Pressable, View } from 'react-native';
 
-import { Image } from 'expo-image';
 import { Ionicons } from '@expo/vector-icons';
 
 import { useTranslation } from 'react-i18next';
 
-import { Text } from '@/components/ui';
+import { Photo, Text } from '@/components/ui';
 import { useCartStore } from '@/stores/cart.store';
 import { colors } from '@/theme';
 import { formatMoney } from '@/utils/currency';
@@ -33,15 +32,7 @@ export function CartLineRow({ line, currency }: CartLineRowProps) {
 
   return (
     <View className="flex-row items-center border-b border-gray-100 py-3">
-      <View className="mr-3 h-16 w-16 flex-shrink-0 overflow-hidden rounded-xl bg-gray-200">
-        <Image
-          source={{ uri: line.image }}
-          style={{ width: '100%', height: '100%' }}
-          contentFit="cover"
-          transition={200}
-          accessibilityIgnoresInvertColors
-        />
-      </View>
+      <Photo uri={line.image} className="mr-3 h-16 w-16 flex-shrink-0 rounded-xl" />
 
       <View className="flex-1">
         <Text variant="bodyMedium" className="text-gray-900" numberOfLines={2}>

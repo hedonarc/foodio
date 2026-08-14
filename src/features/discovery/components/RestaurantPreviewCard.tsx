@@ -1,12 +1,11 @@
 import { Pressable, View } from 'react-native';
 
-import { Image } from 'expo-image';
 import { useRouter } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
 
 import { useTranslation } from 'react-i18next';
 
-import { Text } from '@/components/ui';
+import { Photo, Text } from '@/components/ui';
 import type { RestaurantSummary } from '@/features/restaurants';
 import { useNavigationGuard } from '@/hooks/useNavigationGuard';
 import { cn } from '@/lib/cn';
@@ -46,17 +45,20 @@ export function RestaurantPreviewCard({ restaurant, wide = false }: RestaurantPr
         'overflow-hidden rounded-2xl border border-gray-100 bg-white shadow-sm active:opacity-90',
         wide ? 'mb-3 w-full' : 'mr-4 w-56',
         isOutOfRange ? 'opacity-60' : '',
+        /*
+          The carousel is a horizontal row, so every card is stretched to the
+          tallest. Without a photograph that would pin the text to the top of a
+          card two thirds empty; centring it fills the same height on purpose.
+          Centre on the card, never `flex-1` on the content: the content is the
+          card's only child, and a `flex-1` only child collapses an auto-height
+          parent to nothing. In the wide (search) layout there is no stretching,
+          so this does nothing.
+        */
+        restaurant.image || wide ? '' : 'justify-center',
       )}
     >
-      <View className="h-36 w-full bg-gray-200">
-        <Image
-          source={{ uri: restaurant.image }}
-          style={{ width: '100%', height: '100%' }}
-          contentFit="cover"
-          transition={200}
-          accessibilityIgnoresInvertColors
-        />
-      </View>
+      <Photo uri={restaurant.image} className="h-36 w-full" />
+
       <View className="p-3">
         <View className="flex-row items-center justify-between">
           <Text variant="bodyMedium" className="flex-1 mr-2 text-gray-900" numberOfLines={1}>

@@ -1,12 +1,11 @@
 import { Pressable, View } from 'react-native';
 
-import { Image } from 'expo-image';
 import { useRouter } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
 
 import { useTranslation } from 'react-i18next';
 
-import { Text } from '@/components/ui';
+import { Photo, Text } from '@/components/ui';
 import { AddToCartControl, type CartRestaurant } from '@/features/cart';
 import { useNavigationGuard } from '@/hooks/useNavigationGuard';
 import { colors } from '@/theme';
@@ -33,15 +32,7 @@ export function MenuItemCard({ item, restaurant }: MenuItemCardProps) {
       accessibilityLabel={item.name}
       className="flex-row items-start py-3 active:opacity-70"
     >
-      <View className="mr-3 h-20 w-20 flex-shrink-0 overflow-hidden rounded-xl bg-gray-200">
-        <Image
-          source={{ uri: item.image }}
-          style={{ width: '100%', height: '100%' }}
-          contentFit="cover"
-          transition={200}
-          accessibilityIgnoresInvertColors
-        />
-      </View>
+      <Photo uri={item.image} className="mr-3 h-20 w-20 flex-shrink-0 rounded-xl" />
       <View className="flex-1">
         <View className="flex-row items-center">
           <Text variant="bodyMedium" className="flex-1 text-gray-900" numberOfLines={1}>

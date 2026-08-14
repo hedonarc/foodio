@@ -1,14 +1,13 @@
 import { useState } from 'react';
 import { Alert, Pressable, ScrollView, View } from 'react-native';
 
-import { Image } from 'expo-image';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
 
 import { useTranslation } from 'react-i18next';
 
 import { ErrorState, LoadingState, ScreenHeader } from '@/components/shared';
-import { Button, Text, TextField } from '@/components/ui';
+import { Button, Photo, Text, TextField } from '@/components/ui';
 // Deep imports: these barrels reach back into this feature.
 import { DishClips } from '@/features/discovery/components/DishClips';
 import { useRestaurant } from '@/features/restaurants/hooks/useRestaurant';
@@ -112,15 +111,7 @@ function Loaded({ item, currency, restaurant }: LoadedProps) {
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{ paddingBottom: 24 }}
       >
-        <View className="h-56 w-full bg-gray-200">
-          <Image
-            source={{ uri: item.image }}
-            style={{ width: '100%', height: '100%' }}
-            contentFit="cover"
-            transition={200}
-            accessibilityIgnoresInvertColors
-          />
-        </View>
+        <Photo uri={item.image} className="h-56 w-full" />
 
         <View className="px-4 pt-4">
           <View className="flex-row items-start">

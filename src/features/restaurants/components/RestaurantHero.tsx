@@ -1,22 +1,11 @@
-import { View } from 'react-native';
-
-import { Image } from 'expo-image';
+import { Photo } from '@/components/ui';
 
 type RestaurantHeroProps = {
   image: string;
   name: string;
 };
 
+/** Renders nothing when the restaurant has no photograph, so the page starts at its name. */
 export function RestaurantHero({ image, name }: RestaurantHeroProps) {
-  return (
-    <View className="h-56 w-full bg-gray-200">
-      <Image
-        source={{ uri: image }}
-        style={{ width: '100%', height: '100%' }}
-        contentFit="cover"
-        transition={200}
-        accessibilityLabel={name}
-      />
-    </View>
-  );
+  return <Photo uri={image} className="h-56 w-full" accessibilityLabel={name} />;
 }
