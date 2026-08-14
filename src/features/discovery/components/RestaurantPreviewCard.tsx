@@ -6,7 +6,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { useTranslation } from 'react-i18next';
 
 import { Photo, Text } from '@/components/ui';
-import type { RestaurantSummary } from '@/features/restaurants';
+import { type RestaurantSummary, RestaurantTilePlaceholder } from '@/features/restaurants';
 import { useNavigationGuard } from '@/hooks/useNavigationGuard';
 import { cn } from '@/lib/cn';
 import { colors } from '@/theme';
@@ -45,24 +45,18 @@ export function RestaurantPreviewCard({ restaurant, wide = false }: RestaurantPr
         'overflow-hidden rounded-2xl border border-gray-100 bg-white shadow-sm active:opacity-90',
         wide ? 'mb-3 w-full' : 'mr-4 w-56',
         isOutOfRange ? 'opacity-60' : '',
-        /*
-          The carousel is a horizontal row, so every card is stretched to the
-          tallest. Without a photograph the text would sit at the top of a card
-          two thirds empty, and — worse across a row — its name would land at a
-          different height from every neighbour's. Anchoring to the bottom puts
-          the text block exactly where the photographed cards put theirs, since
-          all of them are the same height, so titles and delivery lines align
-          straight across. Centring looks fine on one card and ragged in a row.
-
-          On the card, never `flex-1` on the content: the content is the card's
-          only child, and a `flex-1` only child collapses an auto-height parent
-          to nothing. The wide (search) layout does not stretch, so this is a
-          no-op there.
-        */
-        restaurant.image || wide ? '' : 'justify-end',
       )}
     >
-      <Photo uri={restaurant.image} className="h-36 w-full" />
+      {/*
+        A tile always keeps its picture slot. Leaving it out made a photograph-less
+        card read as broken beside its neighbours, and cost a layout special-case
+        to stop the text landing at a different height from theirs.
+      */}
+      {restaurant.image ? (
+        <Photo uri={restaurant.image} className="h-36 w-full" />
+      ) : (
+        <RestaurantTilePlaceholder name={restaurant.name} className="h-36 w-full" />
+      )}
 
       <View className="p-3">
         <View className="flex-row items-center justify-between">
