@@ -7,6 +7,7 @@ import { toApiError } from '@/api/errors';
 import { EmptyState, ErrorState, LoadingState } from '@/components/shared';
 import { Text } from '@/components/ui';
 import { IdentityChip } from '@/features/identity/components/IdentityChip';
+import { ManageButton } from '@/features/manage';
 import { useRestaurantMenu } from '@/features/menu/hooks/useRestaurantMenu';
 import type { MenuItem } from '@/features/menu/types/menu.types';
 import { usePhotoUpload } from '@/features/photos/hooks/usePhotoUpload';
@@ -129,6 +130,7 @@ export function KitchenMenuScreen() {
             {t('work.menu.subtitle')}
           </Text>
         </View>
+        {role.kind === 'kitchen' ? <ManageButton /> : null}
         <IdentityChip />
       </View>
 

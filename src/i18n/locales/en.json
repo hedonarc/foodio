@@ -7,7 +7,8 @@
     "cancel": "Cancel",
     "back": "Go back",
     "save": "Save",
-    "continue": "Continue"
+    "continue": "Continue",
+    "saving": "Saving…"
   },
   "errors": {
     "unknown": "Something went wrong. Please try again."
@@ -322,5 +323,25 @@
       }
     },
     "noneDone": "Nothing finished yet."
+  },
+  "manage": {
+    "title": "Manage",
+    "subtitle": "Everything customers see about {{name}}",
+    "kitchenOnly": "Switch to a kitchen to manage a restaurant.",
+    "open": "Manage restaurant",
+    "profile": {
+      "title": "Profile",
+      "subtitle": "Name, description, address and delivery",
+      "cuisinesHint": "Separate kinds of food with commas.",
+      "fields": {
+        "name": "Restaurant name",
+        "description": "Description",
+        "address": "Address",
+        "cuisines": "Kinds of food",
+        "deliveryFee": "Delivery fee",
+        "minMinutes": "Fastest (min)",
+        "maxMinutes": "Slowest (min)"
+      }
+    }
   }
 }

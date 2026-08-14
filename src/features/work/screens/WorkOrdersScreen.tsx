@@ -9,6 +9,7 @@ import { EmptyState, ErrorState, LoadingState } from '@/components/shared';
 import { Text } from '@/components/ui';
 import type { OrderStatus } from '@/features/checkout/types/order.types';
 import { IdentityChip } from '@/features/identity/components/IdentityChip';
+import { ManageButton } from '@/features/manage';
 import { useRestaurants } from '@/features/restaurants/hooks/useRestaurants';
 import { useSessionStore } from '@/stores/session.store';
 
@@ -90,6 +91,7 @@ export function WorkOrdersScreen() {
             {role.kind === 'delivery' ? t('work.deliverySubtitle') : t('work.kitchenSubtitle')}
           </Text>
         </View>
+        {role.kind === 'kitchen' ? <ManageButton /> : null}
         <IdentityChip />
       </View>
 

@@ -108,6 +108,9 @@ function RootNavigator() {
           name="(kitchen)"
           options={{ contentStyle: { backgroundColor: colors.white } }}
         />
+        {/* The Manage hub pushes over the queue rather than joining the tab bar — t4. */}
+        <Stack.Screen name="manage/index" />
+        <Stack.Screen name="manage/profile" />
       </Stack.Protected>
 
       <Stack.Protected guard={hasOnboarded && role.kind === 'delivery'}>
