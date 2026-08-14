@@ -262,7 +262,13 @@
     },
     "menu": {
       "subtitle": "Flip a dish off when it runs out",
-      "availabilityFor": "Availability for {{name}}"
+      "availabilityFor": "Availability for {{name}}",
+      "photoFor": "Photograph for {{name}}",
+      "addPhoto": "Add photo",
+      "changePhoto": "Change photo",
+      "photoSaved": "Photograph saved",
+      "photoFailed": "Could not save that photograph. Try again.",
+      "photoDenied": "Foodio needs access to your photos to add one."
     },
     "kitchenSubtitle": "Incoming orders",
     "deliverySubtitle": "Ready for delivery",

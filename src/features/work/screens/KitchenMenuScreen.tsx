@@ -9,12 +9,14 @@ import { Text } from '@/components/ui';
 import { IdentityChip } from '@/features/identity/components/IdentityChip';
 import { useRestaurantMenu } from '@/features/menu/hooks/useRestaurantMenu';
 import type { MenuItem } from '@/features/menu/types/menu.types';
+import { usePhotoUpload } from '@/features/photos/hooks/usePhotoUpload';
 import { useRestaurants } from '@/features/restaurants/hooks/useRestaurants';
 import { useSessionStore } from '@/stores/session.store';
 
 import { KitchenMenuRow } from '../components/KitchenMenuRow';
 import { QueueToast } from '../components/QueueToast';
 import { useMenuAvailability } from '../hooks/useMenuAvailability';
+import { useMenuItemPhoto } from '../hooks/useMenuItemPhoto';
 import { useTransientMessage } from '../hooks/useTransientMessage';
 import { soldOutLast } from '../lib/kitchenMenu';
 
@@ -29,6 +31,8 @@ export function KitchenMenuScreen() {
   const { data: menu, isPending, error, refetch } = useRestaurantMenu(restaurantId);
   const { data: restaurants } = useRestaurants();
   const availability = useMenuAvailability(restaurantId ?? '');
+  const photoUpload = usePhotoUpload();
+  const savePhoto = useMenuItemPhoto(restaurantId ?? '');
   const { message: toast, show: showToast } = useTransientMessage();
 
   const restaurant = restaurants?.find((entry) => entry.id === restaurantId);
@@ -38,6 +42,38 @@ export function KitchenMenuScreen() {
         .map((category) => ({ key: category.id, title: category.name, data: category.menuItems }))
         .filter((section) => section.data.length > 0)
     : [];
+
+  /**
+   * Upload then save, as two steps on purpose: an upload that is never saved
+   * leaves an orphaned object, where one write covering both could leave a dish
+   * pointing at bytes that never arrived. Backing out of the picker returns
+   * nothing and must stay silent — it is not a failure.
+   */
+  const pickPhoto = (itemId: string) => {
+    if (!restaurantId) return;
+
+    photoUpload.mutate(
+      { restaurantId, menuItemId: itemId },
+      {
+        onSuccess: (image) => {
+          if (image === undefined) return;
+          savePhoto.mutate(
+            { restaurantId, itemId, image },
+            {
+              onSuccess: () => showToast(t('work.menu.photoSaved')),
+              onError: () => showToast(t('work.menu.photoFailed')),
+            },
+          );
+        },
+        onError: (cause) =>
+          showToast(
+            cause instanceof Error && cause.message === 'photo-library-denied'
+              ? t('work.menu.photoDenied')
+              : toApiError(cause).message,
+          ),
+      },
+    );
+  };
 
   const toggle = (itemId: string, isAvailable: boolean) => {
     if (!restaurantId) return;
@@ -92,6 +128,11 @@ export function KitchenMenuScreen() {
           )}
           renderItem={({ item }) => (
             <KitchenMenuRow
+              onPickPhoto={() => pickPhoto(item.id)}
+              isUploadingPhoto={
+                (photoUpload.isPending && photoUpload.variables?.menuItemId === item.id) ||
+                (savePhoto.isPending && savePhoto.variables?.itemId === item.id)
+              }
               item={item}
               currency={restaurant?.currency}
               onToggle={(isAvailable) => toggle(item.id, isAvailable)}

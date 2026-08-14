@@ -32,3 +32,17 @@ export async function setMenuItemAvailability({
   const { data } = await apiClient.patch<unknown>(endpoint, { isAvailable });
   return parseResponse(menuItemSchema, data, `PATCH ${endpoint}`);
 }
+
+export type PhotoChange = {
+  restaurantId: string;
+  itemId: string;
+  /** The public URL an upload returned. `''` clears the photograph. */
+  image: string;
+};
+
+/** Saves an uploaded photograph onto a dish. The bytes are already in storage. */
+export async function setMenuItemPhoto({ restaurantId, itemId, image }: PhotoChange) {
+  const endpoint = `/restaurants/${restaurantId}/menu-items/${itemId}`;
+  const { data } = await apiClient.patch<unknown>(endpoint, { image });
+  return parseResponse(menuItemSchema, data, `PATCH ${endpoint}`);
+}

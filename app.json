@@ -42,7 +42,14 @@
         }
       ],
       "expo-splash-screen",
-      "expo-video"
+      "expo-video",
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "Foodio needs your photo library so you can put a picture on your restaurant and its dishes.",
+          "cameraPermission": "Foodio needs your camera so you can photograph a dish without leaving the app."
+        }
+      ]
     ]
   }
 }
