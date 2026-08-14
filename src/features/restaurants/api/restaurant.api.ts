@@ -23,3 +23,19 @@ export async function fetchRestaurant(restaurantId: string): Promise<Restaurant>
   const { data } = await apiClient.get<unknown>(`/restaurants/${restaurantId}`);
   return parseResponse(restaurantSchema, data, `GET /restaurants/${restaurantId}`);
 }
+
+export type RestaurantPhotoChange = {
+  restaurantId: string;
+  /** The public URL an upload returned. `''` clears the photograph. */
+  image: string;
+};
+
+/** Saves an already-uploaded photograph onto the restaurant. The bytes are in storage. */
+export async function setRestaurantPhoto({
+  restaurantId,
+  image,
+}: RestaurantPhotoChange): Promise<Restaurant> {
+  const endpoint = `/restaurants/${restaurantId}`;
+  const { data } = await apiClient.patch<unknown>(endpoint, { image });
+  return parseResponse(restaurantSchema, data, `PATCH ${endpoint}`);
+}

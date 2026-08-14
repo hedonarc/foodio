@@ -268,7 +268,9 @@
       "changePhoto": "Change photo",
       "photoSaved": "Photograph saved",
       "photoFailed": "Could not save that photograph. Try again.",
-      "photoDenied": "Foodio needs access to your photos to add one."
+      "photoDenied": "Foodio needs access to your photos to add one.",
+      "restaurantPhoto": "Photograph for {{name}}",
+      "restaurantPhotoSaved": "Restaurant photograph saved"
     },
     "kitchenSubtitle": "Incoming orders",
     "deliverySubtitle": "Ready for delivery",
