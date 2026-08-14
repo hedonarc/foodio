@@ -342,6 +342,18 @@
         "minMinutes": "Fastest (min)",
         "maxMinutes": "Slowest (min)"
       }
+    },
+    "hours": {
+      "title": "Opening hours",
+      "subtitle": "When customers can order from you",
+      "closed": "Closed",
+      "openOn": "Open on {{day}}",
+      "addShift": "Second shift {{day}}",
+      "removeShift": "Remove this shift",
+      "opensAt": "Opens",
+      "closesAt": "Closes",
+      "nextDay": "until {{day}}",
+      "timezone": "Times are in {{zone}}, your restaurant’s own clock."
     }
   }
 }
