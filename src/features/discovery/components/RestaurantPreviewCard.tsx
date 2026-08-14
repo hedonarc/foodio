@@ -1,13 +1,12 @@
 import { Pressable, View } from 'react-native';
 
-import { Image } from 'expo-image';
 import { useRouter } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
 
 import { useTranslation } from 'react-i18next';
 
-import { Text } from '@/components/ui';
-import type { RestaurantSummary } from '@/features/restaurants';
+import { Photo, Text } from '@/components/ui';
+import { type RestaurantSummary, RestaurantTilePlaceholder } from '@/features/restaurants';
 import { useNavigationGuard } from '@/hooks/useNavigationGuard';
 import { cn } from '@/lib/cn';
 import { colors } from '@/theme';
@@ -48,15 +47,17 @@ export function RestaurantPreviewCard({ restaurant, wide = false }: RestaurantPr
         isOutOfRange ? 'opacity-60' : '',
       )}
     >
-      <View className="h-36 w-full bg-gray-200">
-        <Image
-          source={{ uri: restaurant.image }}
-          style={{ width: '100%', height: '100%' }}
-          contentFit="cover"
-          transition={200}
-          accessibilityIgnoresInvertColors
-        />
-      </View>
+      {/*
+        A tile always keeps its picture slot. Leaving it out made a photograph-less
+        card read as broken beside its neighbours, and cost a layout special-case
+        to stop the text landing at a different height from theirs.
+      */}
+      {restaurant.image ? (
+        <Photo uri={restaurant.image} className="h-36 w-full" />
+      ) : (
+        <RestaurantTilePlaceholder name={restaurant.name} className="h-36 w-full" />
+      )}
+
       <View className="p-3">
         <View className="flex-row items-center justify-between">
           <Text variant="bodyMedium" className="flex-1 mr-2 text-gray-900" numberOfLines={1}>
