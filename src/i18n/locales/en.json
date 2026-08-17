@@ -8,7 +8,8 @@
     "back": "Go back",
     "save": "Save",
     "continue": "Continue",
-    "saving": "Saving…"
+    "saving": "Saving…",
+    "done": "Done"
   },
   "errors": {
     "unknown": "Something went wrong. Please try again."
@@ -354,6 +355,33 @@
       "closesAt": "Closes",
       "nextDay": "until {{day}}",
       "timezone": "Times are in {{zone}}, your restaurant’s own clock."
+    },
+    "staff": {
+      "title": "Staff",
+      "subtitle": "Who works here, and what they can do",
+      "empty": "Nobody works here yet.",
+      "owner": "Owner",
+      "capability": {
+        "kitchen": "Kitchen",
+        "delivery": "Rider"
+      },
+      "remove": "Remove {{capability}}",
+      "removeAction": "Remove",
+      "confirmRemoveTitle": "Remove access?",
+      "confirmRemoveBody": "This takes {{capability}} away from {{name}}. They can be added again with a new code.",
+      "removeFailed": "Could not remove that",
+      "addTitle": "Add someone",
+      "addRider": "Create a rider code",
+      "addKitchen": "Create a kitchen code",
+      "addHint": "They install Foodio, sign in, and enter the code. It works once and lasts 24 hours.",
+      "ownerOnlyHint": "Only the owner can add someone to the kitchen.",
+      "addFailed": "Could not create a code",
+      "kitchenCodeTitle": "Kitchen code",
+      "riderCodeTitle": "Rider code",
+      "codeSubtitle": "They enter this after signing in to Foodio.",
+      "codeWarning": "This is the only time you will see it. It works once and expires in 24 hours.",
+      "shareCode": "Share the code",
+      "shareMessage": "Join {{restaurant}} on Foodio. Install the app, sign in, and enter this code: {{code}}"
     }
   }
 }
