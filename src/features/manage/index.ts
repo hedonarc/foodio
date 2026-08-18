@@ -1,4 +1,12 @@
+export { DeliveryAreaMap } from './components/DeliveryAreaMap';
 export { ManageButton } from './components/ManageButton';
+export {
+  formatRadius,
+  LAHORE,
+  RADIUS_CHOICES,
+  radiusChoicesFor,
+  zoomForRadius,
+} from './lib/deliveryArea';
 export { ManageDeliveryAreaScreen } from './screens/ManageDeliveryAreaScreen';
 export { ManageDishScreen } from './screens/ManageDishScreen';
 export { ManageGoingLiveScreen } from './screens/ManageGoingLiveScreen';
