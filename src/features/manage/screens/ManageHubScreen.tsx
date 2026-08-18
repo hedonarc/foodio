@@ -58,6 +58,13 @@ export function ManageHubScreen() {
         </View>
 
         <ManageSectionRow
+          icon="globe-outline"
+          title={t('manage.live.title')}
+          subtitle={t('manage.live.subtitle')}
+          onPress={() => router.push('/manage/live')}
+        />
+
+        <ManageSectionRow
           icon="storefront-outline"
           title={t('manage.profile.title')}
           subtitle={t('manage.profile.subtitle')}
