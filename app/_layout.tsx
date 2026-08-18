@@ -148,6 +148,9 @@ function RootNavigator() {
       */}
       <Stack.Protected guard={hasOnboarded}>
         <Stack.Screen name="join" />
+        {/* Claiming belongs to no role either: a customer starts it, and is a
+            kitchen by the time it finishes. */}
+        <Stack.Screen name="claim" />
       </Stack.Protected>
     </Stack>
   );

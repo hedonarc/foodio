@@ -7,10 +7,14 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { EmptyState, ScreenHeader } from '@/components/shared';
 import { Text } from '@/components/ui';
-import { useRestaurants } from '@/features/restaurants';
+import { useRestaurantMenu } from '@/features/menu/hooks/useRestaurantMenu';
+import { useRestaurant } from '@/features/restaurants';
 import { useSessionStore } from '@/stores/session.store';
 
 import { ManageSectionRow } from '../components/ManageSectionRow';
+import { SetupChecklist } from '../components/SetupChecklist';
+import { useStaff } from '../hooks/useStaff';
+import { checklistFor, isFinishing } from '../lib/checklist';
 
 /**
  * Everything a restaurant sets about itself, one screen deep from the kitchen.
@@ -30,8 +34,9 @@ export function ManageHubScreen() {
   const role = useSessionStore((state) => state.role);
   const restaurantId = role.kind === 'kitchen' ? role.restaurantId : undefined;
 
-  const { data: restaurants } = useRestaurants();
-  const restaurant = restaurants?.find((entry) => entry.id === restaurantId);
+  const { data: restaurant } = useRestaurant(restaurantId ?? '');
+  const { data: menu } = useRestaurantMenu(restaurantId ?? '');
+  const { data: staff } = useStaff(restaurantId ?? '');
 
   if (!restaurantId) {
     // Reachable by deep link, or by switching role with this screen open.
@@ -56,6 +61,20 @@ export function ManageHubScreen() {
             {t('manage.subtitle', { name: restaurant?.name ?? '' })}
           </Text>
         </View>
+
+        {/* Only while the restaurant is still being set up — see t5. */}
+        {restaurant && isFinishing(restaurant.status) ? (
+          <SetupChecklist
+            steps={checklistFor({
+              restaurant,
+              dishCount: (menu ?? []).reduce(
+                (total, category) => total + category.menuItems.length,
+                0,
+              ),
+              staffCount: staff?.length ?? 0,
+            })}
+          />
+        ) : null}
 
         <ManageSectionRow
           icon="globe-outline"

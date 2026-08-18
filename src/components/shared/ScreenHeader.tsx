@@ -14,9 +14,11 @@ type ScreenHeaderProps = {
   action?: ReactNode;
   /** Tab screens have nowhere to go back to. */
   showBack?: boolean;
+  /** Overrides the pop, for a screen whose back means "the previous step". */
+  onBack?: () => void;
 };
 
-export function ScreenHeader({ title, action, showBack = true }: ScreenHeaderProps) {
+export function ScreenHeader({ title, action, showBack = true, onBack }: ScreenHeaderProps) {
   const { t } = useTranslation();
   const router = useRouter();
 
@@ -24,7 +26,7 @@ export function ScreenHeader({ title, action, showBack = true }: ScreenHeaderPro
     <View className="flex-row items-center px-4 py-3">
       {showBack ? (
         <Pressable
-          onPress={() => router.back()}
+          onPress={onBack ?? (() => router.back())}
           accessibilityRole="button"
           accessibilityLabel={t('common.back')}
           className="mr-3 h-9 w-9 items-center justify-center rounded-full bg-gray-100 active:bg-gray-200"

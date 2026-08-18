@@ -150,7 +150,28 @@ function IdentityMenu({ visible, onClose }: { visible: boolean; onClose: () => v
           );
         })}
 
-        {/* Quiet, below the roles: joining is rare, and it is not a role. */}
+        {/*
+          Quiet, below the roles: neither of these is a role, and both are rare.
+          t5 rejected putting "list your restaurant" on the customer home — it
+          advertises a path almost no user should take, in front of the people
+          least likely to want it. The gate against junk listings is t2's
+          invisibility, not this entry point, so it does not need to be one.
+        */}
+        <Pressable
+          onPress={() => {
+            onClose();
+            router.push('/claim');
+          }}
+          accessibilityRole="button"
+          accessibilityLabel={t('identity.listRestaurant')}
+          className="flex-row items-center border-t border-gray-100 px-4 py-3 active:bg-gray-50"
+        >
+          <Ionicons name="storefront-outline" size={16} color={colors.gray[500]} />
+          <Text variant="caption" className="ml-2.5 text-gray-700">
+            {t('identity.listRestaurant')}
+          </Text>
+        </Pressable>
+
         <Pressable
           onPress={() => {
             onClose();

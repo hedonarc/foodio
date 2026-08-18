@@ -252,7 +252,8 @@
       "noMatch": "No country matches that.",
       "change": "Change country"
     },
-    "joinRestaurant": "Join a restaurant"
+    "joinRestaurant": "Join a restaurant",
+    "listRestaurant": "List your restaurant"
   },
   "work": {
     "tabs": {
@@ -443,6 +444,19 @@
       "explainer": "The circle is how far you deliver — {{radius}} from the pin.",
       "useMyLocation": "Use my current location",
       "movedFar": "You have moved your kitchen a long way from where it was. Check the pin before saving."
+    },
+    "checklist": {
+      "title": "Finish setting up",
+      "remaining_one": "{{count}} thing left",
+      "remaining_other": "{{count}} things left",
+      "required": "Required",
+      "steps": {
+        "dish": "Add your first dish",
+        "hours": "Set your opening hours",
+        "describe": "Describe your restaurant",
+        "staff": "Add your team",
+        "live": "Open to customers"
+      }
     }
   },
   "join": {
@@ -465,5 +479,21 @@
       "delivery": "Switch to deliveries from your profile at the top right."
     },
     "hint": "A code works once and expires 24 hours after it was made."
+  },
+  "claim": {
+    "title": "List your restaurant",
+    "nameLabel": "Restaurant name",
+    "namePlaceholder": "Sweet Tooth Bakery",
+    "nameHint": "You can change everything else later. This is the only thing we cannot guess.",
+    "invisibleHint": "Nobody sees your restaurant until you add a dish and open it yourself.",
+    "placeTitle": "Where are you?",
+    "placeHeading": "Drag the map to your kitchen",
+    "placeHint": "The circle is how far you will deliver — {{radius}} from the pin.",
+    "useMyLocation": "Use my current location",
+    "create": "Create restaurant",
+    "creating": "Creating…",
+    "errors": {
+      "name": "Give your restaurant a name."
+    }
   }
 }
