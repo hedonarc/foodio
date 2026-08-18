@@ -36,6 +36,13 @@ type SessionState = {
    * or null after signing out if the refresh token is gone or dead.
    */
   refreshTokens: () => Promise<string | null>;
+  /**
+   * Re-reads who this person is and what they hold. Entitlements are resolved
+   * per request (ADR-0007), so the app only learns about a new one by asking —
+   * which is what redeeming a joining code needs before the new role can appear
+   * in the switcher.
+   */
+  refreshPerson: () => Promise<void>;
 };
 
 const encodeRole = (role: ActiveRole): string =>
@@ -134,6 +141,11 @@ export const useSessionStore = create<SessionState>((set, get) => ({
     const allowed = resolveRole(get().person, role);
     await setStoredRole(encodeRole(allowed));
     set({ role: allowed });
+  },
+
+  refreshPerson: async () => {
+    const person = await fetchMe().catch(() => null);
+    if (person) set({ person });
   },
 
   refreshTokens: async () => {

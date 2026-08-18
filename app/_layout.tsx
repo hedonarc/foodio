@@ -135,6 +135,16 @@ function RootNavigator() {
         <Stack.Screen name="address" />
         <Stack.Screen name="order/[id]" />
       </Stack.Protected>
+
+      {/*
+        Registered once, outside the role guards. Joining belongs to no role —
+        a customer, a rider and a cook can all redeem a code — and expo-router
+        requires screen names to be unique across the whole Stack, so three
+        role-scoped registrations crash it at render.
+      */}
+      <Stack.Protected guard={hasOnboarded}>
+        <Stack.Screen name="join" />
+      </Stack.Protected>
     </Stack>
   );
 }

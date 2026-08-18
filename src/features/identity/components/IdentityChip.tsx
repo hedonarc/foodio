@@ -76,6 +76,7 @@ export function IdentityChip() {
 
 function IdentityMenu({ visible, onClose }: { visible: boolean; onClose: () => void }) {
   const { t } = useTranslation();
+  const router = useRouter();
   const insets = useSafeAreaInsets();
 
   const person = useSessionStore((state) => state.person);
@@ -148,6 +149,22 @@ function IdentityMenu({ visible, onClose }: { visible: boolean; onClose: () => v
             </Pressable>
           );
         })}
+
+        {/* Quiet, below the roles: joining is rare, and it is not a role. */}
+        <Pressable
+          onPress={() => {
+            onClose();
+            router.push('/join');
+          }}
+          accessibilityRole="button"
+          accessibilityLabel={t('identity.joinRestaurant')}
+          className="flex-row items-center border-t border-gray-100 px-4 py-3 active:bg-gray-50"
+        >
+          <Ionicons name="key-outline" size={16} color={colors.gray[500]} />
+          <Text variant="caption" className="ml-2.5 text-gray-700">
+            {t('identity.joinRestaurant')}
+          </Text>
+        </Pressable>
 
         <Pressable
           onPress={() => void signOut().then(onClose)}
