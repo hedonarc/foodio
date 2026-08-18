@@ -176,6 +176,13 @@
       "delivery_failed": "Nobody answered the door. Contact the restaurant about redelivery.",
       "rejected": "The restaurant could not take this order.",
       "cancelled": "You cancelled this order."
+    },
+    "payment": {
+      "dueOnDelivery": "Pay in cash when your order arrives.",
+      "paid": "Paid in cash on delivery.",
+      "notCharged": "You were not charged for this order.",
+      "failed": "This payment did not go through.",
+      "held": "Your card is authorised. You are charged when the restaurant accepts."
     }
   },
   "orders": {
@@ -325,7 +332,8 @@
         "other": "Something else"
       }
     },
-    "noneDone": "Nothing finished yet."
+    "noneDone": "Nothing finished yet.",
+    "collectCash": "Collect {{amount}}"
   },
   "manage": {
     "live": {

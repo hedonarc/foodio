@@ -13,6 +13,7 @@ import { formatMoney } from '@/utils/currency';
 import { OrderStatusTimeline } from '../components/OrderStatusTimeline';
 import { RateOrderAffordance } from '../components/RateOrderAffordance';
 import { useCancelOrder, useOrder } from '../hooks/useOrders';
+import { customerPaymentKey } from '../lib/payment';
 import { isCancellable } from '../types/order.types';
 
 export function OrderStatusScreen() {
@@ -55,6 +56,7 @@ export function OrderStatusScreen() {
   }
 
   const money = (minor: number) => formatMoney(minor, order.currency, i18n.language);
+  const paymentKey = customerPaymentKey(order.payment);
 
   return (
     <View className="flex-1 bg-white">
@@ -114,6 +116,14 @@ export function OrderStatusScreen() {
               {money(order.totalMinor)}
             </Text>
           </View>
+
+          {/* Silent for orders that predate order payments — no record is not
+              the same as unpaid, and a guess here is a guess about money. */}
+          {paymentKey === null ? null : (
+            <Text variant="caption" className="mt-2 text-gray-500">
+              {t(paymentKey)}
+            </Text>
+          )}
         </View>
 
         {order.status === 'delivered' ? (

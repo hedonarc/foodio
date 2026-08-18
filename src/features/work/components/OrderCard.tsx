@@ -5,6 +5,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { useTranslation } from 'react-i18next';
 
 import { Button, Text } from '@/components/ui';
+import { cashToCollect } from '@/features/checkout/lib/payment';
 import type { Order, OrderStatus } from '@/features/checkout/types/order.types';
 import { isTerminal } from '@/features/checkout/types/order.types';
 import { cn } from '@/lib/cn';
@@ -78,6 +79,7 @@ export function OrderCard({
   const aging = agingLevel(order.status, minutes);
   const primary = primaryTransition(role, order.status);
   const itemCount = order.lines.reduce((sum, line) => sum + line.quantity, 0);
+  const toCollect = cashToCollect(order);
   // A settled order stops being urgent: minutes since placed would only grow
   // into nonsense ("4320 min"), so history reads as a date instead.
   const settled = isTerminal(order.status);
@@ -108,6 +110,20 @@ export function OrderCard({
       <Text variant="caption" className="mt-2 text-gray-500">
         {t('work.itemCount', { count: itemCount })}
       </Text>
+
+      {/* The rider's, not the kitchen's: the kitchen never touches the cash.
+          Silent on orders that predate order payments — the total is on the
+          card either way, and a guessed prompt about money is worse than none. */}
+      {role === 'delivery' && toCollect !== null ? (
+        <View className="mt-2 flex-row items-center gap-1.5 self-start rounded-full bg-warning-100 px-2.5 py-1">
+          <Ionicons name="cash-outline" size={13} color={colors.warning[700]} />
+          <Text variant="caption" className="font-semibold text-warning-700">
+            {t('work.collectCash', {
+              amount: formatMoney(toCollect, order.currency, i18n.language),
+            })}
+          </Text>
+        </View>
+      ) : null}
 
       {expanded ? <OrderDetail order={order} role={role} onCall={onCall} /> : null}
 
