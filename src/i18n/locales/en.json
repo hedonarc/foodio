@@ -435,6 +435,14 @@
       "deleteTitle": "Delete this dish?",
       "deleteBody": "This removes {{name}} from your menu for good.",
       "deleteFailed": "Could not delete that dish"
+    },
+    "area": {
+      "title": "Location and delivery area",
+      "subtitle": "Where you are, and how far you deliver",
+      "heading": "Drag the map to your kitchen",
+      "explainer": "The circle is how far you deliver — {{radius}} from the pin.",
+      "useMyLocation": "Use my current location",
+      "movedFar": "You have moved your kitchen a long way from where it was. Check the pin before saving."
     }
   },
   "join": {

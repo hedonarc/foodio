@@ -79,6 +79,13 @@ export function ManageHubScreen() {
         />
 
         <ManageSectionRow
+          icon="map-outline"
+          title={t('manage.area.title')}
+          subtitle={t('manage.area.subtitle')}
+          onPress={() => router.push('/manage/area')}
+        />
+
+        <ManageSectionRow
           icon="people-outline"
           title={t('manage.staff.title')}
           subtitle={t('manage.staff.subtitle')}

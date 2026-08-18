@@ -31,7 +31,7 @@
       [
         "expo-location",
         {
-          "locationWhenInUsePermission": "Foodio uses your location to show which restaurants deliver to your address."
+          "locationWhenInUsePermission": "Foodio uses your location to show which restaurants deliver to your address, and to place your own restaurant on the map."
         }
       ],
       "expo-router",
@@ -49,7 +49,8 @@
           "photosPermission": "Foodio needs your photo library so you can put a picture on your restaurant and its dishes.",
           "cameraPermission": "Foodio needs your camera so you can photograph a dish without leaving the app."
         }
-      ]
+      ],
+      "expo-maps"
     ]
   }
 }
