@@ -383,6 +383,31 @@
       "codeWarning": "This is the only time you will see it. It works once and expires in 24 hours.",
       "shareCode": "Share the code",
       "shareMessage": "Join {{restaurant}} on Foodio. Install the app, sign in, and enter this code: {{code}}"
+    },
+    "menu": {
+      "title": "Menu",
+      "subtitle": "Dishes, prices and sections",
+      "empty": "No sections yet. Add one to start your menu.",
+      "emptySection": "No dishes in here yet.",
+      "addSection": "Add a section",
+      "newSection": "New section",
+      "renameTitle": "Rename section",
+      "renameSection": "Rename {{name}}",
+      "sectionName": "Section name",
+      "sectionFailed": "Could not save that section",
+      "addDish": "Add a dish",
+      "newDish": "New dish",
+      "editDish": "Edit dish",
+      "dishName": "Dish name",
+      "dishDescription": "Description",
+      "dishPrice": "Price",
+      "dishSection": "Section",
+      "saveFailed": "Could not save that dish",
+      "deleteHint": "To take a dish off the menu for a while, mark it sold out from the Menu tab.",
+      "deleteAction": "Delete this dish",
+      "deleteTitle": "Delete this dish?",
+      "deleteBody": "This removes {{name}} from your menu for good.",
+      "deleteFailed": "Could not delete that dish"
     }
   },
   "join": {

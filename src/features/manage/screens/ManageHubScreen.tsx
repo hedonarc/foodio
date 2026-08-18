@@ -77,6 +77,13 @@ export function ManageHubScreen() {
           subtitle={t('manage.staff.subtitle')}
           onPress={() => router.push('/manage/staff')}
         />
+
+        <ManageSectionRow
+          icon="list-outline"
+          title={t('manage.menu.title')}
+          subtitle={t('manage.menu.subtitle')}
+          onPress={() => router.push('/manage/menu')}
+        />
       </ScrollView>
     </SafeAreaView>
   );
