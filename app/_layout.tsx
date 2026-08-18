@@ -112,6 +112,7 @@ function RootNavigator() {
         <Stack.Screen name="manage/index" />
         <Stack.Screen name="manage/profile" />
         <Stack.Screen name="manage/hours" />
+        <Stack.Screen name="manage/area" />
         <Stack.Screen name="manage/staff" />
         <Stack.Screen name="manage/menu" />
         <Stack.Screen name="manage/dish" />

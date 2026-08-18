@@ -14,6 +14,13 @@ export type RestaurantPatch = {
   deliveryFeeMinor?: number;
   deliveryEstimate?: { minMinutes: number; maxMinutes: number };
   /**
+   * Always sent together: the server refuses a patch carrying one without the
+   * other, because half a move puts the restaurant somewhere neither.
+   */
+  latitude?: number;
+  longitude?: number;
+  deliveryRadiusMeters?: number;
+  /**
    * Going live and stepping back are the restaurant's own. `suspended` is
    * absent on purpose — that is Foodio's lever, and the server refuses it.
    */
