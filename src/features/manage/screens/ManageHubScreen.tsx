@@ -70,6 +70,13 @@ export function ManageHubScreen() {
           subtitle={t('manage.hours.subtitle')}
           onPress={() => router.push('/manage/hours')}
         />
+
+        <ManageSectionRow
+          icon="people-outline"
+          title={t('manage.staff.title')}
+          subtitle={t('manage.staff.subtitle')}
+          onPress={() => router.push('/manage/staff')}
+        />
       </ScrollView>
     </SafeAreaView>
   );
