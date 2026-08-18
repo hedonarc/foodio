@@ -13,6 +13,11 @@ export type RestaurantPatch = {
   cuisines?: string[];
   deliveryFeeMinor?: number;
   deliveryEstimate?: { minMinutes: number; maxMinutes: number };
+  /**
+   * Going live and stepping back are the restaurant's own. `suspended` is
+   * absent on purpose — that is Foodio's lever, and the server refuses it.
+   */
+  status?: 'onboarding' | 'active';
 };
 
 async function updateRestaurant(restaurantId: string, patch: RestaurantPatch): Promise<Restaurant> {

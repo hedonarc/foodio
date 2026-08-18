@@ -38,6 +38,11 @@ export const restaurantSummarySchema = z.object({
   longitude: z.number(),
   deliveryRadiusMeters: z.number().int(),
   image: z.string(),
+  /**
+   * Why this restaurant is or is not listed. Only its own staff ever see a
+   * value other than `active` — see t2 and the going-live screen.
+   */
+  status: z.enum(['onboarding', 'active', 'suspended']),
   /** Present only when the request carried `lat`/`lng`. */
   isDeliverable: z.boolean().optional(),
   distanceMeters: z.number().optional(),

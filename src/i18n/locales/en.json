@@ -327,6 +327,33 @@
     "noneDone": "Nothing finished yet."
   },
   "manage": {
+    "live": {
+      "title": "Opening to customers",
+      "subtitle": "Whether people can find and order from you",
+      "state": {
+        "active": "Customers can find you",
+        "onboarding": "Not visible to customers",
+        "suspended": "Suspended by Foodio"
+      },
+      "stateHint": {
+        "active": "You appear in search and can take orders.",
+        "onboarding": "Nobody can see or order from you yet.",
+        "suspended": "You cannot be found or take orders."
+      },
+      "onboardingBody": "You need one thing before you can open.",
+      "suspendedBody": "Only Foodio can lift a suspension. Get in touch and we will sort it out.",
+      "needDish": "At least one dish on your menu",
+      "needDishHint": "People need something to order.",
+      "goToMenu": "Add a dish",
+      "openAction": "Open to customers",
+      "blockedHint": "Add a dish first.",
+      "closeAction": "Stop taking orders",
+      "closeTitle": "Stop taking orders?",
+      "closeBody": "You will disappear from search until you open again. Nothing else is lost.",
+      "failed": "Could not change that",
+      "noHoursWarning": "You are open to customers, but you have set no opening hours — so everyone sees you as closed.",
+      "setHours": "Set your opening hours"
+    },
     "title": "Manage",
     "subtitle": "Everything customers see about {{name}}",
     "kitchenOnly": "Switch to a kitchen to manage a restaurant.",

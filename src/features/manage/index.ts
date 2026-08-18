@@ -1,5 +1,6 @@
 export { ManageButton } from './components/ManageButton';
 export { ManageDishScreen } from './screens/ManageDishScreen';
+export { ManageGoingLiveScreen } from './screens/ManageGoingLiveScreen';
 export { ManageHoursScreen } from './screens/ManageHoursScreen';
 export { ManageHubScreen } from './screens/ManageHubScreen';
 export { ManageMenuScreen } from './screens/ManageMenuScreen';

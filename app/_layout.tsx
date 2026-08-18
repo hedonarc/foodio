@@ -115,6 +115,7 @@ function RootNavigator() {
         <Stack.Screen name="manage/staff" />
         <Stack.Screen name="manage/menu" />
         <Stack.Screen name="manage/dish" />
+        <Stack.Screen name="manage/live" />
       </Stack.Protected>
 
       <Stack.Protected guard={hasOnboarded && role.kind === 'delivery'}>
