@@ -251,7 +251,8 @@
       "search": "Search country or code",
       "noMatch": "No country matches that.",
       "change": "Change country"
-    }
+    },
+    "joinRestaurant": "Join a restaurant"
   },
   "work": {
     "tabs": {
@@ -383,5 +384,26 @@
       "shareCode": "Share the code",
       "shareMessage": "Join {{restaurant}} on Foodio. Install the app, sign in, and enter this code: {{code}}"
     }
+  },
+  "join": {
+    "title": "Join a restaurant",
+    "subtitle": "Enter the code someone at the restaurant gave you.",
+    "codeLabel": "Joining code",
+    "codePlaceholder": "ABC123",
+    "check": "Check the code",
+    "checking": "Checking…",
+    "confirmPrompt": "You are about to join",
+    "as": {
+      "kitchen": "In the kitchen",
+      "delivery": "As a rider"
+    },
+    "confirm": "Join",
+    "joining": "Joining…",
+    "joinedTitle": "You have joined {{restaurant}}",
+    "joinedBody": {
+      "kitchen": "Switch to the kitchen from your profile at the top right.",
+      "delivery": "Switch to deliveries from your profile at the top right."
+    },
+    "hint": "A code works once and expires 24 hours after it was made."
   }
 }
