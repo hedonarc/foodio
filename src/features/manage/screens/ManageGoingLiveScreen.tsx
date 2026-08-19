@@ -15,7 +15,9 @@ import { useRestaurant } from '@/features/restaurants';
 import { useSessionStore } from '@/stores/session.store';
 import { colors } from '@/theme';
 
+import { useSubscription } from '../hooks/useSubscription';
 import { useUpdateRestaurant } from '../hooks/useUpdateRestaurant';
+import type { SubscriptionStatus } from '../lib/goingLive';
 import { blockerFor, canChangeStatus, looksShutToCustomers } from '../lib/goingLive';
 
 /**
@@ -31,6 +33,7 @@ export function ManageGoingLiveScreen() {
 
   const { data: restaurant, isPending, error, refetch } = useRestaurant(restaurantId);
   const { data: menu } = useRestaurantMenu(restaurantId);
+  const { data: subscription } = useSubscription(restaurantId);
 
   if (isPending) return <LoadingState className="flex-1 items-center justify-center" />;
   if (error || !restaurant) {
@@ -46,19 +49,29 @@ export function ManageGoingLiveScreen() {
   const dishCount = (menu ?? []).reduce((total, category) => total + category.menuItems.length, 0);
 
   return (
-    <GoingLive restaurant={restaurant} dishCount={dishCount} menuLoaded={menu !== undefined} />
+    <GoingLive
+      restaurant={restaurant}
+      dishCount={dishCount}
+      menuLoaded={menu !== undefined}
+      subscription={subscription?.status}
+    />
   );
 }
 
-type GoingLiveProps = { restaurant: Restaurant; dishCount: number; menuLoaded: boolean };
+type GoingLiveProps = {
+  restaurant: Restaurant;
+  dishCount: number;
+  menuLoaded: boolean;
+  subscription: SubscriptionStatus | undefined;
+};
 
-function GoingLive({ restaurant, dishCount, menuLoaded }: GoingLiveProps) {
+function GoingLive({ restaurant, dishCount, menuLoaded, subscription }: GoingLiveProps) {
   const { t } = useTranslation();
   const router = useRouter();
   const update = useUpdateRestaurant(restaurant.id);
 
   const { status } = restaurant;
-  const blocker = blockerFor(dishCount);
+  const blocker = blockerFor(dishCount, subscription);
   const shutLooking = looksShutToCustomers(restaurant);
 
   const setStatus = (next: 'active' | 'onboarding') =>
@@ -100,13 +113,30 @@ function GoingLive({ restaurant, dishCount, menuLoaded }: GoingLiveProps) {
             </Text>
 
             <Requirement
-              met={blocker === null}
+              met={dishCount > 0}
               // Unknown until the menu loads; claiming either way would be a guess.
               pending={!menuLoaded}
               label={t('manage.live.needDish')}
               hint={t('manage.live.needDishHint')}
-              onPress={() => router.push('/manage/menu')}
+              action={{
+                label: t('manage.live.goToMenu'),
+                onPress: () => router.push('/manage/menu'),
+              }}
             />
+
+            {/*
+              The second bar, and only shown once it bites. An unpaid invoice is
+              rare and awkward; a permanent "you have paid" row on every
+              restaurant's screen would be noise the other 99% never need.
+            */}
+            {subscription === 'past_due' ? (
+              <Requirement
+                met={false}
+                pending={false}
+                label={t('manage.live.needPayment')}
+                hint={t('manage.live.needPaymentHint')}
+              />
+            ) : null}
           </>
         ) : null}
 
@@ -144,7 +174,9 @@ function GoingLive({ restaurant, dishCount, menuLoaded }: GoingLiveProps) {
 
               {blocker ? (
                 <Text variant="caption" className="text-center text-gray-400">
-                  {t('manage.live.blockedHint')}
+                  {t(
+                    blocker === 'unpaid' ? 'manage.live.blockedUnpaid' : 'manage.live.blockedHint',
+                  )}
                 </Text>
               ) : null}
             </>
@@ -184,12 +216,15 @@ type RequirementProps = {
   pending: boolean;
   label: string;
   hint: string;
-  onPress: () => void;
+  /**
+   * Optional, because not every bar has somewhere to send them. Paying an
+   * invoice has no screen yet — that is t9 — and a link to nowhere is worse
+   * than no link.
+   */
+  action?: { label: string; onPress: () => void };
 };
 
-function Requirement({ met, pending, label, hint, onPress }: RequirementProps) {
-  const { t } = useTranslation();
-
+function Requirement({ met, pending, label, hint, action }: RequirementProps) {
   return (
     <View className="flex-row items-start gap-3 rounded-2xl border border-gray-200 p-4">
       <Ionicons
@@ -204,9 +239,13 @@ function Requirement({ met, pending, label, hint, onPress }: RequirementProps) {
         <Text variant="caption" className="text-gray-500">
           {hint}
         </Text>
-        {!met && !pending ? (
-          <Text variant="caption" className="font-semibold text-primary-600" onPress={onPress}>
-            {t('manage.live.goToMenu')}
+        {!met && !pending && action ? (
+          <Text
+            variant="caption"
+            className="font-semibold text-primary-600"
+            onPress={action.onPress}
+          >
+            {action.label}
           </Text>
         ) : null}
       </View>

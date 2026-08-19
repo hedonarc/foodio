@@ -349,7 +349,7 @@
         "onboarding": "Nobody can see or order from you yet.",
         "suspended": "You cannot be found or take orders."
       },
-      "onboardingBody": "You need one thing before you can open.",
+      "onboardingBody": "Before you can open to customers:",
       "suspendedBody": "Only Foodio can lift a suspension. Get in touch and we will sort it out.",
       "needDish": "At least one dish on your menu",
       "needDishHint": "People need something to order.",
@@ -361,7 +361,10 @@
       "closeBody": "You will disappear from search until you open again. Nothing else is lost.",
       "failed": "Could not change that",
       "noHoursWarning": "You are open to customers, but you have set no opening hours — so everyone sees you as closed.",
-      "setHours": "Set your opening hours"
+      "setHours": "Set your opening hours",
+      "needPayment": "Settle your subscription",
+      "needPaymentHint": "There is an unpaid invoice on your subscription. You can reopen once it is paid.",
+      "blockedUnpaid": "You can still take orders from customers who have your link. Paying reopens you to everyone."
     },
     "title": "Manage",
     "subtitle": "Everything customers see about {{name}}",
