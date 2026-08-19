@@ -2,11 +2,11 @@ import { blockerFor, canChangeStatus, looksShutToCustomers } from './goingLive';
 
 describe('blockerFor', () => {
   it('names the one bar when there is nothing to sell', () => {
-    expect(blockerFor(0)).toBe('no-dishes');
+    expect(blockerFor(0, 'active')).toBe('no-dishes');
   });
 
   it('clears as soon as there is a single dish', () => {
-    expect(blockerFor(1)).toBeNull();
+    expect(blockerFor(1, 'active')).toBeNull();
   });
 
   /**
@@ -14,8 +14,13 @@ describe('blockerFor', () => {
    * publication but not afterwards would be an asymmetry pretending to be a
    * standard. Asserted so nobody "improves" this into a second condition.
    */
-  it('takes only a dish count, so no second rule can creep in', () => {
-    expect(blockerFor.length).toBe(1);
+  /**
+   * The guard exists so a rule cannot arrive by accident, not so one can never
+   * arrive. A second one did arrive, on purpose: an unpaid subscription refuses
+   * reopening — see ADR-0017 and t22. Opening hours are still not a bar.
+   */
+  it('takes a dish count and a subscription, and nothing else', () => {
+    expect(blockerFor.length).toBe(2);
   });
 });
 
@@ -51,5 +56,32 @@ describe('canChangeStatus', () => {
   /** Suspension is Foodio's lever — a tenant that could lift it makes billing decorative. */
   it('refuses a suspended restaurant', () => {
     expect(canChangeStatus('suspended')).toBe(false);
+  });
+});
+
+describe('blockerFor — the unpaid bar', () => {
+  it('refuses a restaurant whose subscription is behind', () => {
+    expect(blockerFor(5, 'past_due')).toBe('unpaid');
+  });
+
+  it('lets a trialing restaurant open, because it owes nothing yet', () => {
+    expect(blockerFor(5, 'trialing')).toBeNull();
+  });
+
+  it('lets a paid-up restaurant open', () => {
+    expect(blockerFor(5, 'active')).toBeNull();
+  });
+
+  /**
+   * Not heard yet is not the same as behind. Claiming they cannot open would be
+   * a guess, and the server refuses anyway if the guess was wrong.
+   */
+  it('says nothing while the subscription is still loading', () => {
+    expect(blockerFor(5, undefined)).toBeNull();
+  });
+
+  /** The one they can fix without spending anything comes first. */
+  it('names the dish first when both are unmet', () => {
+    expect(blockerFor(0, 'past_due')).toBe('no-dishes');
   });
 });
