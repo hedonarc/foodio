@@ -37,6 +37,10 @@ export function ManageHubScreen() {
   const { data: restaurant } = useRestaurant(restaurantId ?? '');
   const { data: menu } = useRestaurantMenu(restaurantId ?? '');
   const { data: staff } = useStaff(restaurantId ?? '');
+  const personId = useSessionStore((state) => state.person?.id);
+
+  /** Only the Owner may add a location or move the Chain between plans. */
+  const isOwner = staff?.some((member) => member.isOwner && member.personId === personId) ?? false;
 
   if (!restaurantId) {
     // Reachable by deep link, or by switching role with this screen open.
@@ -103,6 +107,29 @@ export function ManageHubScreen() {
           subtitle={t('manage.area.subtitle')}
           onPress={() => router.push('/manage/area')}
         />
+
+        {/*
+          Owner only, because the server refuses anyone else — a row that always
+          fails is worse than no row. Adding a location commits the Chain to
+          another Restaurant under the same subscription.
+        */}
+        {isOwner ? (
+          <ManageSectionRow
+            icon="add-circle-outline"
+            title={t('manage.addLocation.title')}
+            subtitle={t('manage.addLocation.subtitle')}
+            onPress={() => router.push('/manage/add-location')}
+          />
+        ) : null}
+
+        {isOwner ? (
+          <ManageSectionRow
+            icon="pricetag-outline"
+            title={t('manage.subscription.title')}
+            subtitle={t('manage.subscription.subtitle')}
+            onPress={() => router.push('/manage/subscription')}
+          />
+        ) : null}
 
         <ManageSectionRow
           icon="people-outline"

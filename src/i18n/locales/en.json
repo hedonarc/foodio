@@ -468,6 +468,38 @@
         "staff": "Add your team",
         "live": "Open to customers"
       }
+    },
+    "addLocation": {
+      "title": "Add another location",
+      "subtitle": "A second branch, on the same subscription",
+      "heading": "Drag the map to the new kitchen",
+      "hint": "The circle is how far this location will deliver — {{radius}} from the pin.",
+      "addressLabel": "Address",
+      "addressPlaceholder": "Shop 4, DHA Phase 5",
+      "action": "Add this location",
+      "seePlans": "See plans",
+      "inheritHint": "It keeps your name and your whole menu. Its opening hours start empty, because a second branch rarely keeps the same ones."
+    },
+    "subscription": {
+      "title": "Subscription",
+      "subtitle": "Your plan, and what it covers",
+      "choose": "Plans",
+      "current": "Your current plan",
+      "perMonth": "{{price}} a month",
+      "switchTo": "Switch to {{name}}",
+      "locations_one": "{{count}} location",
+      "locations_other": "{{count}} locations",
+      "confirmTitle": "Change plan?",
+      "confirmBody": "Your next invoice will be for {{name}}. The month you have already paid for is unchanged.",
+      "confirmAction": "Change plan",
+      "failed": "Could not change plan",
+      "prorationHint": "Changing plan takes effect on your next invoice. Nothing is refunded or charged today.",
+      "status": {
+        "trialing": "Free trial",
+        "active": "Active",
+        "past_due": "Payment overdue",
+        "cancelled": "Cancelled"
+      }
     }
   },
   "join": {

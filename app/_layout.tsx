@@ -114,6 +114,8 @@ function RootNavigator() {
         <Stack.Screen name="manage/hours" />
         <Stack.Screen name="manage/area" />
         <Stack.Screen name="manage/staff" />
+        <Stack.Screen name="manage/add-location" />
+        <Stack.Screen name="manage/subscription" />
         <Stack.Screen name="manage/menu" />
         <Stack.Screen name="manage/dish" />
         <Stack.Screen name="manage/live" />
