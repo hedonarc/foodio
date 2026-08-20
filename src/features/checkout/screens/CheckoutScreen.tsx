@@ -17,10 +17,11 @@ import { formatMoney } from '@/utils/currency';
 import { generateIdempotencyKey } from '@/utils/idempotencyKey';
 
 import { CheckoutBlockers } from '../components/CheckoutBlockers';
+import { PaymentMethods } from '../components/PaymentMethods';
 import { useActiveAddress } from '../hooks/useActiveAddress';
 import { usePlaceOrder } from '../hooks/useOrders';
 import { reviewCheckout } from '../lib/reviewCheckout';
-import type { NewOrder } from '../types/order.types';
+import type { NewOrder, PaymentMethod } from '../types/order.types';
 
 export function CheckoutScreen() {
   const { t, i18n } = useTranslation();
@@ -33,6 +34,16 @@ export function CheckoutScreen() {
   const { address } = useActiveAddress();
 
   const { data: restaurant } = useRestaurant(cartRestaurant?.id);
+
+  /**
+   * The first method the restaurant offers, until the customer says otherwise.
+   * Not hardcoded to cash: the list is served (standing constraint 2), so a
+   * second method arriving needs no app release.
+   */
+  const [chosenMethod, setChosenMethod] = useState<PaymentMethod | null>(null);
+  const offered = restaurant?.paymentMethods ?? ['cash_on_delivery'];
+  const paymentMethod = chosenMethod ?? offered[0] ?? 'cash_on_delivery';
+  const setPaymentMethod = setChosenMethod;
   const { data: categories } = useRestaurantMenu(cartRestaurant?.id);
   const placeOrder = usePlaceOrder();
 
@@ -82,7 +93,7 @@ export function CheckoutScreen() {
       deliveryFeeMinor: review.deliveryFeeMinor,
       totalMinor: review.totalMinor,
       address,
-      paymentMethod: 'cash_on_delivery',
+      paymentMethod,
     };
 
     placeOrder.mutate(
@@ -133,12 +144,11 @@ export function CheckoutScreen() {
         </Section>
 
         <Section title={t('checkout.payment')}>
-          <View className="flex-row items-center rounded-2xl bg-gray-50 p-4">
-            <Ionicons name="cash-outline" size={18} color={colors.gray[500]} />
-            <Text variant="body" className="ml-3 flex-1 text-gray-900">
-              {t('checkout.cashOnDelivery')}
-            </Text>
-          </View>
+          <PaymentMethods
+            methods={restaurant?.paymentMethods ?? ['cash_on_delivery']}
+            chosen={paymentMethod}
+            onChoose={setPaymentMethod}
+          />
         </Section>
 
         <Section title={t('checkout.summary')}>

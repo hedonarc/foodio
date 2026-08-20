@@ -153,7 +153,11 @@
       "outOfRange": "You are {{distance}}km away and this restaurant delivers up to {{radius}}km.",
       "priceChanged": "Some prices changed: {{items}}. Review your cart before ordering.",
       "priceChangedLine": "{{name}} {{was}} → {{now}}"
-    }
+    },
+    "method": {
+      "cash_on_delivery": "Cash on delivery"
+    },
+    "methodUnavailable": "This restaurant offers another way to pay that this version cannot show. Update the app to use it."
   },
   "order": {
     "title": "Your order",
