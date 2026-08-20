@@ -1,5 +1,7 @@
 import { z } from 'zod';
 
+import { paymentMethodSchema } from '@/features/checkout/types/order.types';
+
 export const openingHoursSchema = z.object({
   /** 0 is Sunday, matching Date#getDay(). */
   dayOfWeek: z.number().int().min(0).max(6),
@@ -43,6 +45,13 @@ export const restaurantSummarySchema = z.object({
    * value other than `active` — see t2 and the going-live screen.
    */
   status: z.enum(['onboarding', 'active', 'suspended']),
+  /**
+   * What this restaurant accepts, served rather than assumed — the app renders
+   * what it is handed. Defaulted so an older payload, or a restaurant read
+   * before the API served this, still parses: cash is what every restaurant
+   * took before the field existed.
+   */
+  paymentMethods: z.array(paymentMethodSchema).default(['cash_on_delivery']),
   /** Present only when the request carried `lat`/`lng`. */
   isDeliverable: z.boolean().optional(),
   distanceMeters: z.number().optional(),
