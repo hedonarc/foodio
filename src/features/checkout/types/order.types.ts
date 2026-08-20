@@ -35,6 +35,20 @@ export const orderLineSchema = z.object({
   instruction: z.string().optional(),
 });
 
+/**
+ * One member today, and a list rather than a fixed word on purpose.
+ *
+ * A `z.literal` accepts that exact string and rejects everything else, and
+ * `parseResponse` throws for the whole response — so the first order carrying a
+ * second method would empty the entire order list rather than hide one row. A
+ * one-member list accepts exactly the same values today and costs nothing.
+ *
+ * Card is the only member that will ever join it.
+ */
+export const PAYMENT_METHODS = ['cash_on_delivery'] as const;
+
+export const paymentMethodSchema = z.enum(PAYMENT_METHODS);
+
 export const ORDER_PAYMENT_STATES = [
   'pending',
   'authorized',
@@ -52,7 +66,7 @@ export const orderPaymentStateSchema = z.enum(ORDER_PAYMENT_STATES);
  * there is nothing to hold.
  */
 export const orderPaymentSchema = z.object({
-  method: z.literal('cash_on_delivery'),
+  method: paymentMethodSchema,
   state: orderPaymentStateSchema,
   amountMinor: z.number().int(),
 });
@@ -70,7 +84,7 @@ export const orderSchema = z.object({
   deliveryFeeMinor: z.number().int(),
   totalMinor: z.number().int(),
   address: deliveryAddressSchema,
-  paymentMethod: z.literal('cash_on_delivery'),
+  paymentMethod: paymentMethodSchema,
   /**
    * Optional, and its absence means "we do not know" rather than "unpaid":
    * orders placed before order payments existed carry none, and the app must
@@ -83,6 +97,7 @@ export const orderSchema = z.object({
 
 export const orderListSchema = z.array(orderSchema);
 
+export type PaymentMethod = z.infer<typeof paymentMethodSchema>;
 export type OrderPaymentState = z.infer<typeof orderPaymentStateSchema>;
 export type OrderPayment = z.infer<typeof orderPaymentSchema>;
 export type OrderLine = z.infer<typeof orderLineSchema>;
