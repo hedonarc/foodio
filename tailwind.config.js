@@ -27,7 +27,12 @@ const config = {
          */
         error: {
           DEFAULT: '#F44336',
+          // Matches the warning scale. Without 100 and 700 a class like
+          // `bg-error-100` resolves to nothing and renders unstyled — silently,
+          // which is how it survived once already.
+          100: '#FFE5E3',
           500: '#F44336',
+          700: '#B3261E',
         },
         success: {
           DEFAULT: '#4CAF50',

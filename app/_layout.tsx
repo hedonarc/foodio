@@ -147,6 +147,8 @@ function RootNavigator() {
         role-scoped registrations crash it at render.
       */}
       <Stack.Protected guard={hasOnboarded}>
+        {/* THROWAWAY: prototype route for wayfinder t7. Never ships. */}
+        <Stack.Screen name="prototype-checkout" />
         <Stack.Screen name="join" />
         {/* Claiming belongs to no role either: a customer starts it, and is a
             kitchen by the time it finishes. */}
