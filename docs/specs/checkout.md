@@ -34,7 +34,13 @@ The blockers are a discriminated union: `empty-cart`, `restaurant-unavailable`, 
 
 **The tracking query polls while an order is live** and stops once it reaches a terminal status.
 
-**Cash on delivery only.** Card payment needs PCI scope and a real backend; the restaurant-owned delivery model makes cash a legitimate first option rather than a placeholder.
+**Cash on delivery is the only method that launches.** Card needs PCI scope and a real backend, and the restaurant-owned delivery model makes cash a legitimate first option rather than a placeholder. So one method works at launch, and the customer pays in cash at the door.
+
+**Card ships as copy, not as a method.** Where a customer looks for card, the checkout says _coming soon_ rather than nothing: silence reads as _this app cannot take card_, and coming soon is the truth. The row is inert — not selectable, not a choice the screen can settle on — and carries no card fields, no tokenisation and no PCI surface. It is a sentence.
+
+**The coming-soon row is the app's, not the restaurant's.** It is hardcoded in checkout, never a member of `PAYMENT_METHODS` and never something a restaurant can be listed as serving; a restaurant cannot offer a method that cannot take money. Card joins the list on the day it can be charged, and not before — which is also why the list is a list ([#127](https://github.com/hedonarc/foodio/pull/127)) and why an unknown method the server offers is skipped rather than fatal ([#130](https://github.com/hedonarc/foodio/pull/130)). That skip has its own copy, and it is a different story from card: it means _this build cannot show a method your restaurant serves_, not _we are working on it_.
+
+**The payment record already has card's shape.** `OrderPayment` carries `authorized`, which cash never reaches because cash holds nothing — see the backend's ADR-0016. Modelling the state now costs nothing and keeps the day card arrives from being a migration; it stays unreachable until then.
 
 **Address coordinates come from the device**, not the form. This is the first thing that reads the location permission onboarding has been requesting since the beginning — previously granted and never used, which was both a dark pattern and grounds for App Store rejection.
 
@@ -42,9 +48,11 @@ The blockers are a discriminated union: `empty-cart`, `restaurant-unavailable`, 
 
 19 tests over `reviewCheckout` and `distanceBetween`, covering each blocker in isolation, several at once, the boundary of the delivery radius, and totals that floats would get wrong.
 
+Two render tests over `PaymentMethods` hold the payment shape: card is announced and the screen still offers exactly one choice, and a method this build cannot render is skipped with its own copy rather than mistaken for card.
+
 ## Out of Scope
 
-- Card payment
+- Taking card — the coming-soon row is the whole of card at launch
 - Order history (`fetchOrders` exists; no screen consumes it yet)
 - Live courier position on a map
 - Editing an address book of more than one saved address

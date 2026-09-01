@@ -157,6 +157,10 @@
     "method": {
       "cash_on_delivery": "Cash on delivery"
     },
+    "card": {
+      "label": "Card",
+      "comingSoon": "Coming soon"
+    },
     "methodUnavailable": "This restaurant offers another way to pay that this version cannot show. Update the app to use it."
   },
   "order": {

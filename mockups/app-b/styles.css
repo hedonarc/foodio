@@ -1734,6 +1734,25 @@ body {
   font-size: 18px;
 }
 
+/* Card is announced, not offered: dashed and unfilled so it does not read as a
+   row you can tap. See docs/specs/checkout.md. */
+.s-checkout .card.soon {
+  margin-top: 8px;
+  background: none;
+  border: 1px dashed #d9dce0;
+  padding: 13px;
+}
+
+.s-checkout .card.soon .ic,
+.s-checkout .card.soon h4 {
+  color: #9aa0a8;
+}
+
+.s-checkout .card.soon .tag {
+  font-size: 12px;
+  color: #9aa0a8;
+}
+
 .s-checkout .lines {
   padding: 0 16px;
 }

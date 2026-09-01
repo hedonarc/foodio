@@ -442,6 +442,11 @@ function screenCheckout() {
         <span class="ic">$</span>
         <div class="t"><h4>Cash on delivery</h4></div>
       </div>
+      <div class="card soon">
+        <span class="ic">&#9636;</span>
+        <div class="t"><h4>Card</h4></div>
+        <span class="tag">Coming soon</span>
+      </div>
 
       <div class="sect"><h3>Order summary</h3></div>
       <div class="lines">${lines.map(line).join('')}</div>
