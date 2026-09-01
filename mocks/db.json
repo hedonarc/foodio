@@ -17,6 +17,7 @@
       "longitude": -122.4148,
       "deliveryRadiusMeters": 4000,
       "image": "https://images.unsplash.com/photo-1565299585323-38d6b0865b47?auto=format&fit=crop&w=800&q=80",
+      "status": "active",
       "description": "Authentic Mexican street food made fresh daily. Our birria tacos and hand-pressed tortillas bring the flavors of Jalisco to your doorstep.",
       "address": "124 Taco Lane, Mission District, San Francisco, CA 94110",
       "gallery": [
@@ -80,6 +81,7 @@
       "longitude": -122.4104,
       "deliveryRadiusMeters": 6000,
       "image": "https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&w=800&q=80",
+      "status": "active",
       "description": "Family-owned Italian trattoria serving handmade pasta and Neapolitan pizzas since 1992. Every dish is crafted with imported Italian ingredients.",
       "address": "55 Via Roma, North Beach, San Francisco, CA 94133",
       "gallery": [
@@ -133,6 +135,7 @@
       "longitude": -122.4297,
       "deliveryRadiusMeters": 3000,
       "image": "https://images.unsplash.com/photo-1579871494447-9811cf80d66c?auto=format&fit=crop&w=800&q=80",
+      "status": "active",
       "description": "Premium sushi and authentic Japanese ramen. Fish flown in fresh twice weekly, rice seasoned to traditional Edomae perfection.",
       "address": "8 Sakura Street, Japantown, San Francisco, CA 94115",
       "gallery": [
@@ -196,6 +199,7 @@
       "longitude": -122.4056,
       "deliveryRadiusMeters": 5000,
       "image": "https://images.unsplash.com/photo-1586190848861-99aa4a171e90?auto=format&fit=crop&w=800&q=80",
+      "status": "active",
       "description": "Craft smash burgers using locally sourced beef and house-made sauces. Our thin crispy double smash is what dreams are made of.",
       "address": "309 Grill Avenue, SoMa, San Francisco, CA 94107",
       "gallery": [
@@ -259,6 +263,7 @@
       "longitude": -122.4382,
       "deliveryRadiusMeters": 2500,
       "image": "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=800&q=80",
+      "status": "active",
       "description": "Nourish your body with cold-pressed smoothies, build-your-own power bowls, and seasonal salads. 100% organic and locally sourced.",
       "address": "77 Wellness Blvd, Pacific Heights, San Francisco, CA 94115",
       "gallery": [
@@ -322,6 +327,7 @@
       "longitude": -122.4145,
       "deliveryRadiusMeters": 7000,
       "image": "https://images.unsplash.com/photo-1585937421612-70a008356fbe?auto=format&fit=crop&w=800&q=80",
+      "status": "active",
       "description": "Aromatic North and South Indian cuisine. Our biryani is slow-cooked for 6 hours with whole spices and saffron. Worth the wait.",
       "address": "412 Curry Lane, Tenderloin, San Francisco, CA 94102",
       "gallery": [
@@ -385,6 +391,7 @@
       "longitude": -122.4078,
       "deliveryRadiusMeters": 4500,
       "image": "https://images.unsplash.com/photo-1541696432-82c6da8ce7bf?auto=format&fit=crop&w=800&q=80",
+      "status": "active",
       "description": "Traditional Cantonese dim sum and hand-pulled noodles. Our chefs have been perfecting these recipes for over three generations.",
       "address": "28 Dragon Court, Chinatown, San Francisco, CA 94108",
       "gallery": [
@@ -448,6 +455,7 @@
       "longitude": -122.4167,
       "deliveryRadiusMeters": 4000,
       "image": "https://images.unsplash.com/photo-1582878826629-29b7ad1cdc43?auto=format&fit=crop&w=800&q=80",
+      "status": "active",
       "description": "Slow-simmered 18-hour bone broth pho and crispy banh mi. The broth recipe has been passed down through four generations of the Nguyen family.",
       "address": "93 Saigon Street, Tenderloin, San Francisco, CA 94102",
       "gallery": [
@@ -511,6 +519,7 @@
       "longitude": -122.4241,
       "deliveryRadiusMeters": 3500,
       "image": "https://images.unsplash.com/photo-1578985545062-69928b1d9587?auto=format&fit=crop&w=800&q=80",
+      "status": "active",
       "description": "Artisanal pastries, celebration cakes, and specialty coffee. Everything is baked fresh daily using traditional French pâtisserie techniques.",
       "address": "16 Sugar Street, Hayes Valley, San Francisco, CA 94102",
       "gallery": [
@@ -569,6 +578,7 @@
       "longitude": -122.4644,
       "deliveryRadiusMeters": 6500,
       "image": "https://images.unsplash.com/photo-1559847844-5315695dadae?auto=format&fit=crop&w=800&q=80",
+      "status": "active",
       "description": "Vibrant Thai street food straight from the night markets of Bangkok. Fiery curries, fragrant jasmine rice, and the best pad thai in the city.",
       "address": "201 Thai Town Blvd, Richmond, San Francisco, CA 94118",
       "gallery": [
