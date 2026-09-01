@@ -27,6 +27,7 @@
     "axios": "^1.19.0",
     "clsx": "^2.1.1",
     "expo": "~57.0.11",
+    "expo-build-properties": "~57.0.16",
     "expo-constants": "^57.0.9",
     "expo-font": "~57.0.1",
     "expo-image": "~57.0.2",
