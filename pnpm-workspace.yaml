@@ -1,3 +1,12 @@
+# Gradle runs Metro from android/, where pnpm's strict tree hides Babel's
+# plugins from it — a release build then dies on `Cannot find module
+# 'babel-preset-expo'`. Hoisting the toolchain to the root fixes the bundling
+# step without loosening resolution for anything else.
+publicHoistPattern:
+  - '*babel*'
+  - '*metro*'
+  - 'react-native'
+
 allowBuilds:
   lefthook: true
   unrs-resolver: set this to true or false
