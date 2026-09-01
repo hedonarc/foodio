@@ -9,7 +9,7 @@
     "scheme": "foodio",
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.anonymous.foodio"
+      "bundleIdentifier": "com.hedonarc.foodio"
     },
     "android": {
       "adaptiveIcon": {
@@ -19,7 +19,7 @@
         "monochromeImage": "./assets/android-icon-monochrome.png"
       },
       "predictiveBackGestureEnabled": false,
-      "package": "com.anonymous.foodio"
+      "package": "com.hedonarc.foodio"
     },
     "web": {
       "favicon": "./assets/favicon.png",

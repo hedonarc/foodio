@@ -81,6 +81,13 @@ the dev machine's address from Expo, so an Android emulator or a physical device
 works without editing anything. Copy `.env.example` to `.env` only when you need
 to point at a deployed API.
 
+The delivery-area map needs `GOOGLE_MAPS_API_KEY` in `.env` on Android — put
+the Maps SDK key there, never in `app.json`, because this repository is public.
+`app.config.ts` reads it at build time and fails an EAS Android build outright
+if it is missing, rather than shipping a grey rectangle. iOS uses Apple Maps and
+needs nothing. The key is not a secret — it ships inside the APK — so restrict
+it in the Cloud console to this package and to Maps SDK for Android.
+
 The mock's responses are delayed 400ms so loading states are real. To exercise
 failure paths against it:
 
