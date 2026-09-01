@@ -50,7 +50,16 @@
           "cameraPermission": "Foodio needs your camera so you can photograph a dish without leaving the app."
         }
       ],
-      "expo-maps"
+      "expo-maps",
+      [
+        "expo-build-properties",
+        {
+          "android": {
+            "enableMinifyInReleaseBuilds": true,
+            "enableShrinkResourcesInReleaseBuilds": true
+          }
+        }
+      ]
     ]
   }
 }
