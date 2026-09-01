@@ -25,6 +25,11 @@ export const personSchema = z.object({
  * E.164. Phone is the identity in this market — see backend ADR-0007. Stored
  * and compared in this exact form, so the client normalises before sending.
  */
+/** Who vouched for a person. The server verifies the token; this only names it. */
+export const IDENTITY_PROVIDERS = ['google', 'apple'] as const;
+
+export const identityProviderSchema = z.enum(IDENTITY_PROVIDERS);
+
 export const phoneSchema = z
   .string()
   .trim()
@@ -64,6 +69,7 @@ export const sessionSchema = z.object({
   person: personSchema,
 });
 
+export type IdentityProvider = z.infer<typeof identityProviderSchema>;
 export type Capability = z.infer<typeof capabilitySchema>;
 export type Entitlement = z.infer<typeof entitlementSchema>;
 export type Person = z.infer<typeof personSchema>;
