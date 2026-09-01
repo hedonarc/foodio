@@ -268,7 +268,12 @@
       "change": "Change country"
     },
     "joinRestaurant": "Join a restaurant",
-    "listRestaurant": "List your restaurant"
+    "listRestaurant": "List your restaurant",
+    "providerHint": "Sign in to order, track deliveries, and rate what you ate.",
+    "continueWithGoogle": "Continue with Google",
+    "continueWithApple": "Continue with Apple",
+    "signingIn": "Signing in…",
+    "phoneLater": "We ask for a phone number at checkout, so your rider can call about the door."
   },
   "work": {
     "tabs": {

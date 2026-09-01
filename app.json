@@ -9,7 +9,8 @@
     "scheme": "foodio",
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.hedonarc.foodio"
+      "bundleIdentifier": "com.hedonarc.foodio",
+      "usesAppleSignIn": true
     },
     "android": {
       "adaptiveIcon": {
@@ -51,6 +52,7 @@
         }
       ],
       "expo-maps",
+      "expo-apple-authentication",
       [
         "expo-build-properties",
         {

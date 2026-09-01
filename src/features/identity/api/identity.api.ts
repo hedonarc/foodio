@@ -1,8 +1,27 @@
 import { apiClient } from '@/api/client';
 import { parseResponse } from '@/api/parse';
 
-import type { Person, Session } from '../types/identity.types';
+import type { IdentityProvider, Person, Session } from '../types/identity.types';
 import { personSchema, sessionSchema } from '../types/identity.types';
+
+/**
+ * Hands the provider's signed token to the API, which verifies it against
+ * Google's or Apple's own keys before believing a word of it. The app never
+ * sends an email address and asks the server to trust it.
+ */
+export async function signInWithProvider(input: {
+  provider: IdentityProvider;
+  idToken: string;
+  /** Apple only, first sign-in only — Apple sends the name once and never again. */
+  displayName?: string;
+}): Promise<Session> {
+  const { data } = await apiClient.post<unknown>('/auth/provider', {
+    provider: input.provider,
+    idToken: input.idToken,
+    ...(input.displayName ? { displayName: input.displayName } : {}),
+  });
+  return parseResponse(sessionSchema, data, 'POST /auth/provider');
+}
 
 /** `202`: the code was sent. The server says nothing about whether the phone is known. */
 export async function requestOtp(phone: string): Promise<void> {
