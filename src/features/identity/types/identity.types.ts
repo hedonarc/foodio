@@ -40,33 +40,6 @@ export const phoneSchema = z
   .trim()
   .regex(/^\+[1-9]\d{7,14}$/);
 
-export const otpCodeSchema = z
-  .string()
-  .trim()
-  .regex(/^\d{6}$/);
-
-export const otpRequestFormSchema = z.object({
-  phone: phoneSchema,
-});
-
-export const otpVerifyFormSchema = z.object({
-  phone: phoneSchema,
-  code: otpCodeSchema,
-  /**
-   * Only asked for, and only sent, on a phone's first sign-in — every
-   * returning user leaves this blank. No `.min(1)`: a blank TextField reports
-   * its value as `''`, not `undefined`, and `.min(1)` rejected that outright —
-   * silently blocking the whole form from submitting, since nothing surfaced
-   * the error for a field with no visible error text. The call site already
-   * turns a falsy `displayName` into `undefined` before it reaches the
-   * network, so an empty string reaching here is harmless.
-   */
-  displayName: z.string().trim().max(60).optional(),
-});
-
-export type OtpRequestFormValues = z.infer<typeof otpRequestFormSchema>;
-export type OtpVerifyFormValues = z.infer<typeof otpVerifyFormSchema>;
-
 /** Replaces the mock's `{ token, person }` — see backend ADR-0007. */
 export const sessionSchema = z.object({
   accessToken: z.string(),

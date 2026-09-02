@@ -23,24 +23,6 @@ export async function signInWithProvider(input: {
   return parseResponse(sessionSchema, data, 'POST /auth/provider');
 }
 
-/** `202`: the code was sent. The server says nothing about whether the phone is known. */
-export async function requestOtp(phone: string): Promise<void> {
-  await apiClient.post<unknown>('/auth/otp', { phone });
-}
-
-export async function verifyOtp(
-  phone: string,
-  code: string,
-  displayName?: string,
-): Promise<Session> {
-  const { data } = await apiClient.post<unknown>('/auth/verify', {
-    phone,
-    code,
-    ...(displayName ? { displayName } : {}),
-  });
-  return parseResponse(sessionSchema, data, 'POST /auth/verify');
-}
-
 /**
  * The client never attaches an access token to `/auth/*` (see `api/client.ts`),
  * so a stale one from the old session cannot be presented — and rejected —
