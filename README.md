@@ -60,7 +60,12 @@ Run iOS
 pnpm ios
 ```
 
----
+Both `pnpm ios` and `pnpm prebuild` pin `LANG` and `LC_ALL` to UTF-8, because
+CocoaPods calls `String#unicode_normalize` on the project path and Ruby hands it
+an ASCII-8BIT string under a `C` locale — which macOS gives a shell with no
+`LANG` set. The failure is `Unicode Normalization not appropriate for
+ASCII-8BIT`, several frames deep in CocoaPods, and says nothing about locales.
+Android is unaffected; it never runs Ruby.
 
 ---
 
