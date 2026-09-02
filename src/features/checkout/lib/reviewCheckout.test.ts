@@ -65,12 +65,28 @@ const review = (overrides: Partial<CheckoutInput> = {}) =>
     lines: [line()],
     restaurant: restaurant(),
     address: nearbyAddress,
+    phone: '+923001234567',
     currentPrices: [{ id: 'item-1', priceMinor: 1499 }],
     now: MONDAY_NOON,
     ...overrides,
   });
 
 const kinds = (blockers: CheckoutBlocker[]) => blockers.map((blocker) => blocker.kind);
+
+describe('a customer with no contact number', () => {
+  it('cannot order, because nobody could call about the door', () => {
+    const result = review({ phone: null });
+
+    expect(kinds(result.blockers)).toEqual(['no-phone']);
+    expect(result.canPlaceOrder).toBe(false);
+  });
+
+  it('is a separate blocker from a missing address', () => {
+    const result = review({ phone: null, address: null });
+
+    expect(kinds(result.blockers)).toEqual(['no-address', 'no-phone']);
+  });
+});
 
 describe('a cart that is ready to order', () => {
   it('has no blockers', () => {

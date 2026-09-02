@@ -10,6 +10,7 @@ import {
 const person = (entitlements: Person['entitlements']): Person => ({
   id: 'marco',
   displayName: 'Marco R.',
+  phone: null,
   entitlements,
 });
 

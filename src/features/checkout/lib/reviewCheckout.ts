@@ -19,6 +19,7 @@ export type CheckoutBlocker =
   | { kind: 'restaurant-unavailable' }
   | { kind: 'restaurant-closed' }
   | { kind: 'no-address' }
+  | { kind: 'no-phone' }
   | { kind: 'out-of-range'; distanceMeters: number; radiusMeters: number }
   | { kind: 'price-changed'; lines: RepricedLine[] };
 
@@ -35,6 +36,12 @@ export type CheckoutInput = {
   lines: readonly CartLine[];
   restaurant: Restaurant | undefined;
   address: DeliveryAddress | null;
+  /**
+   * The customer's contact number, null until they give one. Not a credential —
+   * sign-in is Google or Apple — but a rider has to be able to call about a
+   * gate number, so an order without one is an order nobody can deliver.
+   */
+  phone: string | null;
   currentPrices: readonly Pick<MenuItem, 'id' | 'priceMinor'>[];
   now: Date;
 };
@@ -60,7 +67,7 @@ function repricedLines(
  * checkout button and the screen explaining why it is disabled.
  */
 export function reviewCheckout(input: CheckoutInput): CheckoutReview {
-  const { cartRestaurant, lines, restaurant, address, currentPrices, now } = input;
+  const { cartRestaurant, lines, restaurant, address, phone, currentPrices, now } = input;
 
   const subtotalMinor = lines.reduce(
     (total, line) => total + line.unitPriceMinor * line.quantity,
@@ -84,6 +91,8 @@ export function reviewCheckout(input: CheckoutInput): CheckoutReview {
     const outOfRange = deliverabilityBlocker(address, restaurant);
     if (outOfRange) blockers.push(outOfRange);
   }
+
+  if (!phone) blockers.push({ kind: 'no-phone' });
 
   const reprices = repricedLines(lines, currentPrices);
   if (reprices.length > 0) blockers.push({ kind: 'price-changed', lines: reprices });

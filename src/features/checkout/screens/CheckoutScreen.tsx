@@ -4,14 +4,17 @@ import { Pressable, ScrollView, View } from 'react-native';
 import { useRouter } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
 
+import { useMutation } from '@tanstack/react-query';
 import { useTranslation } from 'react-i18next';
 
 import { EmptyState, ErrorState, ScreenHeader } from '@/components/shared';
 import { Button, Text } from '@/components/ui';
+import { PhoneField, updateMe } from '@/features/identity';
 import { useRestaurantMenu } from '@/features/menu';
 import { useRestaurant } from '@/features/restaurants';
 import { useNavigationGuard } from '@/hooks/useNavigationGuard';
 import { useCartStore } from '@/stores/cart.store';
+import { useSessionStore } from '@/stores/session.store';
 import { colors } from '@/theme';
 import { formatMoney } from '@/utils/currency';
 import { generateIdempotencyKey } from '@/utils/idempotencyKey';
@@ -34,6 +37,23 @@ export function CheckoutScreen() {
   const { address } = useActiveAddress();
 
   const { data: restaurant } = useRestaurant(cartRestaurant?.id);
+
+  /**
+   * The number a rider calls about a gate number — contact information, not a
+   * credential, since sign-in moved to Google and Apple (backend ADR-0019).
+   * Asked for here because this is the first moment it matters, and saved to
+   * the person so a second order never asks again.
+   */
+  const person = useSessionStore((state) => state.person);
+  const refreshPerson = useSessionStore((state) => state.refreshPerson);
+  const [phoneDraft, setPhoneDraft] = useState('');
+
+  const savePhone = useMutation({
+    mutationFn: (phone: string) => updateMe({ phone }),
+    onSuccess: async () => {
+      await refreshPerson();
+    },
+  });
 
   /**
    * The first method the restaurant offers, until the customer says otherwise.
@@ -60,6 +80,7 @@ export function CheckoutScreen() {
     lines,
     restaurant,
     address,
+    phone: person?.phone ?? null,
     currentPrices: (categories ?? []).flatMap((category) => category.menuItems),
     now: new Date(),
   });
@@ -142,6 +163,27 @@ export function CheckoutScreen() {
             <Ionicons name="chevron-forward" size={18} color={colors.gray[400]} />
           </Pressable>
         </Section>
+
+        {person !== null && person.phone === null ? (
+          <Section title={t('checkout.contactNumber')}>
+            <Text variant="caption" className="mb-2 text-gray-500">
+              {t('checkout.contactHint')}
+            </Text>
+
+            <PhoneField value={phoneDraft} onChange={setPhoneDraft} />
+
+            {savePhone.isError ? <ErrorState error={savePhone.error} className="mt-2" /> : null}
+
+            <Button
+              variant="secondary"
+              onPress={() => savePhone.mutate(phoneDraft)}
+              disabled={savePhone.isPending || phoneDraft.trim() === ''}
+              className="mt-3"
+            >
+              {savePhone.isPending ? t('checkout.savingNumber') : t('checkout.saveNumber')}
+            </Button>
+          </Section>
+        ) : null}
 
         <Section title={t('checkout.payment')}>
           <PaymentMethods
