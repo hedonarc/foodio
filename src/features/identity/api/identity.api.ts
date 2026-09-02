@@ -61,7 +61,7 @@ export async function fetchMe(): Promise<Person> {
   return parseResponse(personSchema, data, 'GET /me');
 }
 
-export async function updateMe(displayName: string): Promise<Person> {
-  const { data } = await apiClient.patch<unknown>('/me', { displayName });
+export async function updateMe(update: { displayName?: string; phone?: string }): Promise<Person> {
+  const { data } = await apiClient.patch<unknown>('/me', update);
   return parseResponse(personSchema, data, 'PATCH /me');
 }

@@ -17,12 +17,17 @@ export const entitlementSchema = z.object({
 export const personSchema = z.object({
   id: z.string(),
   displayName: z.string(),
+  /**
+   * Contact information, not a credential — a rider calls it. Null until
+   * checkout asks for one. See the backend's ADR-0019.
+   */
+  phone: z.string().nullable(),
   /** Empty means customer — the baseline, not a row. */
   entitlements: z.array(entitlementSchema),
 });
 
 /**
- * E.164. Phone is the identity in this market — see backend ADR-0007. Stored
+ * E.164. Contact information rather than a credential since ADR-0019 — stored
  * and compared in this exact form, so the client normalises before sending.
  */
 /** Who vouched for a person. The server verifies the token; this only names it. */

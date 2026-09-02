@@ -1,5 +1,6 @@
 export { fetchMe, requestOtp, updateMe, verifyOtp } from './api/identity.api';
 export { IdentityChip } from './components/IdentityChip';
+export { PhoneField } from './components/PhoneField';
 export { IdentityPickerScreen } from './screens/IdentityPickerScreen';
 export type {
   ActiveRole,

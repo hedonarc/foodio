@@ -152,7 +152,8 @@
       "no-address": "Add a delivery address to continue.",
       "outOfRange": "You are {{distance}}km away and this restaurant delivers up to {{radius}}km.",
       "priceChanged": "Some prices changed: {{items}}. Review your cart before ordering.",
-      "priceChangedLine": "{{name}} {{was}} → {{now}}"
+      "priceChangedLine": "{{name}} {{was}} → {{now}}",
+      "no-phone": "Add a contact number so your rider can reach you."
     },
     "method": {
       "cash_on_delivery": "Cash on delivery"
@@ -161,7 +162,11 @@
       "label": "Card",
       "comingSoon": "Coming soon"
     },
-    "methodUnavailable": "This restaurant offers another way to pay that this version cannot show. Update the app to use it."
+    "methodUnavailable": "This restaurant offers another way to pay that this version cannot show. Update the app to use it.",
+    "contactNumber": "Contact number",
+    "contactHint": "Your rider calls this if they cannot find the door. We only use it for your orders.",
+    "saveNumber": "Save number",
+    "savingNumber": "Saving…"
   },
   "order": {
     "title": "Your order",
