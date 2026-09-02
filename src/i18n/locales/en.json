@@ -248,23 +248,10 @@
     "kitchen": "Kitchen",
     "delivery": "Delivery",
     "chipHint": "Opens your account and role menu",
-    "phoneHint": "Enter your phone number and we will text you a code.",
     "phoneLabel": "Phone number",
     "phonePlaceholder": "300 1234567",
-    "sendCode": "Send code",
-    "sendingCode": "Sending…",
-    "codeHint": "Enter the 6-digit code sent to {{phone}}.",
-    "codeLabel": "Code",
-    "codePlaceholder": "123456",
-    "nameLabel": "Your name (first time only)",
-    "namePlaceholder": "Full name",
-    "verify": "Verify and sign in",
-    "verifying": "Verifying…",
-    "changeNumber": "Use a different number",
-    "resendCode": "Resend code",
     "errors": {
-      "phone": "Enter a phone number including its country code, e.g. +92 300 1234567.",
-      "code": "Enter the 6-digit code."
+      "phone": "Enter a phone number including its country code, e.g. +92 300 1234567."
     },
     "country": {
       "title": "Select country",
