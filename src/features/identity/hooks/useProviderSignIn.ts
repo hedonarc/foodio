@@ -59,18 +59,30 @@ export function useProviderSignIn() {
   const [pending, setPending] = useState<IdentityProvider | null>(null);
   const [error, setError] = useState<unknown>(null);
 
-  const run = async (provider: IdentityProvider, token: () => Promise<TokenResult | null>) => {
+  /**
+   * Answers whether a session now exists, so a caller can navigate on success
+   * and only on success. Returning nothing would make a cancelled sheet and a
+   * completed sign-in indistinguishable — which is exactly the bug found by
+   * tapping the button on a device with no Google account: the screen closed,
+   * no error was ever seen, and the Person was still signed out.
+   */
+  const run = async (
+    provider: IdentityProvider,
+    token: () => Promise<TokenResult | null>,
+  ): Promise<boolean> => {
     setPending(provider);
     setError(null);
 
     try {
       const result = await token();
-      if (result === null) return;
+      if (result === null) return false;
 
       const session = await signInWithProvider({ provider, ...result });
       await signIn(session);
+      return true;
     } catch (caught) {
       setError(caught);
+      return false;
     } finally {
       setPending(null);
     }
@@ -82,17 +94,34 @@ export function useProviderSignIn() {
     /** iOS only: Apple ships no Android sheet, and Android has no Apple account. */
     appleAvailable: Platform.OS === 'ios',
 
-    google: () =>
+    google: (): Promise<boolean> =>
       run('google', async () => {
         configureGoogle();
 
-        const result = await GoogleOneTapSignIn.signIn();
-        const idToken = result.data?.idToken;
+        // The quiet path first: it signs in an already-authorised account with
+        // no picker at all. `noSavedCredentialFound` is not a refusal — it means
+        // there is nobody to offer yet — so the explicit sheet follows, which is
+        // also where a Person adds a Google account to the device.
+        const quiet = await GoogleOneTapSignIn.signIn();
+        const result =
+          quiet.type === 'noSavedCredentialFound'
+            ? await GoogleOneTapSignIn.presentExplicitSignIn()
+            : quiet;
 
-        return typeof idToken === 'string' && idToken !== '' ? { idToken } : null;
+        // Changing your mind is not an error, and says nothing on screen.
+        if (result.type === 'cancelled') return null;
+
+        const idToken = result.data?.idToken;
+        if (typeof idToken !== 'string' || idToken === '') {
+          // Everything else is: a device with no Google account reaches here,
+          // and silence would leave the button looking broken.
+          throw new Error('No Google account is available on this device.');
+        }
+
+        return { idToken };
       }),
 
-    apple: () =>
+    apple: (): Promise<boolean> =>
       run('apple', async () => {
         const credential = await AppleAuthentication.signInAsync({
           requestedScopes: [

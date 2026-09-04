@@ -27,7 +27,11 @@ export function IdentityPickerScreen() {
   const router = useRouter();
   const { google, apple, appleAvailable, pending, error } = useProviderSignIn();
 
-  const signedIn = () => router.back();
+  // Only on success. A cancelled sheet leaves the Person here, and a failed one
+  // leaves them here with the reason on screen.
+  const leaveIfSignedIn = (signedIn: boolean) => {
+    if (signedIn) router.back();
+  };
 
   return (
     <View className="flex-1 bg-white">
@@ -39,7 +43,7 @@ export function IdentityPickerScreen() {
         </Text>
 
         <Button
-          onPress={() => void google().then(signedIn)}
+          onPress={() => void google().then(leaveIfSignedIn)}
           disabled={pending !== null}
           icon={<Ionicons name="logo-google" size={18} color={colors.white} />}
         >
@@ -49,7 +53,7 @@ export function IdentityPickerScreen() {
         {appleAvailable ? (
           <Button
             variant="secondary"
-            onPress={() => void apple().then(signedIn)}
+            onPress={() => void apple().then(leaveIfSignedIn)}
             disabled={pending !== null}
             icon={<Ionicons name="logo-apple" size={18} color={colors.gray[900]} />}
           >
