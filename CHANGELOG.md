@@ -1,5 +1,68 @@
 # Changelog
 
+## [1.4.0](https://github.com/hedonarc/foodio/compare/v1.3.0...v1.4.0) (2026-09-04)
+
+
+### Features
+
+* **build:** shrink the release with R8, and walk the app to prove it ([#136](https://github.com/hedonarc/foodio/issues/136)) ([5dbdafe](https://github.com/hedonarc/foodio/commit/5dbdafeaa224974879dd7c807c381d13b207f242))
+* **checkout:** ask for the number the rider will call ([#139](https://github.com/hedonarc/foodio/issues/139)) ([ea82538](https://github.com/hedonarc/foodio/commit/ea8253800cdc6e9360e9c32d6936aaf5b224b968))
+* **checkout:** card is announced, not offered ([#131](https://github.com/hedonarc/foodio/issues/131)) ([b5ce4df](https://github.com/hedonarc/foodio/commit/b5ce4df9527a54e8f40f4f0e53b26ee31c24768b))
+* **checkout:** render the payment methods the restaurant serves ([#130](https://github.com/hedonarc/foodio/issues/130)) ([4470ad7](https://github.com/hedonarc/foodio/commit/4470ad7126a9924448b1ac3fba7afbd23061df4e))
+* **claim:** list your restaurant, and finish it afterwards ([#124](https://github.com/hedonarc/foodio/issues/124)) ([1811388](https://github.com/hedonarc/foodio/commit/1811388d0fcc3548d9c0afad1c48481098d27bb9))
+* **identity:** pick the country code instead of typing it ([b033f4a](https://github.com/hedonarc/foodio/commit/b033f4afa514cc9ff9cc125db33afd86e62f4175))
+* **identity:** pick the country code instead of typing it ([889cb4f](https://github.com/hedonarc/foodio/commit/889cb4fb885120f7f73f0d64dab93e4deed673bf))
+* **identity:** sign in with Google or Apple, no code to type ([#138](https://github.com/hedonarc/foodio/issues/138)) ([111bd56](https://github.com/hedonarc/foodio/commit/111bd569abd22de16c8091c12de880cae3b5c9de))
+* **join:** redeem a joining code ([#120](https://github.com/hedonarc/foodio/issues/120)) ([30355d8](https://github.com/hedonarc/foodio/commit/30355d8a63ad7dc83846c50758f4774b22b3fef7))
+* **manage:** add another location, and move between plans ([#129](https://github.com/hedonarc/foodio/issues/129)) ([deb1520](https://github.com/hedonarc/foodio/commit/deb1520a953779fd939198ad669160c1afac7b1c))
+* **manage:** edit the menu — dishes fully, sections lightly ([#121](https://github.com/hedonarc/foodio/issues/121)) ([72f550a](https://github.com/hedonarc/foodio/commit/72f550a36f4f74610bfe2e54bb07334d5b3be2b8))
+* **manage:** explain why an unpaid restaurant cannot reopen ([#126](https://github.com/hedonarc/foodio/issues/126)) ([bcb64a6](https://github.com/hedonarc/foodio/commit/bcb64a6fc1f022ef662990caeefd876235102ba3))
+* **manage:** going live, and why a restaurant is invisible ([#122](https://github.com/hedonarc/foodio/issues/122)) ([3014cf7](https://github.com/hedonarc/foodio/commit/3014cf7b172259a11e66b14981518a38973cc513))
+* **manage:** the location and delivery-area editor ([#123](https://github.com/hedonarc/foodio/issues/123)) ([3b47122](https://github.com/hedonarc/foodio/commit/3b471225518a155ad43b474fb86948304ed319f6))
+* **manage:** the Manage hub, and Profile as its first section ([#117](https://github.com/hedonarc/foodio/issues/117)) ([f794262](https://github.com/hedonarc/foodio/commit/f79426203e05e5ac6e5073c1e01ea5e785fe6543))
+* **manage:** the opening-hours editor ([#118](https://github.com/hedonarc/foodio/issues/118)) ([3b4fc77](https://github.com/hedonarc/foodio/commit/3b4fc77d99e36cf093d80962b206cd2017095a30))
+* **manage:** the Staff section, and joining by code ([#119](https://github.com/hedonarc/foodio/issues/119)) ([5163aab](https://github.com/hedonarc/foodio/commit/5163aab6c4fc29ee81da1d45274c35626d0768ad))
+* **maps:** a real package id, and the Maps key out of git ([#132](https://github.com/hedonarc/foodio/issues/132)) ([abf8717](https://github.com/hedonarc/foodio/commit/abf871758144cc479472cc2fe02de8c73ab1245e))
+* **orders:** one payment-method list, not two fixed words ([#127](https://github.com/hedonarc/foodio/issues/127)) ([a1015c9](https://github.com/hedonarc/foodio/commit/a1015c9824155b7e4daaeca1638f0471eee7b3cf))
+* **orders:** show what is owed and what was collected ([#125](https://github.com/hedonarc/foodio/issues/125)) ([6340287](https://github.com/hedonarc/foodio/commit/634028773598abb5384bb539986c52e1466ad8b2))
+* **photos:** let a kitchen set the restaurant's own photograph ([#115](https://github.com/hedonarc/foodio/issues/115)) ([76d0899](https://github.com/hedonarc/foodio/commit/76d089925564d27a644983e8b0ee5f0f2912a979))
+* **photos:** put a photograph on a dish from the kitchen ([#114](https://github.com/hedonarc/foodio/issues/114)) ([f18e174](https://github.com/hedonarc/foodio/commit/f18e174fbb3ced59c493a5b62ae5cb80f560de69))
+* **reviews:** rate a delivered order, read them all ([fc8a7bf](https://github.com/hedonarc/foodio/commit/fc8a7bfaa33ee791c9c77980f95e534326e959be))
+* **reviews:** rate a delivered order, read them all ([26fcb34](https://github.com/hedonarc/foodio/commit/26fcb34fa45bc06a6ccdf297abca9bd321d53958)), closes [#99](https://github.com/hedonarc/foodio/issues/99)
+* **ui:** pull to refresh on home, orders, and the staff queues ([cc0c26f](https://github.com/hedonarc/foodio/commit/cc0c26f57edc05d306f4afe331bf2b09b13c456d))
+* **ui:** show nothing where there is no photograph ([#113](https://github.com/hedonarc/foodio/issues/113)) ([f6f6596](https://github.com/hedonarc/foodio/commit/f6f6596b985a233d564a8a03eefd5af07df3b5cb))
+* **work:** a Done tab for settled orders in both staff queues ([514cf26](https://github.com/hedonarc/foodio/commit/514cf26a0cd21005e6e2fa5c7a6ac9b6d36780dd))
+* **work:** a Done tab for settled orders in both staff queues ([926eef4](https://github.com/hedonarc/foodio/commit/926eef45377b6e6ba99e7bbdd06d1c459bf8445b))
+* **work:** kitchen and delivery act on orders ([bb2f7f0](https://github.com/hedonarc/foodio/commit/bb2f7f01b3270eefb01a10f573d4b9f9cb0e87fd))
+* **work:** kitchen and delivery act on orders ([f3bd7f4](https://github.com/hedonarc/foodio/commit/f3bd7f464d64ff8525b19fd006961994a6a51518)), closes [#95](https://github.com/hedonarc/foodio/issues/95)
+* **work:** the kitchen marks dishes sold out ([ab2dc9d](https://github.com/hedonarc/foodio/commit/ab2dc9db4b88c13f8852f767f9557ca4367ee09f))
+* **work:** the kitchen marks dishes sold out ([e52caf9](https://github.com/hedonarc/foodio/commit/e52caf901db6f5f7d6fe77d439f3f2aaf7cb6bd0)), closes [#97](https://github.com/hedonarc/foodio/issues/97)
+
+
+### Bug Fixes
+
+* **build:** the release build works, and now has a number ([#133](https://github.com/hedonarc/foodio/issues/133)) ([a44cf99](https://github.com/hedonarc/foodio/commit/a44cf99516385ca6c946ef9fcfa9050bebe15179))
+* **clips:** videos no longer go black or flicker while scrolling ([8edeaf5](https://github.com/hedonarc/foodio/commit/8edeaf50f4ae332c67f975a5bef0b520ee20a2e4))
+* **clips:** videos no longer go black or flicker while scrolling ([184b3c4](https://github.com/hedonarc/foodio/commit/184b3c451b7d5b484662e0c395732fa0b1b5e5b5))
+* **identity:** a failed sign-in stays on the sign-in screen ([#162](https://github.com/hedonarc/foodio/issues/162)) ([16bfa77](https://github.com/hedonarc/foodio/commit/16bfa774aa8cda5e05e3086a692dabd6f30b5b1c))
+* **ios:** prebuild survives a shell with no LANG set ([#141](https://github.com/hedonarc/foodio/issues/141)) ([214caa6](https://github.com/hedonarc/foodio/commit/214caa65311fff07c127d797522c1988be24d8de))
+* **mocks:** give the mock restaurants a status ([#137](https://github.com/hedonarc/foodio/issues/137)) ([09d3774](https://github.com/hedonarc/foodio/commit/09d37742476d03be51cf015dd88c5f469bd0f78a))
+* **restaurants:** judge Open/Closed by the restaurant's clock ([3d0449a](https://github.com/hedonarc/foodio/commit/3d0449a8830d04d88effd1b864cea54928a8315f))
+* **restaurants:** judge Open/Closed by the restaurant's clock ([249b7e1](https://github.com/hedonarc/foodio/commit/249b7e1f77eb478aa96c2f495c878e2e4fc062f9))
+* **restaurants:** show every window of a split shift, not just the last ([#112](https://github.com/hedonarc/foodio/issues/112)) ([40b74ec](https://github.com/hedonarc/foodio/commit/40b74ec5e69a0be4b87316f7f60486a98198ff96))
+* **session:** clear the query cache on sign-in and sign-out ([8a8a2f0](https://github.com/hedonarc/foodio/commit/8a8a2f06c20be901450caca166a5b91459e431e6))
+* **session:** clear the query cache on sign-in and sign-out ([4564f69](https://github.com/hedonarc/foodio/commit/4564f69d8c6e293a0f123bf667e880c329299ee5))
+* sheet safe-area insets, and pull to refresh ([66dc34f](https://github.com/hedonarc/foodio/commit/66dc34f300894b649d7d9e756c93f553efed0965))
+* **theme:** add error and success to the Tailwind palette ([#116](https://github.com/hedonarc/foodio/issues/116)) ([2019aa6](https://github.com/hedonarc/foodio/commit/2019aa61d24b3b8364e244692416dba588404794))
+* **theme:** give error the same scale as warning ([#128](https://github.com/hedonarc/foodio/issues/128)) ([7325f05](https://github.com/hedonarc/foodio/commit/7325f05be4f7e641ef1eb1042f39b552f4291cfc))
+* **ui:** bottom sheets respect the home-indicator inset ([960b853](https://github.com/hedonarc/foodio/commit/960b85303532fb4a63f1397788295c83fe64ec5a))
+* **ui:** bound the Android tab bar ripple to a full circle ([f2f3623](https://github.com/hedonarc/foodio/commit/f2f3623ea635ff1376f8379f1534acda7d1af53b))
+* **ui:** bound the Android tab bar ripple to a full circle ([d375ae8](https://github.com/hedonarc/foodio/commit/d375ae8625c481206c7e6ba604ed39aa36623cd7))
+* **ui:** correct inset measurement and keyboard padding in sheets ([8be91c2](https://github.com/hedonarc/foodio/commit/8be91c2b523911ffb90eabf25757abe5209920e2))
+* **ui:** give the resting sheet visible clearance from the nav bar ([e4aa116](https://github.com/hedonarc/foodio/commit/e4aa1164f8edf87118984c1a2344d605f5cb58b3))
+* **ui:** keyboard avoidance for bottom sheets on Android ([70801ce](https://github.com/hedonarc/foodio/commit/70801ce35df430301462364d57ce5a1c7a7dc3bc))
+* **work:** cursor-paginate the staff order queue ([8aca8d1](https://github.com/hedonarc/foodio/commit/8aca8d18b232803759c19fd3b6618fbbf1603e90))
+
 ## [1.3.0](https://github.com/hedonarc/foodio/compare/v1.2.0...v1.3.0) (2026-08-07)
 
 
