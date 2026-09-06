@@ -115,7 +115,7 @@ function TopSheet({ model, onClose }: { model: SearchModel; onClose: () => void 
   return (
     <View className="absolute inset-0">
       <BlurView
-        intensity={45}
+        intensity={80}
         tint="light"
         experimentalBlurMethod="dimezisBlurView"
         style={StyleSheet.absoluteFill}
@@ -124,7 +124,7 @@ function TopSheet({ model, onClose }: { model: SearchModel; onClose: () => void 
         onPress={onClose}
         accessibilityRole="button"
         accessibilityLabel="Close search"
-        className="absolute inset-0 bg-black/10"
+        className="absolute inset-0 bg-white/30"
       />
 
       <View

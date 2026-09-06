@@ -140,12 +140,13 @@ function InPlaceResults({ model }: { model: SearchModel }) {
   return (
     <View className="absolute inset-0">
       <BlurView
-        intensity={60}
+        intensity={100}
         tint="light"
         experimentalBlurMethod="dimezisBlurView"
         style={StyleSheet.absoluteFill}
       />
-      <View className="flex-1 bg-white/40 px-3 pt-2">
+      {/* The blur alone leaves Home legible underneath; the wash makes this a layer. */}
+      <View className="flex-1 bg-white/80 px-3 pt-2">
         <View className="mb-3 flex-row rounded-2xl bg-gray-100 p-1">
           {QUICK_SORTS.map((sort) => {
             const on = model.filters.sort === sort;
