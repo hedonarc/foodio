@@ -9,6 +9,8 @@ import { reviewCheckout } from './reviewCheckout';
 // Mission District, and a Monday at noon when the restaurant below is open.
 const RESTAURANT_COORDS = { latitude: 37.7599, longitude: -122.4148 };
 const MONDAY_NOON = new Date('2026-08-03T12:00:00');
+/** Long after the 22:00 close, so the Restaurant below is shut. */
+const MONDAY_MIDNIGHT = new Date('2026-08-03T23:30:00');
 
 const restaurant = (overrides: Partial<Restaurant> = {}): Restaurant =>
   ({
@@ -65,6 +67,7 @@ const review = (overrides: Partial<CheckoutInput> = {}) =>
     lines: [line()],
     restaurant: restaurant(),
     address: nearbyAddress,
+    isSignedIn: true,
     phone: '+923001234567',
     currentPrices: [{ id: 'item-1', priceMinor: 1499 }],
     now: MONDAY_NOON,
@@ -72,6 +75,27 @@ const review = (overrides: Partial<CheckoutInput> = {}) =>
   });
 
 const kinds = (blockers: CheckoutBlocker[]) => blockers.map((blocker) => blocker.kind);
+
+describe('nobody signed in', () => {
+  it('is asked to sign in, not to fix things that belong to a Person', () => {
+    const result = review({ isSignedIn: false, address: null, phone: null });
+
+    expect(kinds(result.blockers)).toEqual(['not-signed-in']);
+    expect(result.canPlaceOrder).toBe(false);
+  });
+
+  it('is still told what is true of the Restaurant', () => {
+    const result = review({ isSignedIn: false, now: MONDAY_MIDNIGHT });
+
+    expect(kinds(result.blockers)).toEqual(['restaurant-closed', 'not-signed-in']);
+  });
+
+  it('still gets a total, so the Cart is worth signing in for', () => {
+    const result = review({ isSignedIn: false });
+
+    expect(result.totalMinor).toBe(1499 + 199);
+  });
+});
 
 describe('a customer with no contact number', () => {
   it('cannot order, because nobody could call about the door', () => {

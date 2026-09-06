@@ -7,6 +7,7 @@ import {
 } from '@tanstack/react-query';
 
 import { queryKeys } from '@/constants/queryKeys';
+import { useSessionStore } from '@/stores/session.store';
 
 import { cancelOrder, fetchOrder, fetchOrdersPage, placeOrder } from '../api/order.api';
 import type { NewOrder } from '../types/order.types';
@@ -27,9 +28,11 @@ export function useOrder(orderId: string | undefined) {
 }
 
 export function useOrders() {
+  const isSignedIn = useSessionStore((state) => state.person !== null);
+
   const query = useInfiniteQuery({
     queryKey: queryKeys.orders.list(),
-    queryFn: ({ pageParam }) => fetchOrdersPage(pageParam),
+    queryFn: isSignedIn ? ({ pageParam }) => fetchOrdersPage(pageParam) : skipToken,
     initialPageParam: undefined as string | undefined,
     getNextPageParam: (lastPage) => lastPage.nextCursor ?? undefined,
   });
