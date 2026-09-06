@@ -114,7 +114,14 @@ function CategoryTiles({
                 accessibilityLabel={category.name}
                 className="mb-2.5 h-24 w-32 overflow-hidden rounded-2xl bg-gray-200 active:opacity-80"
               >
-                {category.image ? <Photo uri={category.image} className="h-full w-full" /> : null}
+                {category.image ? (
+                  <Photo uri={category.image} className="h-full w-full" />
+                ) : (
+                  // No Restaurant with a photograph serves this yet: the emoji stands in.
+                  <View className="h-full w-full items-center justify-center bg-primary-100">
+                    <Text className="text-4xl opacity-60">{category.emoji}</Text>
+                  </View>
+                )}
                 <LinearGradient
                   colors={['transparent', 'rgba(0,0,0,0.65)']}
                   style={{ position: 'absolute', left: 0, right: 0, bottom: 0, height: 56 }}
