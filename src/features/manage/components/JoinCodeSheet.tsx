@@ -42,7 +42,7 @@ export function JoinCodeSheet({ code, restaurantName, onClose }: JoinCodeSheetPr
               {t(
                 code.capability === 'kitchen'
                   ? 'manage.staff.kitchenCodeTitle'
-                  : 'manage.staff.riderCodeTitle',
+                  : 'manage.staff.deliveryCodeTitle',
               )}
             </Text>
             <Text variant="caption" className="text-gray-500">
