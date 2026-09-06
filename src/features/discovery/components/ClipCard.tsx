@@ -58,19 +58,19 @@ export function ClipCard({ clip, showRestaurantName = true }: ClipCardProps) {
           />
         </View>
 
-        {/* Centred, and in its own layer: stacked above the name, a Restaurant
-            whose name wrapped to two lines pushed the icon up, so a row of
-            cards had its play buttons at different heights. */}
-        <View className="absolute inset-0 items-center justify-center" pointerEvents="none">
-          <Ionicons name="play-circle" size={30} color={colors.white} />
+        {/* Opposite the marker and cut from the same cloth. Anchored to the
+            corner rather than stacked above the name, which used to ride up
+            whenever a Restaurant's name wrapped to a second line. */}
+        <View className="absolute right-2 top-2 h-6 w-6 items-center justify-center rounded-full bg-black/50">
+          <Ionicons name="play" size={12} color={colors.white} />
         </View>
 
         {showRestaurantName ? (
-          <View className="absolute inset-x-0 bottom-0 items-center p-2.5">
+          <View className="absolute inset-x-0 bottom-0 p-2.5">
             <Text
               variant="caption"
               numberOfLines={2}
-              className="text-center text-[10px] font-bold uppercase tracking-wider text-white"
+              className="text-[10px] font-bold uppercase tracking-wider text-white"
               style={{
                 textShadowColor: 'rgba(0, 0, 0, 0.65)',
                 textShadowOffset: { width: 0, height: 1 },
