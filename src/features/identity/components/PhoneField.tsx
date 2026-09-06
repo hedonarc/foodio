@@ -25,6 +25,17 @@ type PhoneFieldProps = {
 const digitsOnly = (text: string) => text.replace(/\D/g, '');
 
 /**
+ * `3001234567` reads as `300 1234567` while it is being typed.
+ *
+ * Display only — `onChange` still emits plain E.164, so the schema and the API
+ * see exactly what they did before. A long run of digits is hard to check
+ * against the number in your head, which is the one moment this field has to
+ * get right.
+ */
+const grouped = (national: string) =>
+  national.length > 3 ? `${national.slice(0, 3)} ${national.slice(3)}` : national;
+
+/**
  * Country is picked, never typed: a dial code the user has to remember is the
  * one part of a phone number they most often get wrong. The field still emits
  * plain E.164, so the schema and the API see exactly what they did before.
@@ -78,7 +89,7 @@ export function PhoneField({ value, onChange, onBlur, error }: PhoneFieldProps) 
           accessibilityLabel={t('identity.phoneLabel')}
           placeholder={t('identity.phonePlaceholder')}
           placeholderTextColor={colors.gray[400]}
-          value={national}
+          value={grouped(national)}
           onChangeText={(text) => onChange(`${prefix}${digitsOnly(text)}`)}
           onBlur={onBlur}
           keyboardType="phone-pad"

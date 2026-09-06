@@ -10,4 +10,10 @@ export type {
   RoleOption,
   Session,
 } from './types/identity.types';
-export { CUSTOMER_ROLE, resolveRole, roleOptionsFor, sameRole } from './types/identity.types';
+export {
+  CUSTOMER_ROLE,
+  phoneSchema,
+  resolveRole,
+  roleOptionsFor,
+  sameRole,
+} from './types/identity.types';
