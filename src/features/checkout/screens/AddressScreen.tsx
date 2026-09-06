@@ -8,10 +8,17 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { Controller, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 
-import { EmptyState, ErrorState, LoadingState, ScreenHeader } from '@/components/shared';
+import {
+  EmptyState,
+  ErrorState,
+  LoadingState,
+  ScreenHeader,
+  SignInRequired,
+} from '@/components/shared';
 import { Button, Text, TextField } from '@/components/ui';
 import { cn } from '@/lib/cn';
 import { useActiveAddressStore } from '@/stores/activeAddress.store';
+import { useSessionStore } from '@/stores/session.store';
 import { colors } from '@/theme';
 import type { Coordinates } from '@/utils/distance';
 
@@ -44,6 +51,8 @@ export function AddressScreen() {
 
   const [formTarget, setFormTarget] = useState<FormTarget | null>(null);
 
+  const isSignedIn = useSessionStore((state) => state.person !== null);
+
   const { data: addresses, isPending, error, refetch } = useAddresses();
   const activeAddressId = useActiveAddressStore((state) => state.activeAddressId);
   const selectAddress = useActiveAddressStore((state) => state.selectAddress);
@@ -51,6 +60,21 @@ export function AddressScreen() {
   const createAddress = useCreateAddress();
   const updateAddress = useUpdateAddress();
   const deleteAddress = useDeleteAddress();
+
+  // Addresses hang off a Person, so signed out there is nothing to show and
+  // nothing to save — and the request that used to run answered with the
+  // server's own "Not authenticated." See issue #177.
+  if (!isSignedIn) {
+    return (
+      <View className="flex-1 bg-white">
+        <ScreenHeader title={t('address.title')} />
+        <SignInRequired
+          message={t('address.signInRequired')}
+          className="flex-1 items-center justify-center px-8"
+        />
+      </View>
+    );
+  }
 
   if (formTarget) {
     return (

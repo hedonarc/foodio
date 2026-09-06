@@ -102,6 +102,7 @@
   },
   "address": {
     "title": "Delivery address",
+    "signInRequired": "Sign in to save a delivery address.",
     "save": "Save address",
     "saving": "Saving…",
     "addNew": "Add new address",
@@ -158,7 +159,8 @@
       "outOfRange": "You are {{distance}}km away and this restaurant delivers up to {{radius}}km.",
       "priceChanged": "Some prices changed: {{items}}. Review your cart before ordering.",
       "priceChangedLine": "{{name}} {{was}} → {{now}}",
-      "no-phone": "Add a contact number so the restaurant can reach you."
+      "no-phone": "Add a contact number so the restaurant can reach you.",
+      "not-signed-in": "Sign in to place this order. Your cart is waiting."
     },
     "method": {
       "cash_on_delivery": "Cash on delivery"
@@ -203,7 +205,8 @@
   },
   "orders": {
     "title": "Your orders",
-    "empty": "You have not ordered anything yet."
+    "empty": "You have not ordered anything yet.",
+    "signInRequired": "Sign in to see your orders."
   },
   "review": {
     "rateOrder": "Rate your order",

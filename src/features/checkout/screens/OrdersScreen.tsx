@@ -6,9 +6,16 @@ import { Ionicons } from '@expo/vector-icons';
 import { useTranslation } from 'react-i18next';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-import { EmptyState, ErrorState, LoadingState, ScreenHeader } from '@/components/shared';
+import {
+  EmptyState,
+  ErrorState,
+  LoadingState,
+  ScreenHeader,
+  SignInRequired,
+} from '@/components/shared';
 import { Text } from '@/components/ui';
 import { useNavigationGuard } from '@/hooks/useNavigationGuard';
+import { useSessionStore } from '@/stores/session.store';
 import { colors } from '@/theme';
 import { formatMoney } from '@/utils/currency';
 import { formatDate } from '@/utils/date';
@@ -22,6 +29,8 @@ export function OrdersScreen() {
   const router = useRouter();
   const guard = useNavigationGuard();
 
+  const isSignedIn = useSessionStore((state) => state.person !== null);
+
   const {
     data: orders,
     isPending,
@@ -32,6 +41,20 @@ export function OrdersScreen() {
     isFetchingNextPage,
     isRefetching,
   } = useOrders();
+
+  /* Orders belong to a Person. Signed out this screen showed the server's own
+     "Not authenticated.", with no way to sign in — issue #177. */
+  if (!isSignedIn) {
+    return (
+      <SafeAreaView edges={['top']} className="flex-1 bg-white">
+        <ScreenHeader title={t('orders.title')} showBack={false} />
+        <SignInRequired
+          message={t('orders.signInRequired')}
+          className="flex-1 items-center justify-center px-8"
+        />
+      </SafeAreaView>
+    );
+  }
 
   return (
     <SafeAreaView edges={['top']} className="flex-1 bg-white">

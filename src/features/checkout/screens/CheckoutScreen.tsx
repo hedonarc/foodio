@@ -63,7 +63,8 @@ export function CheckoutScreen() {
     },
   });
 
-  const needsPhone = person !== null && person.phone === null;
+  const isSignedIn = person !== null;
+  const needsPhone = isSignedIn && person.phone === null;
   const draftIsValid = phoneSchema.safeParse(phoneDraft).success;
 
   /**
@@ -88,6 +89,7 @@ export function CheckoutScreen() {
 
   const review = reviewCheckout({
     cartRestaurant,
+    isSignedIn,
     lines,
     restaurant,
     address,
@@ -243,15 +245,23 @@ export function CheckoutScreen() {
           <ErrorState error={placeOrder.error} onRetry={submit} className="mt-4 px-2" />
         ) : null}
 
-        <Button
-          onPress={() => void submit()}
-          disabled={!review.canPlaceOrder || placeOrder.isPending || savePhone.isPending}
-          className="mt-6"
-        >
-          {placeOrder.isPending
-            ? t('checkout.placing')
-            : t('checkout.placeOrder', { total: money(review.totalMinor) })}
-        </Button>
+        {/* One thing to do. A disabled Place order under blockers nobody can
+            clear is the wall issue #177 describes. */}
+        {isSignedIn ? (
+          <Button
+            onPress={() => void submit()}
+            disabled={!review.canPlaceOrder || placeOrder.isPending || savePhone.isPending}
+            className="mt-6"
+          >
+            {placeOrder.isPending
+              ? t('checkout.placing')
+              : t('checkout.placeOrder', { total: money(review.totalMinor) })}
+          </Button>
+        ) : (
+          <Button onPress={() => guard(() => router.push('/sign-in'))} className="mt-6">
+            {t('identity.signIn')}
+          </Button>
+        )}
       </ScrollView>
     </View>
   );

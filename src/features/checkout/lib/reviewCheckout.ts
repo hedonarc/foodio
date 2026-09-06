@@ -16,6 +16,7 @@ export type RepricedLine = {
 
 export type CheckoutBlocker =
   | { kind: 'empty-cart' }
+  | { kind: 'not-signed-in' }
   | { kind: 'restaurant-unavailable' }
   | { kind: 'restaurant-closed' }
   | { kind: 'no-address' }
@@ -33,6 +34,11 @@ export type CheckoutReview = {
 
 export type CheckoutInput = {
   cartRestaurant: CartRestaurant | null;
+  /**
+   * An Order belongs to somebody. Browsing, the Menu and the Cart are open to
+   * everyone — this is the first screen that needs a Person.
+   */
+  isSignedIn: boolean;
   lines: readonly CartLine[];
   restaurant: Restaurant | undefined;
   address: DeliveryAddress | null;
@@ -67,7 +73,8 @@ function repricedLines(
  * checkout button and the screen explaining why it is disabled.
  */
 export function reviewCheckout(input: CheckoutInput): CheckoutReview {
-  const { cartRestaurant, lines, restaurant, address, phone, currentPrices, now } = input;
+  const { cartRestaurant, isSignedIn, lines, restaurant, address, phone, currentPrices, now } =
+    input;
 
   const subtotalMinor = lines.reduce(
     (total, line) => total + line.unitPriceMinor * line.quantity,
@@ -85,14 +92,21 @@ export function reviewCheckout(input: CheckoutInput): CheckoutReview {
     blockers.push({ kind: 'restaurant-closed' });
   }
 
-  if (!address) {
-    blockers.push({ kind: 'no-address' });
-  } else if (restaurant) {
-    const outOfRange = deliverabilityBlocker(address, restaurant);
-    if (outOfRange) blockers.push(outOfRange);
-  }
+  // An address and a number belong to a Person. With nobody signed in they are
+  // not missing, they are unaskable — so the screen is told the one thing that
+  // is actually in the customer's way, and the rest follows sign-in.
+  if (!isSignedIn) {
+    blockers.push({ kind: 'not-signed-in' });
+  } else {
+    if (!address) {
+      blockers.push({ kind: 'no-address' });
+    } else if (restaurant) {
+      const outOfRange = deliverabilityBlocker(address, restaurant);
+      if (outOfRange) blockers.push(outOfRange);
+    }
 
-  if (!phone) blockers.push({ kind: 'no-phone' });
+    if (!phone) blockers.push({ kind: 'no-phone' });
+  }
 
   const reprices = repricedLines(lines, currentPrices);
   if (reprices.length > 0) blockers.push({ kind: 'price-changed', lines: reprices });
