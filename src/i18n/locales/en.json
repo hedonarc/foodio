@@ -37,7 +37,8 @@
     "searchLabel": "Search restaurants",
     "clearSearch": "Clear search",
     "searchResults": "Results for “{{query}}”",
-    "noResults": "Nothing matched “{{query}}”."
+    "noResults": "Nothing matched “{{query}}”.",
+    "allRestaurants": "All restaurants · {{count}}"
   },
   "restaurant": {
     "detailsTitle": "Restaurant Details",
@@ -57,7 +58,11 @@
     "clipsFromCustomers": "From customers",
     "seeAllReviews": "See all",
     "reviewsTitle": "Reviews",
-    "noReviews": "No reviews yet."
+    "noReviews": "No reviews yet.",
+    "newRating": "New",
+    "noReviewsYet": "No reviews yet",
+    "reviewCount_one": "({{count}} review)",
+    "reviewCount_other": "({{count}} reviews)"
   },
   "menu": {
     "title": "Menu",
@@ -164,9 +169,7 @@
     },
     "methodUnavailable": "This restaurant offers another way to pay that this version cannot show. Update the app to use it.",
     "contactNumber": "Contact number",
-    "contactHint": "The restaurant calls this if they cannot find the door. We only use it for your orders.",
-    "saveNumber": "Save number",
-    "savingNumber": "Saving…"
+    "contactHint": "The restaurant calls this if they cannot find the door. We only use it for your orders."
   },
   "order": {
     "title": "Your order",
