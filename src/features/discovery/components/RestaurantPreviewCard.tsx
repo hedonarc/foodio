@@ -63,12 +63,19 @@ export function RestaurantPreviewCard({ restaurant, wide = false }: RestaurantPr
           <Text variant="bodyMedium" className="flex-1 mr-2 text-gray-900" numberOfLines={1}>
             {restaurant.name}
           </Text>
-          <View className="flex-row items-center">
-            <Ionicons name="star" size={12} color={colors.warning[500]} />
-            <Text variant="caption" className="ml-0.5 font-bold text-warning-700">
-              {restaurant.rating.toFixed(1)}
+          {/* No reviews is New, not zero — see RestaurantRating. */}
+          {restaurant.reviewCount === 0 ? (
+            <Text variant="caption" className="font-bold text-primary-600">
+              {t('restaurant.newRating')}
             </Text>
-          </View>
+          ) : (
+            <View className="flex-row items-center">
+              <Ionicons name="star" size={12} color={colors.warning[500]} />
+              <Text variant="caption" className="ml-0.5 font-bold text-warning-700">
+                {restaurant.rating.toFixed(1)}
+              </Text>
+            </View>
+          )}
         </View>
         <Text variant="caption" className="mt-0.5 text-gray-400" numberOfLines={1}>
           {restaurant.cuisines.join(' • ')}
