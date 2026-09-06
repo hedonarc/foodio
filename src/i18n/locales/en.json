@@ -57,7 +57,11 @@
     "clipsFromCustomers": "From customers",
     "seeAllReviews": "See all",
     "reviewsTitle": "Reviews",
-    "noReviews": "No reviews yet."
+    "noReviews": "No reviews yet.",
+    "newRating": "New",
+    "noReviewsYet": "No reviews yet",
+    "reviewCount_one": "({{count}} review)",
+    "reviewCount_other": "({{count}} reviews)"
   },
   "menu": {
     "title": "Menu",
