@@ -12,6 +12,7 @@ import { usePullToRefresh } from '@/hooks/usePullToRefresh';
 // Everything the home surface renders: the carousel and its clip shelves.
 const HOME_KEYS = [queryKeys.restaurants.all, queryKeys.clips.all] as const;
 
+import { RecentClips } from '../components/RecentClips';
 import { RestaurantCarousel } from '../components/RestaurantCarousel';
 import { RestaurantList } from '../components/RestaurantList';
 import { SearchBar } from '../components/SearchBar';
@@ -39,6 +40,10 @@ export function HomeScreen() {
             </View>
 
             <RestaurantCarousel query={query} />
+
+            {/* Search turns the carousel into a vertical list of results; a
+                shelf of unrelated Clips in the middle of them is noise. */}
+            {query ? null : <RecentClips />}
           </>
         }
       />
