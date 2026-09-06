@@ -58,12 +58,19 @@ export function ClipCard({ clip, showRestaurantName = true }: ClipCardProps) {
           />
         </View>
 
-        <View className="absolute inset-x-0 bottom-0 items-center p-2.5">
-          <Ionicons name="play-circle" size={22} color={colors.white} />
-          {showRestaurantName ? (
+        {/* Centred, and in its own layer: stacked above the name, a Restaurant
+            whose name wrapped to two lines pushed the icon up, so a row of
+            cards had its play buttons at different heights. */}
+        <View className="absolute inset-0 items-center justify-center" pointerEvents="none">
+          <Ionicons name="play-circle" size={30} color={colors.white} />
+        </View>
+
+        {showRestaurantName ? (
+          <View className="absolute inset-x-0 bottom-0 items-center p-2.5">
             <Text
               variant="caption"
-              className="mt-1 text-[10px] font-bold uppercase tracking-wider text-white"
+              numberOfLines={2}
+              className="text-center text-[10px] font-bold uppercase tracking-wider text-white"
               style={{
                 textShadowColor: 'rgba(0, 0, 0, 0.65)',
                 textShadowOffset: { width: 0, height: 1 },
@@ -72,8 +79,8 @@ export function ClipCard({ clip, showRestaurantName = true }: ClipCardProps) {
             >
               {clip.restaurantName}
             </Text>
-          ) : null}
-        </View>
+          </View>
+        ) : null}
       </View>
     </Pressable>
   );
