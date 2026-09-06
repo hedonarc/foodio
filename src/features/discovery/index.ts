@@ -1,5 +1,6 @@
 export { ClipCard } from './components/ClipCard';
 export { DishClips } from './components/DishClips';
+export { RecentClips } from './components/RecentClips';
 export { RestaurantCarousel } from './components/RestaurantCarousel';
 export { RestaurantClips } from './components/RestaurantClips';
 export { RestaurantList } from './components/RestaurantList';

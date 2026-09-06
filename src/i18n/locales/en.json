@@ -38,7 +38,8 @@
     "clearSearch": "Clear search",
     "searchResults": "Results for “{{query}}”",
     "noResults": "Nothing matched “{{query}}”.",
-    "allRestaurants": "All restaurants · {{count}}"
+    "allRestaurants": "All restaurants · {{count}}",
+    "recentClips": "Latest clips"
   },
   "restaurant": {
     "detailsTitle": "Restaurant Details",
