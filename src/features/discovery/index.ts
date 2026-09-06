@@ -2,6 +2,7 @@ export { ClipCard } from './components/ClipCard';
 export { DishClips } from './components/DishClips';
 export { RestaurantCarousel } from './components/RestaurantCarousel';
 export { RestaurantClips } from './components/RestaurantClips';
+export { RestaurantList } from './components/RestaurantList';
 export { RestaurantPreviewCard } from './components/RestaurantPreviewCard';
 export { SearchBar } from './components/SearchBar';
 export { SectionHeader } from './components/SectionHeader';
