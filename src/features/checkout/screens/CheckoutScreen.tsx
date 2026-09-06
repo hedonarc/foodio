@@ -9,7 +9,7 @@ import { useTranslation } from 'react-i18next';
 
 import { EmptyState, ErrorState, ScreenHeader } from '@/components/shared';
 import { Button, Text } from '@/components/ui';
-import { PhoneField, updateMe } from '@/features/identity';
+import { PhoneField, phoneSchema, updateMe } from '@/features/identity';
 import { useRestaurantMenu } from '@/features/menu';
 import { useRestaurant } from '@/features/restaurants';
 import { useNavigationGuard } from '@/hooks/useNavigationGuard';
@@ -48,12 +48,23 @@ export function CheckoutScreen() {
   const refreshPerson = useSessionStore((state) => state.refreshPerson);
   const [phoneDraft, setPhoneDraft] = useState('');
 
+  /**
+   * Saved as part of placing the Order rather than behind its own button.
+   *
+   * One flow, one tap: a separate save put an extra round trip in the middle of
+   * the only screen that ends in money. If it fails — a number another account
+   * already uses answers 409 — the Order is not placed, because an Order nobody
+   * can call about is worse than one that was refused.
+   */
   const savePhone = useMutation({
     mutationFn: (phone: string) => updateMe({ phone }),
     onSuccess: async () => {
       await refreshPerson();
     },
   });
+
+  const needsPhone = person !== null && person.phone === null;
+  const draftIsValid = phoneSchema.safeParse(phoneDraft).success;
 
   /**
    * The first method the restaurant offers, until the customer says otherwise.
@@ -80,7 +91,9 @@ export function CheckoutScreen() {
     lines,
     restaurant,
     address,
-    phone: person?.phone ?? null,
+    // A number typed but not yet saved still clears the blocker: it is saved on
+    // the way to the Order, a moment later.
+    phone: person?.phone ?? (draftIsValid ? phoneDraft : null),
     currentPrices: (categories ?? []).flatMap((category) => category.menuItems),
     now: new Date(),
   });
@@ -94,8 +107,17 @@ export function CheckoutScreen() {
     );
   }
 
-  const submit = () => {
+  const submit = async () => {
     if (!review.canPlaceOrder || !address || !restaurant) return;
+
+    if (needsPhone) {
+      try {
+        await savePhone.mutateAsync(phoneDraft);
+      } catch {
+        // The reason is already on the field; the Order does not go without it.
+        return;
+      }
+    }
 
     const order: NewOrder = {
       restaurantId: restaurant.id,
@@ -164,7 +186,7 @@ export function CheckoutScreen() {
           </Pressable>
         </Section>
 
-        {person !== null && person.phone === null ? (
+        {needsPhone ? (
           <Section title={t('checkout.contactNumber')}>
             <Text variant="caption" className="mb-2 text-gray-500">
               {t('checkout.contactHint')}
@@ -173,15 +195,6 @@ export function CheckoutScreen() {
             <PhoneField value={phoneDraft} onChange={setPhoneDraft} />
 
             {savePhone.isError ? <ErrorState error={savePhone.error} className="mt-2" /> : null}
-
-            <Button
-              variant="secondary"
-              onPress={() => savePhone.mutate(phoneDraft)}
-              disabled={savePhone.isPending || phoneDraft.trim() === ''}
-              className="mt-3"
-            >
-              {savePhone.isPending ? t('checkout.savingNumber') : t('checkout.saveNumber')}
-            </Button>
           </Section>
         ) : null}
 
@@ -231,8 +244,8 @@ export function CheckoutScreen() {
         ) : null}
 
         <Button
-          onPress={submit}
-          disabled={!review.canPlaceOrder || placeOrder.isPending}
+          onPress={() => void submit()}
+          disabled={!review.canPlaceOrder || placeOrder.isPending || savePhone.isPending}
           className="mt-6"
         >
           {placeOrder.isPending

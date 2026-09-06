@@ -169,9 +169,7 @@
     },
     "methodUnavailable": "This restaurant offers another way to pay that this version cannot show. Update the app to use it.",
     "contactNumber": "Contact number",
-    "contactHint": "Your rider calls this if they cannot find the door. We only use it for your orders.",
-    "saveNumber": "Save number",
-    "savingNumber": "Saving…"
+    "contactHint": "Your rider calls this if they cannot find the door. We only use it for your orders."
   },
   "order": {
     "title": "Your order",
