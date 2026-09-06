@@ -19,11 +19,17 @@
  * Results are the real `GET /restaurants?q=` narrowed on the device; recents
  * are in memory. No persistence, no tests, no i18n — on purpose.
  */
+import { LogBox } from 'react-native';
+
 import type { PrototypeVariant } from '@/components/shared/PrototypeSwitcher';
 
 import { NAME_A, VariantA } from './VariantA';
 import { NAME_B, VariantB } from './VariantB';
 import { NAME_C, VariantC } from './VariantC';
+
+// The dev warning badge sat over every screenshot of these variants. This
+// branch is throwaway; the warnings are not its business.
+if (__DEV__) LogBox.ignoreAllLogs();
 
 export const HOME_VARIANTS: readonly PrototypeVariant[] = [
   { key: 'home', name: 'Shipped Home' },

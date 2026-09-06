@@ -146,8 +146,11 @@ function InPlaceResults({ model }: { model: SearchModel }) {
         style={StyleSheet.absoluteFill}
       />
       {/* The blur alone leaves Home legible underneath; the wash makes this a layer. */}
-      <View className="flex-1 bg-white/80 px-3 pt-2">
-        <View className="mb-3 flex-row rounded-2xl bg-gray-100 p-1">
+      <View className="flex-1 bg-white/70 px-3 pt-2">
+        <View
+          className="mb-3 flex-row rounded-2xl border border-gray-200 bg-white p-1"
+          style={{ elevation: 2 }}
+        >
           {QUICK_SORTS.map((sort) => {
             const on = model.filters.sort === sort;
             return (
@@ -171,7 +174,10 @@ function InPlaceResults({ model }: { model: SearchModel }) {
         </View>
 
         {idle ? (
-          <View>
+          <View
+            className="rounded-2xl border border-gray-100 bg-white p-4"
+            style={{ elevation: 2 }}
+          >
             <Text variant="label" className="mb-1 text-gray-500">
               Recent
             </Text>
@@ -197,7 +203,10 @@ function InPlaceResults({ model }: { model: SearchModel }) {
             keyboardShouldPersistTaps="handled"
             contentContainerClassName="pb-6"
             ListHeaderComponent={
-              <Text variant="caption" className="mb-2 text-gray-500">
+              <Text
+                variant="caption"
+                className="mb-2 self-start rounded-full bg-white px-2.5 py-1 text-gray-600"
+              >
                 {model.results.length} places{model.query ? ` for “${model.query}”` : ''}
               </Text>
             }
