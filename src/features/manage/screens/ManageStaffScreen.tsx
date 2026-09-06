@@ -116,7 +116,7 @@ export function ManageStaffScreen() {
               disabled={mint.isPending}
               icon={<Ionicons name="bicycle-outline" size={16} color="white" />}
             >
-              {t('manage.staff.addRider')}
+              {t('manage.staff.addDelivery')}
             </Button>
 
             <Button

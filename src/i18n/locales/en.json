@@ -130,7 +130,7 @@
       "line2": "Apartment, floor (optional)",
       "city": "City",
       "postcode": "Postcode",
-      "notes": "Notes for the driver (optional)"
+      "notes": "Notes for the restaurant (optional)"
     },
     "errors": {
       "label": "Give this address a short name.",
@@ -158,7 +158,7 @@
       "outOfRange": "You are {{distance}}km away and this restaurant delivers up to {{radius}}km.",
       "priceChanged": "Some prices changed: {{items}}. Review your cart before ordering.",
       "priceChangedLine": "{{name}} {{was}} → {{now}}",
-      "no-phone": "Add a contact number so your rider can reach you."
+      "no-phone": "Add a contact number so the restaurant can reach you."
     },
     "method": {
       "cash_on_delivery": "Cash on delivery"
@@ -169,7 +169,7 @@
     },
     "methodUnavailable": "This restaurant offers another way to pay that this version cannot show. Update the app to use it.",
     "contactNumber": "Contact number",
-    "contactHint": "Your rider calls this if they cannot find the door. We only use it for your orders."
+    "contactHint": "The restaurant calls this if they cannot find the door. We only use it for your orders."
   },
   "order": {
     "title": "Your order",
@@ -268,7 +268,7 @@
     "continueWithGoogle": "Continue with Google",
     "continueWithApple": "Continue with Apple",
     "signingIn": "Signing in…",
-    "phoneLater": "We ask for a phone number at checkout, so your rider can call about the door."
+    "phoneLater": "We ask for a phone number at checkout, so the restaurant can call about the door."
   },
   "work": {
     "tabs": {
@@ -411,7 +411,7 @@
       "owner": "Owner",
       "capability": {
         "kitchen": "Kitchen",
-        "delivery": "Rider"
+        "delivery": "Delivery"
       },
       "remove": "Remove {{capability}}",
       "removeAction": "Remove",
@@ -419,13 +419,13 @@
       "confirmRemoveBody": "This takes {{capability}} away from {{name}}. They can be added again with a new code.",
       "removeFailed": "Could not remove that",
       "addTitle": "Add someone",
-      "addRider": "Create a rider code",
+      "addDelivery": "Create a delivery code",
       "addKitchen": "Create a kitchen code",
       "addHint": "They install Foodio, sign in, and enter the code. It works once and lasts 24 hours.",
       "ownerOnlyHint": "Only the owner can add someone to the kitchen.",
       "addFailed": "Could not create a code",
       "kitchenCodeTitle": "Kitchen code",
-      "riderCodeTitle": "Rider code",
+      "deliveryCodeTitle": "Delivery code",
       "codeSubtitle": "They enter this after signing in to Foodio.",
       "codeWarning": "This is the only time you will see it. It works once and expires in 24 hours.",
       "shareCode": "Share the code",
@@ -520,7 +520,7 @@
     "confirmPrompt": "You are about to join",
     "as": {
       "kitchen": "In the kitchen",
-      "delivery": "As a rider"
+      "delivery": "On delivery"
     },
     "confirm": "Join",
     "joining": "Joining…",
