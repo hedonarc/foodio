@@ -9,42 +9,30 @@ import { useRestaurants } from '@/features/restaurants';
 import { RestaurantPreviewCard } from './RestaurantPreviewCard';
 import { SectionHeader } from './SectionHeader';
 
-type RestaurantCarouselProps = {
-  query?: string;
-};
-
 /** Owns its query so a failure here does not blank the whole screen. */
-export function RestaurantCarousel({ query }: RestaurantCarouselProps) {
+export function RestaurantCarousel() {
   const { t } = useTranslation();
   const { address } = useActiveAddress();
   const coordinates = address
     ? { latitude: address.latitude, longitude: address.longitude }
     : undefined;
-  const { data: restaurants, isPending, error, refetch } = useRestaurants(query, coordinates);
+  const { data: restaurants, isPending, error, refetch } = useRestaurants(undefined, coordinates);
 
-  const isSearching = Boolean(query);
   const isEmpty = !isPending && !error && restaurants?.length === 0;
 
   return (
     <View className="mb-6">
-      <SectionHeader
-        title={isSearching ? t('home.searchResults', { query }) : t('home.restaurants')}
-      />
+      <SectionHeader title={t('home.restaurants')} />
       {isPending ? <LoadingState /> : null}
       {error ? <ErrorState error={error} onRetry={refetch} /> : null}
-      {isEmpty ? (
-        <EmptyState
-          message={isSearching ? t('home.noResults', { query }) : t('home.noRestaurants')}
-        />
-      ) : null}
+      {isEmpty ? <EmptyState message={t('home.noRestaurants')} /> : null}
       {restaurants && restaurants.length > 0 ? (
         <FlatList
           data={restaurants}
           keyExtractor={(item) => item.id}
-          horizontal={!isSearching}
-          scrollEnabled={!isSearching}
+          horizontal
           showsHorizontalScrollIndicator={false}
-          renderItem={({ item }) => <RestaurantPreviewCard restaurant={item} wide={isSearching} />}
+          renderItem={({ item }) => <RestaurantPreviewCard restaurant={item} />}
         />
       ) : null}
     </View>
