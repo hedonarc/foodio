@@ -1,3 +1,4 @@
+export { CategoryRail } from './components/CategoryRail';
 export { ClipCard } from './components/ClipCard';
 export { DishClips } from './components/DishClips';
 export { RecentClips } from './components/RecentClips';

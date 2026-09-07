@@ -10,6 +10,7 @@ import { IdentityChip } from '@/features/identity/components/IdentityChip';
 import { useNavigationGuard } from '@/hooks/useNavigationGuard';
 import { usePullToRefresh } from '@/hooks/usePullToRefresh';
 
+import { CategoryRail } from '../components/CategoryRail';
 import { RecentClips } from '../components/RecentClips';
 import { RestaurantCarousel } from '../components/RestaurantCarousel';
 import { RestaurantList } from '../components/RestaurantList';
@@ -35,6 +36,7 @@ export function HomeScreen() {
               <IdentityChip />
             </View>
 
+            <CategoryRail />
             <RestaurantCarousel />
             <RecentClips />
           </>
