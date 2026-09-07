@@ -9,7 +9,6 @@ import { RestaurantPreviewCard } from './RestaurantPreviewCard';
 import { SectionHeader } from './SectionHeader';
 
 type RestaurantListProps = {
-  query?: string;
   /** The search field and the carousel, scrolled with the list rather than above it. */
   header: ReactElement;
   refreshing: boolean;
@@ -26,20 +25,17 @@ type RestaurantListProps = {
  * ride along as the header, because a FlashList inside a ScrollView virtualises
  * nothing and warns about it.
  *
- * The same query the carousel uses, so the rows come from cache rather than a
- * second request.
+ * The same request the carousel makes, so the rows come from cache rather than
+ * a second round trip.
  */
-export function RestaurantList({ query, header, refreshing, onRefresh }: RestaurantListProps) {
+export function RestaurantList({ header, refreshing, onRefresh }: RestaurantListProps) {
   const { t } = useTranslation();
   const { address } = useActiveAddress();
   const coordinates = address
     ? { latitude: address.latitude, longitude: address.longitude }
     : undefined;
-  const { data: restaurants } = useRestaurants(query, coordinates);
-
-  // Searching already turns the carousel into a vertical list of results, so a
-  // second copy here would be the same rows twice.
-  const rows = query ? [] : (restaurants ?? []);
+  const { data: restaurants } = useRestaurants(undefined, coordinates);
+  const rows = restaurants ?? [];
 
   return (
     <FlashList

@@ -135,6 +135,7 @@ function RootNavigator() {
         <Stack.Screen name="restaurant/[id]/reviews" />
         <Stack.Screen name="menu-item/[id]" />
         <Stack.Screen name="sign-in" options={{ presentation: 'modal' }} />
+        <Stack.Screen name="search" />
         {/* Full-bleed video: black, no insets — the screen places its own controls. */}
         <Stack.Screen name="clip/[id]" options={{ contentStyle: { backgroundColor: 'black' } }} />
         <Stack.Screen name="checkout" />

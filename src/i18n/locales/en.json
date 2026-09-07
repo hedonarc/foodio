@@ -36,10 +36,31 @@
     "noRestaurants": "No restaurants available right now.",
     "searchLabel": "Search restaurants",
     "clearSearch": "Clear search",
-    "searchResults": "Results for “{{query}}”",
-    "noResults": "Nothing matched “{{query}}”.",
     "allRestaurants": "All restaurants · {{count}}",
     "recentClips": "Latest clips"
+  },
+  "search": {
+    "recent": "Recent",
+    "cuisines": "Cuisines",
+    "places_one": "{{count}} place",
+    "places_other": "{{count}} places",
+    "sortedBy": "sorted by {{sort}}",
+    "nothingMatched": "Nothing matched. Try fewer filters, or another word.",
+    "sort": "Sort",
+    "sortTitle": "Sort by",
+    "removeFilter": "Remove {{filter}}",
+    "sorts": {
+      "nearest": "Nearest",
+      "rating": "Top rated",
+      "fastest": "Fastest",
+      "cheapest": "Cheapest delivery"
+    },
+    "toggles": {
+      "freeDelivery": "Free delivery",
+      "topRated": "4.0+",
+      "under30": "Under 30 min",
+      "deliversHere": "Delivers to you"
+    }
   },
   "restaurant": {
     "detailsTitle": "Restaurant Details",
