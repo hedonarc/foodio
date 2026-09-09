@@ -45,9 +45,7 @@ export function RestaurantList({ header, refreshing, onRefresh }: RestaurantList
       ListHeaderComponent={
         <>
           {header}
-          {rows.length > 0 ? (
-            <SectionHeader title={t('home.allRestaurants', { count: rows.length })} />
-          ) : null}
+          {rows.length > 0 ? <SectionHeader title={t('home.allRestaurants')} /> : null}
         </>
       }
       refreshing={refreshing}
