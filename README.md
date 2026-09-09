@@ -2,6 +2,31 @@
 
 A production-grade React Native application built with Expo and TypeScript.
 
+---
+
+## The app
+
+Android, running against the real backend with the seeded Restaurants. Every
+delivery is performed by the Restaurant's own Delivery Staff — there is no
+platform rider pool — so a Restaurant's Delivery Area, hours and fee are its
+own, and the app renders what it is handed.
+
+|                                                                Home                                                                |                                                    Search                                                     |                                                                      Restaurant                                                                      |
+| :--------------------------------------------------------------------------------------------------------------------------------: | :-----------------------------------------------------------------------------------------------------------: | :--------------------------------------------------------------------------------------------------------------------------------------------------: |
+| <img src="docs/screenshots/app-home.png" width="240" alt="Home: a rail of cuisines, restaurants near you, and the latest clips" /> | <img src="docs/screenshots/app-search.png" width="240" alt="Search: filter pills over compact result rows" /> | <img src="docs/screenshots/app-restaurant.png" width="240" alt="Restaurant: hero, rating, opening state, and a menu behind sticky category chips" /> |
+|                                        Cuisines, the Restaurants that reach you, and Clips                                         |                                    Filter pills and sort, results as rows                                     |                                                         Sticky category chips over the Menu                                                          |
+
+|                                             Clips                                              |                                                        Checkout                                                         |                                                 Order                                                 |
+| :--------------------------------------------------------------------------------------------: | :---------------------------------------------------------------------------------------------------------------------: | :---------------------------------------------------------------------------------------------------: |
+| <img src="docs/screenshots/app-clips.png" width="240" alt="Clips: a full-screen video feed" /> | <img src="docs/screenshots/app-checkout.png" width="240" alt="Checkout: deliver-to, cash on delivery, order summary" /> | <img src="docs/screenshots/app-order.png" width="240" alt="Order placed, with the status timeline" /> |
+|                           A Restaurant's own clips beside customers'                           |                                    Cash on delivery; card is announced, not offered                                     |                              The Order's life, from placed to delivered                               |
+
+The Cart sits between the Menu and Checkout:
+
+<img src="docs/screenshots/app-cart.png" width="240" alt="Cart: line items, delivery, total" />
+
+---
+
 ## Tech Stack
 
 - Expo (Continuous Native Generation)
