@@ -36,7 +36,7 @@
     "noRestaurants": "No restaurants available right now.",
     "searchLabel": "Search restaurants",
     "clearSearch": "Clear search",
-    "allRestaurants": "All restaurants · {{count}}",
+    "allRestaurants": "All restaurants",
     "recentClips": "Latest clips"
   },
   "search": {
