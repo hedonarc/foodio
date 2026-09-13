@@ -84,7 +84,7 @@
     "deliveryFee": "{{fee}} delivery",
     "deliveryEstimate": "{{min}}–{{max}} min",
     "hours": "Hours",
-    "recentReviews": "Recent Reviews",
+    "recentReviews": "Recent reviews",
     "ratingOutOfFive": "Rated {{rating}} out of 5",
     "closedAllDay": "Closed",
     "clipsFromRestaurant": "From {{name}}",
@@ -95,10 +95,12 @@
     "newRating": "New",
     "noReviewsYet": "No reviews yet",
     "reviewCount_one": "({{count}} review)",
-    "reviewCount_other": "({{count}} reviews)"
+    "reviewCount_other": "({{count}} reviews)",
+    "about": "About",
+    "gallery": "Gallery",
+    "openAllDay": "Open 24 hours"
   },
   "menu": {
-    "title": "Menu",
     "empty": "This restaurant has not published a menu yet.",
     "popularBadge": "Popular",
     "soldOut": "Sold out",

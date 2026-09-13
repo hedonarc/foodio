@@ -13,12 +13,12 @@ import { CART_BAR_CLEARANCE, CartBar, type CartRestaurant } from '@/features/car
 import { RestaurantClips } from '@/features/discovery/components/RestaurantClips';
 import { Menu, MenuCategoryChips, useRestaurantMenu } from '@/features/menu';
 
+import { RestaurantAbout } from '../components/RestaurantAbout';
+import { RestaurantBackButton } from '../components/RestaurantBackButton';
 import { RestaurantGallery } from '../components/RestaurantGallery';
-import { RestaurantHeader } from '../components/RestaurantHeader';
 import { RestaurantHero } from '../components/RestaurantHero';
 import { RestaurantHours } from '../components/RestaurantHours';
 import { RestaurantInfo } from '../components/RestaurantInfo';
-import { RestaurantRating } from '../components/RestaurantRating';
 import { RestaurantReviewPreview } from '../components/RestaurantReviewPreview';
 import { useRestaurant } from '../hooks/useRestaurant';
 
@@ -36,6 +36,11 @@ export function RestaurantDetailsScreen() {
   const offsets = useRef(new Map<string, number>());
   const [activeCategoryId, setActiveCategoryId] = useState<string | null>(null);
 
+  // Where the chip row sits in the content; past it, the row is pinned and
+  // shares the top edge with the floating back button.
+  const chipsY = useRef(0);
+  const [chipsPinned, setChipsPinned] = useState(false);
+
   const rememberSection = useCallback((categoryId: string, y: number) => {
     offsets.current.set(categoryId, y);
   }, []);
@@ -50,7 +55,11 @@ export function RestaurantDetailsScreen() {
 
   /** The last section the pinned row has passed is the one being read. */
   const trackActiveCategory = (event: NativeSyntheticEvent<NativeScrollEvent>) => {
-    const y = event.nativeEvent.contentOffset.y + CHIP_ROW_HEIGHT + 1;
+    const offset = event.nativeEvent.contentOffset.y;
+    const pinned = offset >= chipsY.current;
+    if (pinned !== chipsPinned) setChipsPinned(pinned);
+
+    const y = offset + CHIP_ROW_HEIGHT + 1;
 
     // Above the first section nothing has been passed yet, and an empty row
     // reads as broken — the first category is what a customer is looking at.
@@ -103,34 +112,37 @@ export function RestaurantDetailsScreen() {
 
   return (
     <View className="flex-1 bg-white">
-      <RestaurantHeader name={restaurant.name} />
       <ScrollView
         ref={scrollRef}
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{ paddingBottom: CART_BAR_CLEARANCE }}
-        // Index 3: the chips, so they pin under the header once the info above
-        // them scrolls away.
-        stickyHeaderIndices={[3]}
+        // Index 2: the chips, so they pin at the top once the photograph and
+        // the name scroll away.
+        stickyHeaderIndices={[2]}
         onScroll={trackActiveCategory}
         scrollEventThrottle={16}
       >
         <RestaurantHero image={restaurant.image} name={restaurant.name} />
-        <RestaurantRating rating={restaurant.rating} reviewCount={restaurant.reviewCount} />
         <View className="border-b border-gray-100">
           <RestaurantInfo restaurant={restaurant} />
         </View>
-        <MenuCategoryChips
-          categories={categories ?? []}
-          activeId={activeCategoryId}
-          onSelect={scrollToCategory}
-        />
+        <View onLayout={(event) => (chipsY.current = event.nativeEvent.layout.y)}>
+          <MenuCategoryChips
+            categories={categories ?? []}
+            activeId={activeCategoryId}
+            onSelect={scrollToCategory}
+            leadingInset={chipsPinned}
+          />
+        </View>
         <Menu restaurant={cartRestaurant} onSectionLayout={rememberSection} />
         {/* After the menu — people came to order; the clips argue for it (#26). */}
         <RestaurantClips restaurantId={restaurant.id} restaurantName={restaurant.name} />
+        <RestaurantAbout description={restaurant.description} />
         <RestaurantGallery images={restaurant.gallery} />
         <RestaurantHours openingHours={restaurant.openingHours} />
         <RestaurantReviewPreview restaurantId={restaurant.id} reviews={restaurant.reviews} />
       </ScrollView>
+      <RestaurantBackButton />
       <CartBar />
     </View>
   );
@@ -139,7 +151,7 @@ export function RestaurantDetailsScreen() {
 function RestaurantDetailsShell({ children }: PropsWithChildren) {
   return (
     <View className="flex-1 bg-white">
-      <RestaurantHeader name="" />
+      <RestaurantBackButton />
       {children}
     </View>
   );

@@ -9,6 +9,8 @@ type MenuCategoryChipsProps = {
   categories: readonly MenuCategory[];
   activeId: string | null;
   onSelect: (categoryId: string) => void;
+  /** Once pinned at the top the row shares that edge with the floating back button. */
+  leadingInset?: boolean;
 };
 
 /**
@@ -21,7 +23,12 @@ type MenuCategoryChipsProps = {
  * One category has nothing to jump between, so the row does not appear at all
  * rather than showing a single chip that does nothing.
  */
-export function MenuCategoryChips({ categories, activeId, onSelect }: MenuCategoryChipsProps) {
+export function MenuCategoryChips({
+  categories,
+  activeId,
+  onSelect,
+  leadingInset = false,
+}: MenuCategoryChipsProps) {
   if (categories.length < 2) return null;
 
   return (
@@ -29,7 +36,7 @@ export function MenuCategoryChips({ categories, activeId, onSelect }: MenuCatego
       horizontal
       showsHorizontalScrollIndicator={false}
       className="border-b border-gray-100 bg-white"
-      contentContainerClassName="gap-2 px-4 py-3"
+      contentContainerClassName={cn('gap-2 py-3', leadingInset ? 'pl-16 pr-4' : 'px-4')}
     >
       {categories.map((category) => {
         const active = category.id === activeId;
