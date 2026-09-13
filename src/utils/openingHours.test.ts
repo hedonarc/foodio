@@ -2,6 +2,7 @@ import {
   formatTimeOfDay,
   formatWeekday,
   groupOpeningHours,
+  isAllDay,
   isOpenAt,
   type OpeningHours,
 } from './openingHours';
@@ -171,5 +172,17 @@ describe('formatTimeOfDay', () => {
 
   it('uses a 24-hour clock for de-DE', () => {
     expect(formatTimeOfDay('22:30', 'de-DE')).toBe('22:30');
+  });
+});
+
+describe('isAllDay', () => {
+  it('reads the schema spelling of always as all day', () => {
+    expect(isAllDay({ opensAt: '00:00', closesAt: '23:59' })).toBe(true);
+    expect(isAllDay({ opensAt: '00:00', closesAt: '24:00' })).toBe(true);
+  });
+
+  it('does not mistake a long day for the whole day', () => {
+    expect(isAllDay({ opensAt: '00:00', closesAt: '22:00' })).toBe(false);
+    expect(isAllDay({ opensAt: '06:00', closesAt: '23:59' })).toBe(false);
   });
 });

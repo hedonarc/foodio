@@ -2,6 +2,8 @@ import { FlatList, View } from 'react-native';
 
 import { Image } from 'expo-image';
 
+import { useTranslation } from 'react-i18next';
+
 import { Text } from '@/components/ui';
 
 type RestaurantGalleryProps = {
@@ -9,12 +11,13 @@ type RestaurantGalleryProps = {
 };
 
 export function RestaurantGallery({ images }: RestaurantGalleryProps) {
+  const { t } = useTranslation();
   if (images.length === 0) return null;
 
   return (
     <View className="mb-2">
       <Text variant="bodyMedium" className="mb-3 px-4 text-gray-900">
-        Gallery
+        {t('restaurant.gallery')}
       </Text>
       <FlatList
         data={images}

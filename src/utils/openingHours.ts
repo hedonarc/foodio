@@ -128,6 +128,14 @@ export function groupOpeningHours(hours: readonly OpeningHours[]): OpeningHoursG
 const WEEKDAY_REFERENCE_DATE = Date.UTC(2024, 0, 7);
 const MS_PER_DAY = 24 * 60 * 60 * 1000;
 
+/**
+ * `00:00–23:59` is how the schema spells "always", and read back as a clock
+ * time it looks like a bakery that shuts for one minute a night.
+ */
+export function isAllDay(window: OpeningWindow): boolean {
+  return window.opensAt === '00:00' && ['23:59', '24:00', '00:00'].includes(window.closesAt);
+}
+
 export function formatWeekday(dayOfWeek: number, locale?: string): string {
   const date = new Date(WEEKDAY_REFERENCE_DATE + dayOfWeek * MS_PER_DAY);
   return new Intl.DateTimeFormat(locale, { weekday: 'short', timeZone: 'UTC' }).format(date);

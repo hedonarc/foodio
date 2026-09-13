@@ -1,5 +1,6 @@
+export * from './components/RestaurantAbout';
+export * from './components/RestaurantBackButton';
 export * from './components/RestaurantGallery';
-export * from './components/RestaurantHeader';
 export * from './components/RestaurantHero';
 export * from './components/RestaurantHours';
 export * from './components/RestaurantInfo';

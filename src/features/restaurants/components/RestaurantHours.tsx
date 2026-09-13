@@ -7,7 +7,7 @@ import { useTranslation } from 'react-i18next';
 import { Text } from '@/components/ui';
 import { colors } from '@/theme';
 import type { OpeningHours } from '@/utils/openingHours';
-import { formatTimeOfDay, formatWeekday, groupOpeningHours } from '@/utils/openingHours';
+import { formatTimeOfDay, formatWeekday, groupOpeningHours, isAllDay } from '@/utils/openingHours';
 
 type RestaurantHoursProps = {
   openingHours: OpeningHours[];
@@ -51,8 +51,9 @@ export function RestaurantHours({ openingHours }: RestaurantHoursProps) {
                   variant="caption"
                   className="text-gray-500"
                 >
-                  {formatTimeOfDay(window.opensAt, i18n.language)} –{' '}
-                  {formatTimeOfDay(window.closesAt, i18n.language)}
+                  {isAllDay(window)
+                    ? t('restaurant.openAllDay')
+                    : `${formatTimeOfDay(window.opensAt, i18n.language)} – ${formatTimeOfDay(window.closesAt, i18n.language)}`}
                 </Text>
               ))}
             </View>
