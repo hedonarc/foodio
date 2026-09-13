@@ -43,6 +43,19 @@ export default function TabsLayout() {
         name="clips"
         options={{
           title: t('tabs.clips'),
+          // A white bar under a full-bleed video reads as a mistake. The Clips
+          // tab owns a black one, whatever theme the phone itself is in — the
+          // feed is black in both, so the bar follows the feed, not the OS.
+          tabBarStyle: { backgroundColor: colors.black, borderTopColor: colors.gray[800] },
+          tabBarActiveTintColor: colors.primary[400],
+          tabBarInactiveTintColor: colors.gray[400],
+          // The default ripple is black; on a black bar that is no ripple at all.
+          tabBarButton: ({ ref: _ref, ...props }) => (
+            <Pressable
+              {...props}
+              android_ripple={{ color: 'rgba(255, 255, 255, 0.24)', borderless: true, radius: 28 }}
+            />
+          ),
           tabBarIcon: ({ color, size }) => (
             <Ionicons name="play-circle-outline" size={size} color={color} />
           ),
