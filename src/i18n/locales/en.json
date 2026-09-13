@@ -36,8 +36,19 @@
     "noRestaurants": "No restaurants available right now.",
     "searchLabel": "Search restaurants",
     "clearSearch": "Clear search",
-    "allRestaurants": "All restaurants",
-    "recentClips": "Latest clips"
+    "recentClips": "Latest clips",
+    "views": {
+      "all": "All",
+      "fast": "Fast delivery",
+      "free": "Free delivery",
+      "rated": "Top rated"
+    },
+    "viewEmpty": {
+      "all": "No restaurants available right now.",
+      "fast": "Nobody delivers inside half an hour right now.",
+      "free": "Nobody delivers free right now.",
+      "rated": "No restaurants available right now."
+    }
   },
   "search": {
     "recent": "Recent",
