@@ -12,6 +12,7 @@ import { isOpenAt } from '@/utils/openingHours';
 import type { Restaurant } from '../types/restaurant.types';
 
 import { RestaurantRating } from './RestaurantRating';
+import { RestaurantReach } from './RestaurantReach';
 
 type RestaurantInfoProps = {
   restaurant: Restaurant;
@@ -77,6 +78,8 @@ export function RestaurantInfo({ restaurant }: RestaurantInfoProps) {
           </Text>
         </View>
       </View>
+
+      <RestaurantReach restaurant={restaurant} />
 
       <View className="mt-2.5 flex-row items-start">
         <Ionicons name="map-outline" size={15} color={colors.gray[400]} className="mt-0.5" />
