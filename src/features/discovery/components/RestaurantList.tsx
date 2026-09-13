@@ -1,12 +1,19 @@
+import { useState } from 'react';
+
 import { FlashList } from '@shopify/flash-list';
 import type { ReactElement } from 'react';
 import { useTranslation } from 'react-i18next';
 
+import { EmptyState } from '@/components/shared';
 import { useActiveAddress } from '@/features/checkout/hooks/useActiveAddress';
+import type { RestaurantSummary } from '@/features/restaurants';
 import { useRestaurants } from '@/features/restaurants';
 
+import type { HomeView } from '../lib/homeViews';
+import { applyView } from '../lib/homeViews';
+
+import { HomeViewTabs } from './HomeViewTabs';
 import { RestaurantPreviewCard } from './RestaurantPreviewCard';
-import { SectionHeader } from './SectionHeader';
 
 type RestaurantListProps = {
   /** The search field and the carousel, scrolled with the list rather than above it. */
@@ -16,10 +23,18 @@ type RestaurantListProps = {
 };
 
 /**
- * Every Restaurant, under the carousel — the "All restaurants" half of the
- * chosen design that was never built. Home was a single horizontal row above
- * two thirds of empty screen, which is a poor showing for the surface whose job
- * is Discovery.
+ * The tab row is the first item rather than part of the header so it can be
+ * sticky: FlashList pins items, not the header component.
+ */
+type Row =
+  { kind: 'tabs' } | { kind: 'restaurant'; restaurant: RestaurantSummary } | { kind: 'empty' };
+
+const keyOf = (row: Row): string => (row.kind === 'restaurant' ? row.restaurant.id : row.kind);
+
+/**
+ * Every Restaurant, under the carousel, seen one way at a time — All, Fast
+ * delivery, Free delivery, Top rated. A view is a sort or a single filter,
+ * never a combination; combining is what the search screen is for (#190).
  *
  * It owns the scrolling for the whole screen: the search field and the carousel
  * ride along as the header, because a FlashList inside a ScrollView virtualises
@@ -30,24 +45,42 @@ type RestaurantListProps = {
  */
 export function RestaurantList({ header, refreshing, onRefresh }: RestaurantListProps) {
   const { t } = useTranslation();
+  const [view, setView] = useState<HomeView>('all');
+
   const { address } = useActiveAddress();
   const coordinates = address
     ? { latitude: address.latitude, longitude: address.longitude }
     : undefined;
   const { data: restaurants } = useRestaurants(undefined, coordinates);
-  const rows = restaurants ?? [];
+
+  const shown = applyView(restaurants ?? [], view);
+  const rows: Row[] =
+    restaurants === undefined
+      ? []
+      : [
+          { kind: 'tabs' },
+          ...(shown.length === 0
+            ? [{ kind: 'empty' } as const]
+            : shown.map((restaurant) => ({ kind: 'restaurant', restaurant }) as const)),
+        ];
 
   return (
     <FlashList
       data={rows}
-      keyExtractor={(item) => item.id}
-      renderItem={({ item }) => <RestaurantPreviewCard restaurant={item} wide />}
-      ListHeaderComponent={
-        <>
-          {header}
-          {rows.length > 0 ? <SectionHeader title={t('home.allRestaurants')} /> : null}
-        </>
-      }
+      keyExtractor={keyOf}
+      getItemType={(row) => row.kind}
+      stickyHeaderIndices={[0]}
+      renderItem={({ item }) => {
+        switch (item.kind) {
+          case 'tabs':
+            return <HomeViewTabs view={view} onChange={setView} />;
+          case 'restaurant':
+            return <RestaurantPreviewCard restaurant={item.restaurant} wide />;
+          case 'empty':
+            return <EmptyState message={t(`home.viewEmpty.${view}`)} />;
+        }
+      }}
+      ListHeaderComponent={header}
       refreshing={refreshing}
       onRefresh={onRefresh}
       contentContainerClassName="pb-6"
