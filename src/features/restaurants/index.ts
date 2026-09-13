@@ -5,6 +5,7 @@ export * from './components/RestaurantHero';
 export * from './components/RestaurantHours';
 export * from './components/RestaurantInfo';
 export * from './components/RestaurantRating';
+export * from './components/RestaurantReach';
 export * from './components/RestaurantReviewPreview';
 export * from './components/RestaurantTilePlaceholder';
 export * from './components/ReviewAvatar';
