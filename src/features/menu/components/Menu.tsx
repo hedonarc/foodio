@@ -4,7 +4,6 @@ import { type LayoutChangeEvent, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 
 import { EmptyState, ErrorState, LoadingState } from '@/components/shared';
-import { Text } from '@/components/ui';
 import type { CartRestaurant } from '@/features/cart';
 
 import { useRestaurantMenu } from '../hooks/useRestaurantMenu';
@@ -23,7 +22,6 @@ type MenuProps = {
 };
 
 export function Menu({ restaurant, onSectionLayout }: MenuProps) {
-  const { t } = useTranslation();
   const { data: categories, isPending, error, refetch } = useRestaurantMenu(restaurant.id);
   const [menuY, setMenuY] = useState(0);
 
@@ -54,10 +52,9 @@ export function Menu({ restaurant, onSectionLayout }: MenuProps) {
   }, [menuY, onSectionLayout]);
 
   return (
+    // No heading: the category chips above are the menu's navigation, and a
+    // heading here sat half-hidden under them once they pinned (#194).
     <View className="px-4 pb-4" onLayout={handleLayout}>
-      <Text variant="bodyMedium" className="mb-1 text-gray-900">
-        {t('menu.title')}
-      </Text>
       <MenuBody
         categories={categories}
         restaurant={restaurant}
