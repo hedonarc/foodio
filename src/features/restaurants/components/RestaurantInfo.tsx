@@ -7,8 +7,8 @@ import { useTranslation } from 'react-i18next';
 import { Text } from '@/components/ui';
 import { colors } from '@/theme';
 import { formatMoney } from '@/utils/currency';
-import { isOpenAt } from '@/utils/openingHours';
 
+import { useOpeningNotice } from '../hooks/useOpeningNotice';
 import type { Restaurant } from '../types/restaurant.types';
 
 import { RestaurantRating } from './RestaurantRating';
@@ -26,7 +26,7 @@ type RestaurantInfoProps = {
  */
 export function RestaurantInfo({ restaurant }: RestaurantInfoProps) {
   const { t, i18n } = useTranslation();
-  const isOpen = isOpenAt(restaurant.openingHours, new Date(), restaurant.timezone);
+  const { isOpen, opensText } = useOpeningNotice(restaurant);
 
   const deliveryFee =
     restaurant.deliveryFeeMinor === 0
@@ -60,6 +60,12 @@ export function RestaurantInfo({ restaurant }: RestaurantInfoProps) {
           </Text>
         </View>
       </View>
+
+      {opensText ? (
+        <Text variant="caption" className="mt-1.5 font-medium text-gray-600">
+          {opensText}
+        </Text>
+      ) : null}
 
       <View className="mt-3 flex-row flex-wrap items-center gap-4">
         <View className="flex-row items-center">

@@ -16,10 +16,21 @@ type AddToCartControlProps = {
   item: AddableMenuItem;
   /** Sold out: the add button stays visible but explains why it won't respond. */
   disabled?: boolean;
+  /**
+   * "Opens Monday at 11:30 AM" while the Restaurant is closed. Adding still
+   * works — checkout is the backstop — but the customer hears it here, before
+   * a Cart and an address have been built on it (#156).
+   */
+  closedNotice?: string;
 };
 
 /** A single add button until the item is in the cart, then a stepper. */
-export function AddToCartControl({ restaurant, item, disabled = false }: AddToCartControlProps) {
+export function AddToCartControl({
+  restaurant,
+  item,
+  disabled = false,
+  closedNotice,
+}: AddToCartControlProps) {
   const { t } = useTranslation();
 
   // Plain-line-only: a noted line is stepped from the cart, not the menu row.
@@ -31,6 +42,21 @@ export function AddToCartControl({ restaurant, item, disabled = false }: AddToCa
   const currentRestaurantName = useCartStore((state) => state.restaurant?.name);
 
   const handleAdd = () => {
+    if (closedNotice && !line) {
+      Alert.alert(
+        t('cart.closedTitle', { restaurant: restaurant.name }),
+        t('cart.closedMessage', { opens: closedNotice }),
+        [
+          { text: t('common.cancel'), style: 'cancel' },
+          { text: t('cart.closedConfirm'), onPress: addOrReplace },
+        ],
+      );
+      return;
+    }
+    addOrReplace();
+  };
+
+  const addOrReplace = () => {
     if (!heldByOtherRestaurant) {
       addItem(restaurant, item);
       return;

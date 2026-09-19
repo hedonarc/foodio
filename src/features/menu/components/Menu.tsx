@@ -19,9 +19,11 @@ type MenuProps = {
    * measures against the immediate parent.
    */
   onSectionLayout?: (categoryId: string, y: number) => void;
+  /** Passed to every Add button while the Restaurant is closed. */
+  closedNotice?: string;
 };
 
-export function Menu({ restaurant, onSectionLayout }: MenuProps) {
+export function Menu({ restaurant, onSectionLayout, closedNotice }: MenuProps) {
   const { data: categories, isPending, error, refetch } = useRestaurantMenu(restaurant.id);
   const [menuY, setMenuY] = useState(0);
 
@@ -62,6 +64,7 @@ export function Menu({ restaurant, onSectionLayout }: MenuProps) {
         error={error}
         onRetry={refetch}
         {...(onSectionLayout === undefined ? {} : { onSectionLayout: reportSection })}
+        {...(closedNotice === undefined ? {} : { closedNotice })}
       />
     </View>
   );
@@ -74,6 +77,7 @@ type MenuBodyProps = {
   error: unknown;
   onRetry: () => void;
   onSectionLayout?: (categoryId: string, y: number) => void;
+  closedNotice?: string;
 };
 
 function MenuBody({
@@ -83,6 +87,7 @@ function MenuBody({
   error,
   onRetry,
   onSectionLayout,
+  closedNotice,
 }: MenuBodyProps) {
   const { t } = useTranslation();
 
@@ -99,7 +104,11 @@ function MenuBody({
           key={category.id}
           onLayout={(event) => onSectionLayout?.(category.id, event.nativeEvent.layout.y)}
         >
-          <MenuCategorySection category={category} restaurant={restaurant} />
+          <MenuCategorySection
+            category={category}
+            restaurant={restaurant}
+            {...(closedNotice === undefined ? {} : { closedNotice })}
+          />
         </View>
       ))}
     </>

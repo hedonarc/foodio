@@ -128,6 +128,47 @@ export function groupOpeningHours(hours: readonly OpeningHours[]): OpeningHoursG
 const WEEKDAY_REFERENCE_DATE = Date.UTC(2024, 0, 7);
 const MS_PER_DAY = 24 * 60 * 60 * 1000;
 
+export type NextOpening = {
+  dayOfWeek: number;
+  opensAt: string;
+  /** Opens later today, rather than on another day. */
+  isToday: boolean;
+};
+
+/**
+ * The next time the doors open, in the restaurant's own clock — or null when
+ * nothing opens within a week, which is what "no hours" means.
+ *
+ * A Closed pill alone gives a customer no reason to come back rather than
+ * leave. Only the next *start* matters here; a window already under way is
+ * `isOpenAt`'s business.
+ */
+export function nextOpening(
+  hours: readonly OpeningHours[],
+  at: Date,
+  timeZone: string,
+): NextOpening | null {
+  if (hours.length === 0) return null;
+
+  const { day, minutes: nowMinutes } = localTimeAt(at, timeZone);
+
+  let best: { inMinutes: number; period: OpeningHours } | null = null;
+  for (const period of hours) {
+    const daysAhead = (period.dayOfWeek - day + 7) % 7;
+    let inMinutes = daysAhead * MINUTES_PER_DAY + toMinutes(period.opensAt) - nowMinutes;
+    // Today's window that has already started counts as next week's.
+    if (inMinutes <= 0) inMinutes += 7 * MINUTES_PER_DAY;
+    if (best === null || inMinutes < best.inMinutes) best = { inMinutes, period };
+  }
+
+  if (best === null) return null;
+  return {
+    dayOfWeek: best.period.dayOfWeek,
+    opensAt: best.period.opensAt,
+    isToday: best.period.dayOfWeek === day && best.inMinutes < MINUTES_PER_DAY,
+  };
+}
+
 /**
  * `00:00–23:59` is how the schema spells "always", and read back as a clock
  * time it looks like a bakery that shuts for one minute a night.
@@ -136,9 +177,14 @@ export function isAllDay(window: OpeningWindow): boolean {
   return window.opensAt === '00:00' && ['23:59', '24:00', '00:00'].includes(window.closesAt);
 }
 
-export function formatWeekday(dayOfWeek: number, locale?: string): string {
-  const date = new Date(WEEKDAY_REFERENCE_DATE + dayOfWeek * MS_PER_DAY);
-  return new Intl.DateTimeFormat(locale, { weekday: 'short', timeZone: 'UTC' }).format(date);
+export function formatWeekday(
+  dayOfWeek: number,
+  locale?: string,
+  style: 'short' | 'long' = 'short',
+): string {
+  return new Intl.DateTimeFormat(locale, { weekday: style, timeZone: 'UTC' }).format(
+    new Date(WEEKDAY_REFERENCE_DATE + dayOfWeek * MS_PER_DAY),
+  );
 }
 
 /** `'22:30'` rendered as the locale writes it — 12-hour in en-US, 24-hour in de-DE. */

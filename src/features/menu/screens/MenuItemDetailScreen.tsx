@@ -10,7 +10,9 @@ import { ErrorState, LoadingState, ScreenHeader } from '@/components/shared';
 import { Button, Photo, Text, TextField } from '@/components/ui';
 // Deep imports: these barrels reach back into this feature.
 import { DishClips } from '@/features/discovery/components/DishClips';
+import { useOpeningNotice } from '@/features/restaurants/hooks/useOpeningNotice';
 import { useRestaurant } from '@/features/restaurants/hooks/useRestaurant';
+import type { Restaurant } from '@/features/restaurants/types/restaurant.types';
 import { selectIsFromOtherRestaurant, useCartStore } from '@/stores/cart.store';
 import { colors } from '@/theme';
 import { formatMoney } from '@/utils/currency';
@@ -52,18 +54,19 @@ export function MenuItemDetailScreen() {
       </Shell>
     );
 
-  return <Loaded item={item} currency={restaurant.currency} restaurant={restaurant} />;
+  return <Loaded item={item} restaurant={restaurant} />;
 }
 
 type LoadedProps = {
   item: MenuItem;
-  currency: string;
-  restaurant: { id: string; name: string; currency: string; deliveryFeeMinor: number };
+  restaurant: Restaurant;
 };
 
-function Loaded({ item, currency, restaurant }: LoadedProps) {
+function Loaded({ item, restaurant }: LoadedProps) {
   const { t, i18n } = useTranslation();
   const router = useRouter();
+  const { currency } = restaurant;
+  const { opensText } = useOpeningNotice(restaurant);
 
   const [quantity, setQuantity] = useState(1);
   const [instruction, setInstruction] = useState('');
@@ -89,6 +92,22 @@ function Loaded({ item, currency, restaurant }: LoadedProps) {
   const handleAdd = () => {
     if (soldOut) return;
 
+    // Closed: say so here, before a Cart is built on it — checkout is the backstop (#156).
+    if (opensText) {
+      Alert.alert(
+        t('cart.closedTitle', { restaurant: restaurant.name }),
+        t('cart.closedMessage', { opens: opensText }),
+        [
+          { text: t('common.cancel'), style: 'cancel' },
+          { text: t('cart.closedConfirm'), onPress: addOrReplace },
+        ],
+      );
+      return;
+    }
+    addOrReplace();
+  };
+
+  const addOrReplace = () => {
     if (!heldByOtherRestaurant) {
       commit();
       return;

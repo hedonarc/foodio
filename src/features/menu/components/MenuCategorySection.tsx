@@ -10,14 +10,24 @@ import { MenuSectionHeader } from './MenuSectionHeader';
 type MenuCategorySectionProps = {
   category: MenuCategory;
   restaurant: CartRestaurant;
+  closedNotice?: string;
 };
 
-export function MenuCategorySection({ category, restaurant }: MenuCategorySectionProps) {
+export function MenuCategorySection({
+  category,
+  restaurant,
+  closedNotice,
+}: MenuCategorySectionProps) {
   return (
     <View>
       <MenuSectionHeader title={category.name} />
       {category.menuItems.map((item) => (
-        <MenuItemCard key={item.id} item={item} restaurant={restaurant} />
+        <MenuItemCard
+          key={item.id}
+          item={item}
+          restaurant={restaurant}
+          {...(closedNotice === undefined ? {} : { closedNotice })}
+        />
       ))}
     </View>
   );

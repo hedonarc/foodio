@@ -100,7 +100,9 @@
     "gallery": "Gallery",
     "openAllDay": "Open 24 hours",
     "deliversTo": "Delivers to {{label}} · {{km}} km",
-    "doesNotDeliverTo": "Doesn't deliver to {{label}} — {{km}} km away, delivers up to {{radius}} km"
+    "doesNotDeliverTo": "Doesn't deliver to {{label}} — {{km}} km away, delivers up to {{radius}} km",
+    "opensToday": "Opens at {{time}}",
+    "opensOn": "Opens {{day}} at {{time}}"
   },
   "menu": {
     "empty": "This restaurant has not published a menu yet.",
@@ -135,7 +137,10 @@
     "checkout": "Go to checkout",
     "addNote": "Add a note",
     "addNoteLabel": "Add a note to {{name}}",
-    "editNoteLabel": "Edit note: {{note}}"
+    "editNoteLabel": "Edit note: {{note}}",
+    "closedTitle": "{{restaurant}} is closed",
+    "closedMessage": "{{opens}}. You can add this now and order once it opens.",
+    "closedConfirm": "Add anyway"
   },
   "address": {
     "title": "Delivery address",

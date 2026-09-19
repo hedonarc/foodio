@@ -20,6 +20,7 @@ import { RestaurantHero } from '../components/RestaurantHero';
 import { RestaurantHours } from '../components/RestaurantHours';
 import { RestaurantInfo } from '../components/RestaurantInfo';
 import { RestaurantReviewPreview } from '../components/RestaurantReviewPreview';
+import { useOpeningNotice } from '../hooks/useOpeningNotice';
 import { useRestaurant } from '../hooks/useRestaurant';
 
 /** How far above a section's top the chips sit once they are pinned. */
@@ -31,6 +32,10 @@ export function RestaurantDetailsScreen() {
   const { data: restaurant, isPending, error, refetch } = useRestaurant(id);
   // Cached: the Menu itself already asked for this.
   const { data: categories } = useRestaurantMenu(id);
+
+  // Before the early returns: a hook. An empty schedule reads as open, which
+  // is harmless while the page is still loading.
+  const { opensText } = useOpeningNotice(restaurant ?? { openingHours: [], timezone: 'UTC' });
 
   const scrollRef = useRef<ScrollView>(null);
   const offsets = useRef(new Map<string, number>());
@@ -134,7 +139,11 @@ export function RestaurantDetailsScreen() {
             leadingInset={chipsPinned}
           />
         </View>
-        <Menu restaurant={cartRestaurant} onSectionLayout={rememberSection} />
+        <Menu
+          restaurant={cartRestaurant}
+          onSectionLayout={rememberSection}
+          {...(opensText === null ? {} : { closedNotice: opensText })}
+        />
         {/* After the menu — people came to order; the clips argue for it (#26). */}
         <RestaurantClips restaurantId={restaurant.id} restaurantName={restaurant.name} />
         <RestaurantAbout description={restaurant.description} />
