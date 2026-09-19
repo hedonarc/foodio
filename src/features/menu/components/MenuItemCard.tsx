@@ -19,6 +19,11 @@ type MenuItemCardProps = {
   restaurant: CartRestaurant;
 };
 
+/**
+ * The dish gets the photograph the chosen design gives it — a large square
+ * with the Add button sitting on its corner — on the left, as decided in
+ * #196. A dish with no photograph keeps the frame, so rows stay aligned.
+ */
 export function MenuItemCard({ item, restaurant }: MenuItemCardProps) {
   const { t } = useTranslation();
   const router = useRouter();
@@ -30,41 +35,17 @@ export function MenuItemCard({ item, restaurant }: MenuItemCardProps) {
       onPress={() => guard(() => router.push(`/menu-item/${item.id}`))}
       accessibilityRole="button"
       accessibilityLabel={item.name}
-      className="flex-row items-start py-3 active:opacity-70"
+      className="flex-row items-stretch py-3 active:opacity-70"
     >
-      <Photo uri={item.image} className="mr-3 h-20 w-20 flex-shrink-0 rounded-xl" />
-      <View className="flex-1">
-        <View className="flex-row items-center">
-          <Text variant="bodyMedium" className="flex-1 text-gray-900" numberOfLines={1}>
-            {item.name}
-          </Text>
-          {soldOut ? (
-            <View className="ml-2 rounded-full bg-gray-200 px-2 py-0.5">
-              <Text variant="caption" className="font-semibold text-gray-600">
-                {t('menu.soldOut')}
-              </Text>
-            </View>
-          ) : item.isPopular ? (
-            <View className="ml-2 rounded-full bg-warning-100 px-2 py-0.5">
-              <Text variant="caption" className="font-semibold text-warning-700">
-                {t('menu.popularBadge')}
-              </Text>
-            </View>
-          ) : null}
-        </View>
-        {item.rating !== undefined ? (
-          <View className="mt-0.5 flex-row items-center">
-            <Ionicons name="star" size={11} color={colors.warning[500]} />
-            <Text variant="caption" className="ml-0.5 font-semibold text-warning-700">
-              {item.rating.toFixed(1)}
-            </Text>
+      <View className="relative h-28 w-28 flex-shrink-0 overflow-hidden rounded-2xl bg-gray-100">
+        {item.image ? (
+          <Photo uri={item.image} className="h-full w-full" />
+        ) : (
+          <View className="h-full w-full items-center justify-center">
+            <Ionicons name="fast-food-outline" size={28} color={colors.gray[300]} />
           </View>
-        ) : null}
-        <Text variant="caption" className="mt-1 text-gray-500" numberOfLines={2}>
-          {item.description}
-        </Text>
-        <View className="mt-2 flex-row items-center justify-between">
-          <MenuPrice priceMinor={item.priceMinor} currency={restaurant.currency} />
+        )}
+        <View className="absolute bottom-1.5 right-1.5">
           <AddToCartControl
             restaurant={restaurant}
             item={{
@@ -76,6 +57,41 @@ export function MenuItemCard({ item, restaurant }: MenuItemCardProps) {
             disabled={soldOut}
           />
         </View>
+      </View>
+
+      <View className="ml-3 flex-1 justify-between py-0.5">
+        <View>
+          <View className="flex-row items-center">
+            <Text variant="bodyMedium" className="flex-1 text-gray-900" numberOfLines={1}>
+              {item.name}
+            </Text>
+            {soldOut ? (
+              <View className="ml-2 rounded-full bg-gray-200 px-2 py-0.5">
+                <Text variant="caption" className="font-semibold text-gray-600">
+                  {t('menu.soldOut')}
+                </Text>
+              </View>
+            ) : item.isPopular ? (
+              <View className="ml-2 rounded-full bg-warning-100 px-2 py-0.5">
+                <Text variant="caption" className="font-semibold text-warning-700">
+                  {t('menu.popularBadge')}
+                </Text>
+              </View>
+            ) : null}
+          </View>
+          {item.rating !== undefined ? (
+            <View className="mt-0.5 flex-row items-center">
+              <Ionicons name="star" size={11} color={colors.warning[500]} />
+              <Text variant="caption" className="ml-0.5 font-semibold text-warning-700">
+                {item.rating.toFixed(1)}
+              </Text>
+            </View>
+          ) : null}
+          <Text variant="caption" className="mt-1 text-gray-500" numberOfLines={2}>
+            {item.description}
+          </Text>
+        </View>
+        <MenuPrice priceMinor={item.priceMinor} currency={restaurant.currency} />
       </View>
     </Pressable>
   );
