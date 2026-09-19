@@ -17,6 +17,7 @@ import { MenuPrice } from './MenuPrice';
 type MenuItemCardProps = {
   item: MenuItem;
   restaurant: CartRestaurant;
+  closedNotice?: string;
 };
 
 /**
@@ -24,7 +25,7 @@ type MenuItemCardProps = {
  * with the Add button sitting on its corner — on the left, as decided in
  * #196. A dish with no photograph keeps the frame, so rows stay aligned.
  */
-export function MenuItemCard({ item, restaurant }: MenuItemCardProps) {
+export function MenuItemCard({ item, restaurant, closedNotice }: MenuItemCardProps) {
   const { t } = useTranslation();
   const router = useRouter();
   const guard = useNavigationGuard();
@@ -55,6 +56,7 @@ export function MenuItemCard({ item, restaurant }: MenuItemCardProps) {
               priceMinor: item.priceMinor,
             }}
             disabled={soldOut}
+            {...(closedNotice === undefined ? {} : { closedNotice })}
           />
         </View>
       </View>

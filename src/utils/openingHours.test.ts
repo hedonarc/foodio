@@ -4,6 +4,7 @@ import {
   groupOpeningHours,
   isAllDay,
   isOpenAt,
+  nextOpening,
   type OpeningHours,
 } from './openingHours';
 
@@ -184,5 +185,56 @@ describe('isAllDay', () => {
   it('does not mistake a long day for the whole day', () => {
     expect(isAllDay({ opensAt: '00:00', closesAt: '22:00' })).toBe(false);
     expect(isAllDay({ opensAt: '06:00', closesAt: '23:59' })).toBe(false);
+  });
+});
+
+describe('nextOpening', () => {
+  // Mon–Fri 11:00–22:00, plus a Saturday lunch window.
+  const week: OpeningHours[] = [
+    ...[1, 2, 3, 4, 5].map((dayOfWeek) => ({ dayOfWeek, opensAt: '11:00', closesAt: '22:00' })),
+    { dayOfWeek: 6, opensAt: '12:00', closesAt: '15:00' },
+  ];
+
+  it('opens later today when the doors have not opened yet', () => {
+    // Monday 08:30 Karachi.
+    expect(nextOpening(week, at('2026-08-03T03:30:00Z'), KARACHI)).toEqual({
+      dayOfWeek: 1,
+      opensAt: '11:00',
+      isToday: true,
+    });
+  });
+
+  it('opens tomorrow once today is over', () => {
+    // Monday 23:00 Karachi.
+    expect(nextOpening(week, at('2026-08-03T18:00:00Z'), KARACHI)).toEqual({
+      dayOfWeek: 2,
+      opensAt: '11:00',
+      isToday: false,
+    });
+  });
+
+  it('skips a closed day', () => {
+    // Saturday 16:00 Karachi: Sunday has no entry, so Monday.
+    expect(nextOpening(week, at('2026-08-08T11:00:00Z'), KARACHI)).toEqual({
+      dayOfWeek: 1,
+      opensAt: '11:00',
+      isToday: false,
+    });
+  });
+
+  it('reads the restaurant clock, not the phone', () => {
+    // 07:00 UTC on Monday is 12:00 in Karachi — already open, so the next start is Tuesday.
+    expect(nextOpening(week, at('2026-08-03T07:00:00Z'), KARACHI)?.dayOfWeek).toBe(2);
+  });
+
+  it('has no answer without hours', () => {
+    expect(nextOpening([], at('2026-08-03T03:30:00Z'), KARACHI)).toBeNull();
+  });
+});
+
+describe('formatWeekday', () => {
+  it('has a short form for a table and a long one for a sentence', () => {
+    expect(formatWeekday(0, 'en-GB')).toBe('Sun');
+    expect(formatWeekday(0, 'en-GB', 'long')).toBe('Sunday');
   });
 });

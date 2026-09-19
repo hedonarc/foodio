@@ -10,6 +10,7 @@ export * from './components/RestaurantReviewPreview';
 export * from './components/RestaurantTilePlaceholder';
 export * from './components/ReviewAvatar';
 export * from './components/ReviewCard';
+export * from './hooks/useOpeningNotice';
 export * from './hooks/useRestaurant';
 export * from './hooks/useRestaurantReviews';
 export * from './hooks/useRestaurants';
