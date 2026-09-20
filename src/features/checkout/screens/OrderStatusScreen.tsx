@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { ScrollView, View } from 'react-native';
 
 import { useLocalSearchParams, useRouter } from 'expo-router';
@@ -12,6 +13,7 @@ import { formatMoney } from '@/utils/currency';
 
 import { OrderStatusTimeline } from '../components/OrderStatusTimeline';
 import { RateOrderAffordance } from '../components/RateOrderAffordance';
+import { RateOrderSheet } from '../components/RateOrderSheet';
 import { useCancelOrder, useOrder } from '../hooks/useOrders';
 import { customerPaymentKey } from '../lib/payment';
 import { isCancellable } from '../types/order.types';
@@ -23,6 +25,10 @@ export function OrderStatusScreen() {
 
   const { data: order, isPending, error, refetch } = useOrder(id);
   const cancelOrder = useCancelOrder();
+
+  /* Beside the scroll, not inside it: the sheet's Submit loses its first tap
+     to the ScrollView while the comment keyboard is up (#211). */
+  const [rating, setRating] = useState(false);
 
   if (isPending) {
     return (
@@ -127,11 +133,7 @@ export function OrderStatusScreen() {
         </View>
 
         {order.status === 'delivered' ? (
-          <RateOrderAffordance
-            orderId={order.id}
-            restaurantName={order.restaurantName}
-            variant="button"
-          />
+          <RateOrderAffordance orderId={order.id} variant="button" onRate={() => setRating(true)} />
         ) : null}
 
         {isCancellable(order.status) ? (
@@ -149,6 +151,13 @@ export function OrderStatusScreen() {
           {t('order.backToBrowsing')}
         </Button>
       </ScrollView>
+
+      <RateOrderSheet
+        visible={rating}
+        orderId={order.id}
+        restaurantName={order.restaurantName}
+        onClose={() => setRating(false)}
+      />
     </View>
   );
 }

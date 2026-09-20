@@ -156,7 +156,11 @@ export function CheckoutScreen() {
     <View className="flex-1 bg-white">
       <ScreenHeader title={t('checkout.title')} />
 
-      <ScrollView contentContainerClassName="px-4 pb-8">
+      {/* The phone field puts a keyboard over this screen, and a ScrollView
+          spends the first tap dismissing it — including the tap on Place
+          order, and on the country picker's chevron (#211). `handled` keeps
+          that behaviour for taps on nothing, and lets buttons through. */}
+      <ScrollView keyboardShouldPersistTaps="handled" contentContainerClassName="px-4 pb-8">
         <Text variant="caption" className="text-gray-400">
           {t('cart.fromRestaurant', { restaurant: cartRestaurant.name })}
         </Text>

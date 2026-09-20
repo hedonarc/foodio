@@ -15,12 +15,14 @@ import {
 } from '@/components/shared';
 import { Text } from '@/components/ui';
 import { useNavigationGuard } from '@/hooks/useNavigationGuard';
+import { useSheetTarget } from '@/hooks/useSheetTarget';
 import { useSessionStore } from '@/stores/session.store';
 import { colors } from '@/theme';
 import { formatMoney } from '@/utils/currency';
 import { formatDate } from '@/utils/date';
 
 import { RateOrderAffordance } from '../components/RateOrderAffordance';
+import { RateOrderSheet } from '../components/RateOrderSheet';
 import { useOrders } from '../hooks/useOrders';
 import { isTerminal } from '../types/order.types';
 
@@ -41,6 +43,11 @@ export function OrdersScreen() {
     isFetchingNextPage,
     isRefetching,
   } = useOrders();
+
+  /* One sheet for the whole list, not one per row: a Modal inside renderItem
+     is mounted once per delivered order, and loses its first tap to the list
+     while the comment keyboard is up (#211). */
+  const rating = useSheetTarget<{ id: string; restaurantName: string }>();
 
   /* Orders belong to a Person. Signed out this screen showed the server's own
      "Not authenticated.", with no way to sign in — issue #177. */
@@ -131,14 +138,21 @@ export function OrdersScreen() {
               {order.status === 'delivered' ? (
                 <RateOrderAffordance
                   orderId={order.id}
-                  restaurantName={order.restaurantName}
                   variant="row"
+                  onRate={() => rating.open({ id: order.id, restaurantName: order.restaurantName })}
                 />
               ) : null}
             </Pressable>
           )}
         />
       ) : null}
+
+      <RateOrderSheet
+        visible={rating.visible}
+        orderId={rating.target?.id ?? ''}
+        restaurantName={rating.target?.restaurantName ?? ''}
+        onClose={rating.close}
+      />
     </SafeAreaView>
   );
 }
