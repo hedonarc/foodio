@@ -113,6 +113,7 @@ export function RestaurantDetailsScreen() {
     name: restaurant.name,
     currency: restaurant.currency,
     deliveryFeeMinor: restaurant.deliveryFeeMinor,
+    deliveryEstimate: restaurant.deliveryEstimate,
   };
 
   return (
