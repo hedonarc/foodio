@@ -142,7 +142,8 @@
     "closedConfirm": "Add anyway",
     "header": "{{restaurant}} · {{estimate}}",
     "fromRestaurant": "From {{restaurant}}",
-    "addMore": "Add more items"
+    "addMore": "Add more items",
+    "checkoutWithTotal": "Go to checkout · {{total}}"
   },
   "address": {
     "title": "Delivery address",
