@@ -1,6 +1,7 @@
 import { Pressable, ScrollView, View } from 'react-native';
 
 import { useRouter } from 'expo-router';
+import { Ionicons } from '@expo/vector-icons';
 
 import { useTranslation } from 'react-i18next';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -9,6 +10,7 @@ import { EmptyState, ScreenHeader } from '@/components/shared';
 import { Button, Text } from '@/components/ui';
 import { useNavigationGuard } from '@/hooks/useNavigationGuard';
 import { selectItemCount, useCartStore } from '@/stores/cart.store';
+import { colors } from '@/theme';
 
 import { CartLineRow } from '../components/CartLineRow';
 import { CartSummary } from '../components/CartSummary';
@@ -74,6 +76,23 @@ export function CartScreen() {
           {lines.map((line) => (
             <CartLineRow key={line.id} line={line} currency={restaurant.currency} />
           ))}
+
+          {/* The Cart is a tab: without this, adding a second dish means Home
+              and finding the Restaurant again (#204). */}
+          <Pressable
+            onPress={() => guard(() => router.push(`/restaurant/${restaurant.id}`))}
+            accessibilityRole="button"
+            accessibilityLabel={t('cart.addMore')}
+            className="flex-row items-center border-b border-gray-100 py-4 active:opacity-70"
+          >
+            <View className="h-6 w-6 items-center justify-center rounded-full border-2 border-primary-500">
+              <Ionicons name="add" size={14} color={colors.primary[500]} />
+            </View>
+            <Text variant="label" className="ml-3 flex-1 text-primary-600">
+              {t('cart.addMore')}
+            </Text>
+            <Ionicons name="chevron-forward" size={16} color={colors.gray[400]} />
+          </Pressable>
 
           <CartSummary
             currency={restaurant.currency}
