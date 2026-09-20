@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { Pressable, View } from 'react-native';
 
 import { Ionicons } from '@expo/vector-icons';
@@ -9,26 +8,20 @@ import { Button, Text } from '@/components/ui';
 import { useIsOrderRated } from '@/stores/ratedOrders.store';
 import { colors } from '@/theme';
 
-import { RateOrderSheet } from './RateOrderSheet';
-
 type RateOrderAffordanceProps = {
   orderId: string;
-  restaurantName: string;
   /** `button` on the order status screen, `row` inside an orders-list row. */
   variant: 'button' | 'row';
+  /** The sheet lives on the screen, beside the list — see #211. */
+  onRate: () => void;
 };
 
 /**
  * A delivered order's way in to rating it. Once rated — by this session or
  * discovered via the server's 409 — it settles into a quiet "Rated" state.
  */
-export function RateOrderAffordance({
-  orderId,
-  restaurantName,
-  variant,
-}: RateOrderAffordanceProps) {
+export function RateOrderAffordance({ orderId, variant, onRate }: RateOrderAffordanceProps) {
   const { t } = useTranslation();
-  const [sheetOpen, setSheetOpen] = useState(false);
   const isRated = useIsOrderRated(orderId);
 
   if (isRated) {
@@ -44,31 +37,20 @@ export function RateOrderAffordance({
     );
   }
 
-  return (
-    <>
-      {variant === 'button' ? (
-        <Button onPress={() => setSheetOpen(true)} className="mt-6">
-          {t('review.rateOrder')}
-        </Button>
-      ) : (
-        <Pressable
-          onPress={() => setSheetOpen(true)}
-          accessibilityRole="button"
-          className="mt-2 flex-row items-center self-start rounded-full bg-primary-50 px-3 py-1.5 active:bg-primary-100"
-        >
-          <Ionicons name="star-outline" size={14} color={colors.primary[700]} />
-          <Text variant="label" className="ml-1.5 text-primary-700">
-            {t('review.rateOrder')}
-          </Text>
-        </Pressable>
-      )}
-
-      <RateOrderSheet
-        visible={sheetOpen}
-        orderId={orderId}
-        restaurantName={restaurantName}
-        onClose={() => setSheetOpen(false)}
-      />
-    </>
+  return variant === 'button' ? (
+    <Button onPress={onRate} className="mt-6">
+      {t('review.rateOrder')}
+    </Button>
+  ) : (
+    <Pressable
+      onPress={onRate}
+      accessibilityRole="button"
+      className="mt-2 flex-row items-center self-start rounded-full bg-primary-50 px-3 py-1.5 active:bg-primary-100"
+    >
+      <Ionicons name="star-outline" size={14} color={colors.primary[700]} />
+      <Text variant="label" className="ml-1.5 text-primary-700">
+        {t('review.rateOrder')}
+      </Text>
+    </Pressable>
   );
 }

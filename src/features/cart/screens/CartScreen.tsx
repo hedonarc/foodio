@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { Alert, Pressable, ScrollView, View } from 'react-native';
 
 import { useRouter } from 'expo-router';
@@ -10,6 +9,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { EmptyState, ScreenHeader } from '@/components/shared';
 import { Button, Text } from '@/components/ui';
 import { useNavigationGuard } from '@/hooks/useNavigationGuard';
+import { useSheetTarget } from '@/hooks/useSheetTarget';
 import { selectItemCount, selectTotalMinor, useCartStore } from '@/stores/cart.store';
 import { colors } from '@/theme';
 import { formatMoney } from '@/utils/currency';
@@ -37,15 +37,8 @@ export function CartScreen() {
    * ScrollView whenever the keyboard is up, to dismiss it — so Save needed a
    * second tap (#206).
    */
-  const [noteLineId, setNoteLineId] = useState<string | null>(null);
-  const [noteOpen, setNoteOpen] = useState(false);
-  // The line is kept after closing so the sheet slides out with its text intact.
-  const noteLine = lines.find((line) => line.id === noteLineId) ?? null;
-
-  const openNote = (lineId: string) => {
-    setNoteLineId(lineId);
-    setNoteOpen(true);
-  };
+  const note = useSheetTarget<string>();
+  const noteLine = lines.find((line) => line.id === note.target) ?? null;
 
   const isEmpty = lines.length === 0 || restaurant === null;
 
@@ -112,7 +105,7 @@ export function CartScreen() {
               key={line.id}
               line={line}
               currency={restaurant.currency}
-              onEditNote={() => openNote(line.id)}
+              onEditNote={() => note.open(line.id)}
             />
           ))}
 
@@ -154,13 +147,13 @@ export function CartScreen() {
       )}
 
       <InstructionSheet
-        visible={noteOpen && noteLine !== null}
+        visible={note.visible}
         name={noteLine?.name ?? ''}
         initial={noteLine?.instruction ?? ''}
-        onCancel={() => setNoteOpen(false)}
+        onCancel={note.close}
         onSave={(next) => {
           if (noteLine) setLineInstruction(noteLine.id, next);
-          setNoteOpen(false);
+          note.close();
         }}
       />
     </SafeAreaView>
