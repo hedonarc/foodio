@@ -21,9 +21,13 @@ type MenuItemCardProps = {
 };
 
 /**
- * The dish gets the photograph the chosen design gives it — a large square
- * with the Add button sitting on its corner — on the left, as decided in
- * #196. A dish with no photograph keeps the frame, so rows stay aligned.
+ * The dish gets the photograph the chosen design gives it — a large square on
+ * the left, as decided in #196. A dish with no photograph keeps the frame, so
+ * rows stay aligned.
+ *
+ * Add sits on the row's bottom right, opposite the price, rather than on the
+ * photograph: on the corner it covered the food and crowded the text, and a
+ * line already in the cart turns it into a stepper that needs the width.
  */
 export function MenuItemCard({ item, restaurant, closedNotice }: MenuItemCardProps) {
   const { t } = useTranslation();
@@ -38,7 +42,7 @@ export function MenuItemCard({ item, restaurant, closedNotice }: MenuItemCardPro
       accessibilityLabel={item.name}
       className="flex-row items-stretch py-3 active:opacity-70"
     >
-      <View className="relative h-28 w-28 flex-shrink-0 overflow-hidden rounded-2xl bg-gray-100">
+      <View className="h-28 w-28 flex-shrink-0 overflow-hidden rounded-2xl bg-gray-100">
         {item.image ? (
           <Photo uri={item.image} className="h-full w-full" />
         ) : (
@@ -46,19 +50,6 @@ export function MenuItemCard({ item, restaurant, closedNotice }: MenuItemCardPro
             <Ionicons name="fast-food-outline" size={28} color={colors.gray[300]} />
           </View>
         )}
-        <View className="absolute bottom-1.5 right-1.5">
-          <AddToCartControl
-            restaurant={restaurant}
-            item={{
-              id: item.id,
-              name: item.name,
-              image: item.image,
-              priceMinor: item.priceMinor,
-            }}
-            disabled={soldOut}
-            {...(closedNotice === undefined ? {} : { closedNotice })}
-          />
-        </View>
       </View>
 
       <View className="ml-3 flex-1 justify-between py-0.5">
@@ -93,7 +84,20 @@ export function MenuItemCard({ item, restaurant, closedNotice }: MenuItemCardPro
             {item.description}
           </Text>
         </View>
-        <MenuPrice priceMinor={item.priceMinor} currency={restaurant.currency} />
+        <View className="flex-row items-center justify-between">
+          <MenuPrice priceMinor={item.priceMinor} currency={restaurant.currency} />
+          <AddToCartControl
+            restaurant={restaurant}
+            item={{
+              id: item.id,
+              name: item.name,
+              image: item.image,
+              priceMinor: item.priceMinor,
+            }}
+            disabled={soldOut}
+            {...(closedNotice === undefined ? {} : { closedNotice })}
+          />
+        </View>
       </View>
     </Pressable>
   );
