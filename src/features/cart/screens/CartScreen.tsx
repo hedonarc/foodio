@@ -1,4 +1,5 @@
-import { Pressable, ScrollView, View } from 'react-native';
+import { useState } from 'react';
+import { Alert, Pressable, ScrollView, View } from 'react-native';
 
 import { useRouter } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
@@ -15,6 +16,7 @@ import { formatMoney } from '@/utils/currency';
 
 import { CartLineRow } from '../components/CartLineRow';
 import { CartSummary } from '../components/CartSummary';
+import { InstructionSheet } from '../components/InstructionSheet';
 
 export function CartScreen() {
   const { t, i18n } = useTranslation();
@@ -26,6 +28,24 @@ export function CartScreen() {
   const itemCount = useCartStore(selectItemCount);
   const totalMinor = useCartStore(selectTotalMinor);
   const clear = useCartStore((state) => state.clear);
+  const setLineInstruction = useCartStore((state) => state.setLineInstruction);
+
+  /**
+   * One sheet for the screen, rendered beside the scroll rather than inside a
+   * row. Touch responders follow the React tree, not the native one: a Modal
+   * that is a child of the ScrollView still has its first tap taken by the
+   * ScrollView whenever the keyboard is up, to dismiss it — so Save needed a
+   * second tap (#206).
+   */
+  const [noteLineId, setNoteLineId] = useState<string | null>(null);
+  const [noteOpen, setNoteOpen] = useState(false);
+  // The line is kept after closing so the sheet slides out with its text intact.
+  const noteLine = lines.find((line) => line.id === noteLineId) ?? null;
+
+  const openNote = (lineId: string) => {
+    setNoteLineId(lineId);
+    setNoteOpen(true);
+  };
 
   const isEmpty = lines.length === 0 || restaurant === null;
 
@@ -41,7 +61,14 @@ export function CartScreen() {
                 {t('cart.items', { count: itemCount })}
               </Text>
               <Pressable
-                onPress={clear}
+                // Adding from another Restaurant asks first; wiping the whole
+                // Cart is not the one destruction that gets to skip the question.
+                onPress={() =>
+                  Alert.alert(t('cart.clearTitle'), undefined, [
+                    { text: t('common.cancel'), style: 'cancel' },
+                    { text: t('cart.clearConfirm'), style: 'destructive', onPress: clear },
+                  ])
+                }
                 accessibilityRole="button"
                 accessibilityLabel={t('cart.clear')}
                 hitSlop={8}
@@ -56,7 +83,12 @@ export function CartScreen() {
       />
 
       {isEmpty ? (
-        <EmptyState message={t('cart.empty')} className="flex-1 items-center justify-center px-8" />
+        <View className="flex-1 items-center justify-center px-8">
+          <EmptyState message={t('cart.empty')} className="items-center" />
+          <Button variant="secondary" onPress={() => router.navigate('/')} className="mt-4">
+            {t('cart.browseRestaurants')}
+          </Button>
+        </View>
       ) : (
         <ScrollView
           showsVerticalScrollIndicator={false}
@@ -76,7 +108,12 @@ export function CartScreen() {
           </Text>
 
           {lines.map((line) => (
-            <CartLineRow key={line.id} line={line} currency={restaurant.currency} />
+            <CartLineRow
+              key={line.id}
+              line={line}
+              currency={restaurant.currency}
+              onEditNote={() => openNote(line.id)}
+            />
           ))}
 
           {/* The Cart is a tab: without this, adding a second dish means Home
@@ -115,6 +152,17 @@ export function CartScreen() {
           </Button>
         </View>
       )}
+
+      <InstructionSheet
+        visible={noteOpen && noteLine !== null}
+        name={noteLine?.name ?? ''}
+        initial={noteLine?.instruction ?? ''}
+        onCancel={() => setNoteOpen(false)}
+        onSave={(next) => {
+          if (noteLine) setLineInstruction(noteLine.id, next);
+          setNoteOpen(false);
+        }}
+      />
     </SafeAreaView>
   );
 }

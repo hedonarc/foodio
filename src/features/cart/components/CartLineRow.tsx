@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { Pressable, View } from 'react-native';
 
 import { Ionicons } from '@expo/vector-icons';
@@ -12,21 +11,18 @@ import { formatMoney } from '@/utils/currency';
 
 import type { CartLine } from '../types/cart.types';
 
-import { InstructionSheet } from './InstructionSheet';
-
 type CartLineRowProps = {
   line: CartLine;
   currency: string;
+  /** The note editor lives on the screen, not in the row — see CartScreen. */
+  onEditNote: () => void;
 };
 
-export function CartLineRow({ line, currency }: CartLineRowProps) {
+export function CartLineRow({ line, currency, onEditNote }: CartLineRowProps) {
   const { t, i18n } = useTranslation();
 
   const incrementLine = useCartStore((state) => state.incrementLine);
   const decrementLine = useCartStore((state) => state.decrementLine);
-  const setLineInstruction = useCartStore((state) => state.setLineInstruction);
-
-  const [editing, setEditing] = useState(false);
 
   const lineTotalMinor = line.unitPriceMinor * line.quantity;
 
@@ -43,7 +39,7 @@ export function CartLineRow({ line, currency }: CartLineRowProps) {
         </Text>
 
         <Pressable
-          onPress={() => setEditing(true)}
+          onPress={onEditNote}
           accessibilityRole="button"
           accessibilityLabel={
             line.instruction
@@ -78,15 +74,15 @@ export function CartLineRow({ line, currency }: CartLineRowProps) {
             accessibilityRole="button"
             accessibilityLabel={t('cart.decrease', { name: line.name })}
             hitSlop={8}
-            className="h-7 w-7 items-center justify-center rounded-full active:bg-gray-200"
+            className="h-8 w-8 items-center justify-center rounded-full active:bg-gray-200"
           >
             <Ionicons
               name={line.quantity === 1 ? 'trash-outline' : 'remove'}
-              size={14}
+              size={16}
               color={colors.gray[700]}
             />
           </Pressable>
-          <Text variant="caption" className="w-5 text-center font-semibold text-gray-900">
+          <Text variant="caption" className="w-6 text-center font-semibold text-gray-900">
             {line.quantity}
           </Text>
           <Pressable
@@ -94,23 +90,12 @@ export function CartLineRow({ line, currency }: CartLineRowProps) {
             accessibilityRole="button"
             accessibilityLabel={t('cart.increase', { name: line.name })}
             hitSlop={8}
-            className="h-7 w-7 items-center justify-center rounded-full bg-primary-500 active:bg-primary-600"
+            className="h-8 w-8 items-center justify-center rounded-full bg-primary-500 active:bg-primary-600"
           >
-            <Ionicons name="add" size={14} color={colors.white} />
+            <Ionicons name="add" size={16} color={colors.white} />
           </Pressable>
         </View>
       </View>
-
-      <InstructionSheet
-        visible={editing}
-        name={line.name}
-        initial={line.instruction}
-        onCancel={() => setEditing(false)}
-        onSave={(next) => {
-          setLineInstruction(line.id, next);
-          setEditing(false);
-        }}
-      />
     </View>
   );
 }
