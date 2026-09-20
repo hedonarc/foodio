@@ -9,20 +9,22 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { EmptyState, ScreenHeader } from '@/components/shared';
 import { Button, Text } from '@/components/ui';
 import { useNavigationGuard } from '@/hooks/useNavigationGuard';
-import { selectItemCount, useCartStore } from '@/stores/cart.store';
+import { selectItemCount, selectTotalMinor, useCartStore } from '@/stores/cart.store';
 import { colors } from '@/theme';
+import { formatMoney } from '@/utils/currency';
 
 import { CartLineRow } from '../components/CartLineRow';
 import { CartSummary } from '../components/CartSummary';
 
 export function CartScreen() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const router = useRouter();
   const guard = useNavigationGuard();
 
   const restaurant = useCartStore((state) => state.restaurant);
   const lines = useCartStore((state) => state.lines);
   const itemCount = useCartStore(selectItemCount);
+  const totalMinor = useCartStore(selectTotalMinor);
   const clear = useCartStore((state) => state.clear);
 
   const isEmpty = lines.length === 0 || restaurant === null;
@@ -98,11 +100,20 @@ export function CartScreen() {
             currency={restaurant.currency}
             deliveryFeeMinor={restaurant.deliveryFeeMinor}
           />
-
-          <Button onPress={() => guard(() => router.push('/checkout'))} className="mt-6">
-            {t('cart.checkout')}
-          </Button>
         </ScrollView>
+      )}
+
+      {/* Below the scroll, not in it: with more than four lines the button
+          was off screen, and it named no amount (#205). Same footer as the
+          dish page's Add button. */}
+      {isEmpty ? null : (
+        <View className="border-t border-gray-100 px-4 pb-5 pt-3">
+          <Button onPress={() => guard(() => router.push('/checkout'))}>
+            {t('cart.checkoutWithTotal', {
+              total: formatMoney(totalMinor, restaurant.currency, i18n.language),
+            })}
+          </Button>
+        </View>
       )}
     </SafeAreaView>
   );
