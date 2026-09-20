@@ -5,6 +5,12 @@ export type CartRestaurant = {
   /** ISO 4217. Every amount in this Cart is denominated in it. */
   currency: string;
   deliveryFeeMinor: number;
+  /**
+   * What the Restaurant said when the dish was added. A snapshot like the
+   * price: the Cart shows what the customer was told, and the Cart is the
+   * screen where they decide (#203).
+   */
+  deliveryEstimate: { minMinutes: number; maxMinutes: number };
 };
 
 /** Enough of a menu item to render a cart line without refetching. */

@@ -38,6 +38,7 @@ const cartRestaurant: CartRestaurant = {
   name: 'Taco Fiesta',
   currency: 'USD',
   deliveryFeeMinor: 199,
+  deliveryEstimate: { minMinutes: 20, maxMinutes: 30 },
 };
 
 const line = (overrides: Partial<CartLine> = {}): CartLine => ({

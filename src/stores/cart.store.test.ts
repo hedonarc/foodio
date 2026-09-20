@@ -16,6 +16,7 @@ const tacos: CartRestaurant = {
   name: 'Taco Fiesta',
   currency: 'USD',
   deliveryFeeMinor: 199,
+  deliveryEstimate: { minMinutes: 20, maxMinutes: 30 },
 };
 
 const pizza: CartRestaurant = {
@@ -23,6 +24,7 @@ const pizza: CartRestaurant = {
   name: 'Bella Italia',
   currency: 'USD',
   deliveryFeeMinor: 0,
+  deliveryEstimate: { minMinutes: 25, maxMinutes: 35 },
 };
 
 const item = (id: string, priceMinor: number): AddableMenuItem => ({

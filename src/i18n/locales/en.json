@@ -123,7 +123,6 @@
     "deliveryFee": "Delivery",
     "total": "Total",
     "free": "Free",
-    "fromRestaurant": "From {{restaurant}}",
     "items_one": "{{count}} item",
     "items_other": "{{count}} items",
     "viewWithCount_one": "View cart, {{count}} item",
@@ -140,7 +139,9 @@
     "editNoteLabel": "Edit note: {{note}}",
     "closedTitle": "{{restaurant}} is closed",
     "closedMessage": "{{opens}}. You can add this now and order once it opens.",
-    "closedConfirm": "Add anyway"
+    "closedConfirm": "Add anyway",
+    "header": "{{restaurant}} · {{estimate}}",
+    "fromRestaurant": "From {{restaurant}}"
   },
   "address": {
     "title": "Delivery address",

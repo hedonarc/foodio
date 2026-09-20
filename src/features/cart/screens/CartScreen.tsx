@@ -1,4 +1,4 @@
-import { Pressable, ScrollView } from 'react-native';
+import { Pressable, ScrollView, View } from 'react-native';
 
 import { useRouter } from 'expo-router';
 
@@ -8,7 +8,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { EmptyState, ScreenHeader } from '@/components/shared';
 import { Button, Text } from '@/components/ui';
 import { useNavigationGuard } from '@/hooks/useNavigationGuard';
-import { useCartStore } from '@/stores/cart.store';
+import { selectItemCount, useCartStore } from '@/stores/cart.store';
 
 import { CartLineRow } from '../components/CartLineRow';
 import { CartSummary } from '../components/CartSummary';
@@ -20,6 +20,7 @@ export function CartScreen() {
 
   const restaurant = useCartStore((state) => state.restaurant);
   const lines = useCartStore((state) => state.lines);
+  const itemCount = useCartStore(selectItemCount);
   const clear = useCartStore((state) => state.clear);
 
   const isEmpty = lines.length === 0 || restaurant === null;
@@ -31,16 +32,21 @@ export function CartScreen() {
         showBack={false}
         action={
           isEmpty ? undefined : (
-            <Pressable
-              onPress={clear}
-              accessibilityRole="button"
-              accessibilityLabel={t('cart.clear')}
-              hitSlop={8}
-            >
-              <Text variant="caption" className="font-semibold text-gray-500">
-                {t('cart.clear')}
+            <View className="flex-row items-center gap-3">
+              <Text variant="caption" className="text-gray-500">
+                {t('cart.items', { count: itemCount })}
               </Text>
-            </Pressable>
+              <Pressable
+                onPress={clear}
+                accessibilityRole="button"
+                accessibilityLabel={t('cart.clear')}
+                hitSlop={8}
+              >
+                <Text variant="caption" className="font-semibold text-gray-500">
+                  {t('cart.clear')}
+                </Text>
+              </Pressable>
+            </View>
           )
         }
       />
@@ -53,8 +59,16 @@ export function CartScreen() {
           contentContainerClassName="px-4"
           contentContainerStyle={{ paddingBottom: 32 }}
         >
-          <Text variant="caption" className="mb-2 text-gray-400">
-            {t('cart.fromRestaurant', { restaurant: restaurant.name })}
+          {/* Whose food, and when: what every card on Home says, on the screen
+              where the customer decides. Snapshot, like the price — see #203. */}
+          <Text variant="label" className="mb-2 text-gray-600">
+            {t('cart.header', {
+              restaurant: restaurant.name,
+              estimate: t('restaurant.deliveryEstimate', {
+                min: restaurant.deliveryEstimate.minMinutes,
+                max: restaurant.deliveryEstimate.maxMinutes,
+              }),
+            })}
           </Text>
 
           {lines.map((line) => (
