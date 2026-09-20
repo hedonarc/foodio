@@ -143,7 +143,10 @@
     "header": "{{restaurant}} · {{estimate}}",
     "fromRestaurant": "From {{restaurant}}",
     "addMore": "Add more items",
-    "checkoutWithTotal": "Go to checkout · {{total}}"
+    "checkoutWithTotal": "Go to checkout · {{total}}",
+    "clearTitle": "Empty your cart?",
+    "clearConfirm": "Empty",
+    "browseRestaurants": "Browse restaurants"
   },
   "address": {
     "title": "Delivery address",
