@@ -141,7 +141,8 @@
     "closedMessage": "{{opens}}. You can add this now and order once it opens.",
     "closedConfirm": "Add anyway",
     "header": "{{restaurant}} · {{estimate}}",
-    "fromRestaurant": "From {{restaurant}}"
+    "fromRestaurant": "From {{restaurant}}",
+    "addMore": "Add more items"
   },
   "address": {
     "title": "Delivery address",
